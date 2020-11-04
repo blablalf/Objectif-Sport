@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 public class DistanceGoal extends Goal {
 
-    private double distance;
+    private double distance, completedDistance;
 
     public DistanceGoal(String type, Calendar startDate, Calendar endDate, double distance) {
         super(type, startDate, endDate);

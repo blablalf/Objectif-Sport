@@ -2,11 +2,9 @@ package model.goals;
 
 import java.util.Calendar;
 
-import model.goals.Goal;
-
 public class TimeGoal extends Goal {
 
-    private long time;
+    private long time, completedTime;
 
     public TimeGoal(String type, Calendar startDate, Calendar endDate, long time) {
         super(type, startDate, endDate);

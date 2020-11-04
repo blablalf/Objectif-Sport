@@ -4,9 +4,18 @@ import java.util.Calendar;
 
 public abstract class Goal {
 
-    private String type;
-
+    private String type; // Could be time, distance or timeDistance
     private Calendar startDate, endDate;
+
+    public boolean isAchieved() {
+        return achieved;
+    }
+
+    public void setAchieved(boolean achieved) {
+        this.achieved = achieved;
+    }
+
+    private boolean achieved;
 
     public String getType() {
         return type;
@@ -36,6 +45,7 @@ public abstract class Goal {
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
+        achieved = false;
     }
 
 }

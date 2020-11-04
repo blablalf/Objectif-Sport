@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import model.activities.Activity;
 import model.goals.Goal;
 
 public class Sport {
@@ -26,11 +27,8 @@ public class Sport {
         this.name = name;
     }
 
-    public Sport(ArrayList<Goal> goals, String name) {
-        this.goals = goals;
+    public Sport(String name) {
         this.name = name;
     }
 
-    public Sport() {
-    }
 }
