@@ -1,9 +1,9 @@
-package model;
+package com.example.objectifsport.model;
 
 import java.util.ArrayList;
 
-import model.activities.Activity;
-import model.goals.Goal;
+import com.example.objectifsport.model.activities.Activity;
+import com.example.objectifsport.model.goals.Goal;
 
 public class Sport {
 

@@ -1,4 +1,4 @@
-package model.goals;
+package com.example.objectifsport.model.goals;
 
 import java.util.Calendar;
 

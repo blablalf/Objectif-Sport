@@ -1,20 +1,23 @@
-package model.activities;
+package com.example.objectifsport.model.activities;
 
 import java.util.Calendar;
 
-public abstract class Activity {
+public class Activity {
 
     // General part
     private String type; // Could be time, distance or timeDistance
-    private Calendar date;
 
-    public Activity(String type, Calendar date) {
+    public Activity(String type) {
         this.type = type;
-        this.date = date;
     }
 
+    // Period part
+    private Calendar startDate;
+    private Calendar endDate;
+
+
     // Time part
-    // TODO
+    //
 
     // Distance part
     private double startCoordinateX, startCoordinateY, endCoordinateX, endCoordinateY, completedDistance;
@@ -50,7 +53,7 @@ public abstract class Activity {
     }
 
     public void setCompletedDistance(double completedDistance) {
-        this.completedDistance = completedDistance;
+        this.completedDistance += completedDistance;
     }
 
 }
