@@ -4,12 +4,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.objectifsport.fragments.MyActivitiesFragment;
+import com.example.objectifsport.fragments.MyGoalsFragment;
 import com.example.objectifsport.fragments.MySportsFragment;
 
 public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
 
-    private String tabTitles[] = new String[] { "My Sports", "Activities", "Objectives" };
-    private final int PAGE_COUNT = 1;
+    private String tabTitles[] = new String[] { "My Sports", "My Activities", "My Goals" };
+    private final int PAGE_COUNT = 3;
 
     public SampleFragmentPageAdapter(FragmentManager fm, int behavior) {
         super(fm, behavior);
@@ -22,7 +24,13 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int pagePosition) {
-        return MySportsFragment.newInstance(pagePosition + 1);
+        switch (tabTitles[pagePosition]){
+            case "Activities" :
+                return MyActivitiesFragment.newInstance();
+            case "My Objectives" :
+                return MyGoalsFragment.newInstance();
+            default: return MySportsFragment.newInstance();
+        }
     }
 
     @Override

@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.MySportsFragment">
+
     <ListView
         android:id="@+id/sports_list"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".fragments.MySportsFragment">
+        android:layout_height="match_parent">
 
     </ListView>
 
@@ -21,5 +22,7 @@
         android:src="@android:drawable/ic_input_add"
         android:contentDescription="@string/add_sport"
         android:backgroundTint="@color/purple_500"
-        app:tint="@color/white"/>
+        app:tint="@color/white"
+        android:id="@+id/add_sport"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

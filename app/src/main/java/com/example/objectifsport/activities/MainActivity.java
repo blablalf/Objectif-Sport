@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.example.objectifsport.R;
+import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.adapters.SampleFragmentPageAdapter;
 import com.example.objectifsport.adapters.SportAdapter;
 import com.example.objectifsport.model.Sport;
@@ -16,10 +17,15 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private DataManager dataManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dataManager = new DataManager(this);
+        DataManager.generateFakeSports();
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = findViewById(R.id.viewpager);
