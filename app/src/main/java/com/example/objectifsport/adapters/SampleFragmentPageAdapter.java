@@ -8,7 +8,7 @@ import com.example.objectifsport.fragments.MySportsFragment;
 
 public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
 
-    private String tabTitles[] = new String[] { "My Sports", "Tab2", "Tab3" };
+    private String tabTitles[] = new String[] { "My Sports", "Activities", "Objectives" };
     private final int PAGE_COUNT = 1;
 
     public SampleFragmentPageAdapter(FragmentManager fm, int behavior) {

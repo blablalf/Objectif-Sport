@@ -8,6 +8,7 @@ import com.example.objectifsport.model.goals.Goal;
 public class Sport {
 
     private ArrayList<Goal> goals;
+
     private ArrayList<Activity> activities;
     private String name;
 
@@ -29,6 +30,33 @@ public class Sport {
 
     public Sport(String name) {
         this.name = name;
+        this.activities = new ArrayList<Activity>();
+        this.goals = new ArrayList<Goal>();
+    }
+
+    public ArrayList<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(ArrayList<Activity> activities) {
+        this.activities = activities;
+    }
+
+    public void addActivity(Activity activity){
+        this.activities.add(activity);
+    }
+
+    public void removeActivity(Activity activity){
+        this.activities.remove(activity);
+    }
+
+    public ArrayList<Goal> getAchievedGoals() {
+        ArrayList<Goal> achievedGoals = new ArrayList();
+        for (Goal goal : goals) {
+            if (goal.isAchieved()) achievedGoals.add(goal);
+        }
+
+        return achievedGoals;
     }
 
 }

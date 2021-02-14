@@ -4,10 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.widget.ListView;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.adapters.SampleFragmentPageAdapter;
+import com.example.objectifsport.adapters.SportAdapter;
+import com.example.objectifsport.model.Sport;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
                 R.layout.activity_main));
 
         // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
 }
