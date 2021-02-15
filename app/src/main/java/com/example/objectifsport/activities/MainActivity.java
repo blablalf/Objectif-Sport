@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dataManager = new DataManager(this);
-        DataManager.generateFakeSports();
+
+        // FOR DEMONSTRATIONS / TESTING
+        //DataManager.generateFakeSports();
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = findViewById(R.id.viewpager);

@@ -1,5 +1,6 @@
 package com.example.objectifsport.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.objectifsport.R;
+import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.Sport;
 
 import java.util.ArrayList;
@@ -52,6 +54,22 @@ public class SportAdapter extends ArrayAdapter<Sport> {
         sportView.setOnClickListener(v -> {
             //Intent intent = new Intent(context, DetailSportActivity.class);
             //context.startActivity(intent);
+        });
+
+        sportView.setOnLongClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Do you want to remove this sport ?");
+            builder.setNegativeButton("CANCEL", (dialog, which) -> dialog.cancel());
+
+            builder.setPositiveButton("REMOVE", (dialog, which) -> {
+                DataManager dataManager = DataManager.getInstance();
+                dataManager.getSports().remove(position);
+                dataManager.save();
+                notifyDataSetChanged();
+            });
+
+            builder.show();
+            return false;
         });
 
         // Return the completed view to render on screen
