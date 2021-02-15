@@ -7,7 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
-import com.example.objectifsport.adapters.SampleFragmentPageAdapter;
+import com.example.objectifsport.adapters.MainFragmentPageAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new SampleFragmentPageAdapter(getSupportFragmentManager(),
+        viewPager.setAdapter(new MainFragmentPageAdapter(getSupportFragmentManager(),
                 R.layout.activity_main));
 
         // Give the TabLayout the ViewPager

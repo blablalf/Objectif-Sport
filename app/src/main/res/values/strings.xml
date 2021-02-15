@@ -11,4 +11,10 @@
     <string name="distance_goal">Distance Goal</string>
     <string name="cancel">Cancel</string>
     <string name="goals_in_progress">Goals in progress</string>
+    <string name="activity_description">Activity description</string>
+    <string name="sport">Sport :</string>
+    <string name="creation_date">Creation date</string>
+    <string name="activity_status">Activity status :</string>
+    <string name="done_not_done">❌✔</string>
+    <string name="random_date">15/02/2021</string>
 </resources>

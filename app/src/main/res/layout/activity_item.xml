@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sport_view"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="22sp"
+        android:textColor="@color/design_default_color_primary"
+        android:text="@string/activity_description"
+        android:id="@+id/activity_description"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:textColor="@color/dark_grey"
+            android:text="@string/sport"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:textColor="@color/dark_grey"
+            android:text="@string/sport_name"
+            android:id="@+id/sport_name"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:textColor="@color/dark_grey"
+            android:text="@string/creation_date"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:textColor="@color/dark_grey"
+            android:text="@string/random_date"
+            android:id="@+id/goals_in_progress_amount"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:textColor="@color/dark_grey"
+            android:text="@string/activity_status"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:textColor="@color/dark_grey"
+            android:text="@string/done_not_done"
+            android:id="@+id/activity_status"/>
+
+    </LinearLayout>
+
+</LinearLayout>

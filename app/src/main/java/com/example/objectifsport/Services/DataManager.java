@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.objectifsport.model.Sport;
+import com.example.objectifsport.model.activities.Activity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -59,5 +60,25 @@ public class DataManager {
 
     public ArrayList<Sport> getSports() {
         return sports;
+    }
+
+    public ArrayList<Activity> getActivities() {
+        ArrayList<Activity> activities = new ArrayList<>();
+        for (Sport sport : getSports()) {
+            activities.addAll(sport.getActivities());
+        }
+        return activities;
+    }
+
+    public void removeSport(int position) {
+        sports.remove(position);
+        save();
+    }
+
+    public void removeActivity(Activity activity) {
+        for (Sport sport : getSports()) {
+            if (sport.getName().equals(activity.getSportName())) sport.removeActivity(activity);
+        }
+        save();
     }
 }

@@ -5,10 +5,15 @@ import java.util.Calendar;
 public class Activity {
 
     // General part
-    private String type; // Could be time, distance or timeDistance
+    private int type; // Could be time (1), distance (2) or all (0)
+    private String sportName;
 
-    public Activity(String type) {
+    private String activityDescription; // something like "skipping rope + pumps" for Boxing sport
+
+    public Activity(String sportName, String activityDescription, int type) {
         this.type = type;
+        this.sportName = sportName;
+        this.activityDescription = activityDescription;
     }
 
     // Period part
@@ -54,6 +59,18 @@ public class Activity {
 
     public void setCompletedDistance(double completedDistance) {
         this.completedDistance += completedDistance;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public String getSportName() {
+        return sportName;
+    }
+
+    public String getActivityDescription() {
+        return activityDescription;
     }
 
 }

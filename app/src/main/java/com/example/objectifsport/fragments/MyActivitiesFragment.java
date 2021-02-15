@@ -10,19 +10,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
-import com.example.objectifsport.adapters.SportAdapter;
+import com.example.objectifsport.adapters.ActivityAdapter;
 
 public class MyActivitiesFragment extends Fragment {
-
-    private DataManager dataManager = DataManager.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public static MySportsFragment newInstance() {
-        MySportsFragment fragment = new MySportsFragment();
+    public static MyActivitiesFragment newInstance() {
+        MyActivitiesFragment fragment = new MyActivitiesFragment();
         return fragment;
     }
 
@@ -30,10 +28,11 @@ public class MyActivitiesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_my_sports, container, false);
-        SportAdapter sportAdapter = new SportAdapter(view.getContext(), dataManager.getSports());
-        ListView listView = view.findViewById(R.id.sports_list);
-        listView.setAdapter(sportAdapter);
+        View view = inflater.inflate(R.layout.my_activities_fragment, container, false);
+
+        ActivityAdapter activityAdapter = new ActivityAdapter(view.getContext(), DataManager.getInstance().getActivities());
+        ListView listView = view.findViewById(R.id.activities_list);
+        listView.setAdapter(activityAdapter);
 
         return view;
     }

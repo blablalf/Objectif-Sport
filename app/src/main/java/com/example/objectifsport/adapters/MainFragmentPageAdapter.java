@@ -8,12 +8,12 @@ import com.example.objectifsport.fragments.MyActivitiesFragment;
 import com.example.objectifsport.fragments.MyGoalsFragment;
 import com.example.objectifsport.fragments.MySportsFragment;
 
-public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
+public class MainFragmentPageAdapter extends FragmentPagerAdapter {
 
     private String tabTitles[] = new String[] { "My Sports", "My Activities", "My Goals" };
     private final int PAGE_COUNT = 3;
 
-    public SampleFragmentPageAdapter(FragmentManager fm, int behavior) {
+    public MainFragmentPageAdapter(FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
 
@@ -25,7 +25,7 @@ public class SampleFragmentPageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int pagePosition) {
         switch (tabTitles[pagePosition]){
-            case "Activities" :
+            case "My Activities" :
                 return MyActivitiesFragment.newInstance();
             case "My Objectives" :
                 return MyGoalsFragment.newInstance();
