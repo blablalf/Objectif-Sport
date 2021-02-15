@@ -1,19 +1,14 @@
 package com.example.objectifsport.activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
-import android.os.Bundle;
-import android.widget.ListView;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.adapters.SampleFragmentPageAdapter;
-import com.example.objectifsport.adapters.SportAdapter;
-import com.example.objectifsport.model.Sport;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         dataManager = new DataManager(this);
 
-        // FOR DEMONSTRATIONS / TESTING
+        // FOR TESTING PURPOSES ONLY
         //DataManager.generateFakeSports();
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items

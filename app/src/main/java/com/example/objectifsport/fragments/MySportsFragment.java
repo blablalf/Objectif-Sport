@@ -1,6 +1,5 @@
 package com.example.objectifsport.fragments;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,23 +41,6 @@ public class MySportsFragment extends Fragment {
 
         addSportButton = view.findViewById(R.id.add_sport);
         addSportButton.setOnClickListener(v -> {
-            /*AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-            builder.setTitle("Add Sport");
-
-            final EditText input = new EditText(view.getContext());
-            input.setHint(R.string.sport_name);
-            input.setInputType(InputType.TYPE_CLASS_TEXT);
-            builder.setView(input);
-
-            builder.setPositiveButton("add", (dialog, which) -> {
-                dataManager.getSports().add(new Sport(input.getText().toString()));
-                dataManager.save();
-            });
-
-            builder.setNegativeButton("cancel", (dialog, which) -> dialog.cancel());
-
-            builder.show();*/
-
             FragmentManager fm = getFragmentManager();
             AddSportDialogFragment addSportDialogFragment = AddSportDialogFragment.newInstance("Add sport");
             addSportDialogFragment.show(fm, "fragment_add_sport");
