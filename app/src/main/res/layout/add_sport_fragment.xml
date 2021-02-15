@@ -4,18 +4,54 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical"  >
-
-    <TextView
-        android:id="@+id/lbl_your_name"
-        android:text="Sport title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <EditText
-        android:id="@+id/txt_your_name"
+        android:id="@+id/sport_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/sport_name"
         android:inputType="text"
-        android:imeOptions="actionDone" />
+        android:imeOptions="actionDone"
+        android:autofillHints="@string/sport_name" />
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="17sp"
+        android:checked="true"
+        android:text="@string/time_goal"
+        android:id="@+id/time_goal"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="17sp"
+        android:checked="true"
+        android:text="@string/distance_goal"
+        android:id="@+id/distance_goal"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="?android:attr/buttonBarStyle"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/cancel"
+            android:id="@+id/cancel"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="@string/add_sport"
+            android:id="@+id/add_sport"/>
+
+    </LinearLayout>
+
 </LinearLayout>

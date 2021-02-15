@@ -1,6 +1,5 @@
 package com.example.objectifsport.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.example.objectifsport.model.activities.Activity;
@@ -11,11 +10,20 @@ public class Sport {
     private ArrayList<Goal> goals;
     private ArrayList<Activity> activities;
     private String name;
+    private int authorizedGoals; // 0 for all goals | 1 for time goal | 2 for distance goal
 
     public Sport(String name) {
         this.name = name;
-        this.activities = new ArrayList<Activity>();
-        this.goals = new ArrayList<Goal>();
+        this.activities = new ArrayList<>();
+        this.goals = new ArrayList<>();
+        authorizedGoals = 0;
+    }
+
+    public Sport(String name, int authorizedGoals) {
+        this.name = name;
+        this.activities = new ArrayList<>();
+        this.goals = new ArrayList<>();
+        this.authorizedGoals = authorizedGoals;
     }
 
     public ArrayList<Goal> getGoals() {

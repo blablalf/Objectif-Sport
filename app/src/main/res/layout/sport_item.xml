@@ -49,7 +49,7 @@
             android:textSize="15sp"
             android:layout_margin="5dp"
             android:textColor="@color/dark_grey"
-            android:text="@string/activities_amount"/>
+            android:text="@string/goals_in_progress"/>
 
         <TextView
             android:layout_width="match_parent"

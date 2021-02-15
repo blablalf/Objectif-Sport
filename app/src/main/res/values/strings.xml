@@ -7,4 +7,8 @@
     <string name="activities_amount">Activities amount :</string>
     <string name="six_number">6</string>
     <string name="goals_achieved">Goals achieved</string>
+    <string name="time_goal">Time goal</string>
+    <string name="distance_goal">Distance Goal</string>
+    <string name="cancel">Cancel</string>
+    <string name="goals_in_progress">Goals in progress</string>
 </resources>

@@ -1,24 +1,17 @@
 package com.example.objectifsport.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.adapters.SportAdapter;
-import com.example.objectifsport.model.Sport;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MySportsFragment extends Fragment {
@@ -48,7 +41,7 @@ public class MySportsFragment extends Fragment {
 
         addSportButton = view.findViewById(R.id.add_sport);
         addSportButton.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            /*AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setTitle("Add Sport");
 
             final EditText input = new EditText(view.getContext());
@@ -63,15 +56,14 @@ public class MySportsFragment extends Fragment {
 
             builder.setNegativeButton("cancel", (dialog, which) -> dialog.cancel());
 
-            builder.show();
-            /*
-            System.out.println("Add sport");
+            builder.show();*/
 
             FragmentManager fm = getFragmentManager();
             AddSportDialogFragment addSportDialogFragment = AddSportDialogFragment.newInstance("Add sport");
-            addSportDialogFragment.show(fm, "fragment_add_sport");*/
+            addSportDialogFragment.show(fm, "fragment_add_sport");
         });
 
         return view;
     }
+
 }
