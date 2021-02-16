@@ -14,7 +14,9 @@ import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.activities.Activity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ActivityAdapter extends ArrayAdapter<Activity> {
 
@@ -38,11 +40,20 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
 
         // Lookup view for data population
         TextView activityDescription = convertView.findViewById(R.id.activity_description);
+        TextView sportName = convertView.findViewById(R.id.sport_name);
+        TextView creationDate = convertView.findViewById(R.id.creation_date);
+        TextView activityStatus = convertView.findViewById(R.id.activity_status);
 
 
         // Populate the data into the template view using the data object
         assert activity != null;
         activityDescription.setText(activity.getActivityDescription());
+        sportName.setText(activity.getSport().getName());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
+        creationDate.setText(formatter.format(activity.getCreationDate()));
+
+        activityStatus.setText((activity.isAchieved()) ? "✅":"❌");
 
         convertView.setOnClickListener(v -> {
             //Intent intent = new Intent(context, DetailSportActivity.class);

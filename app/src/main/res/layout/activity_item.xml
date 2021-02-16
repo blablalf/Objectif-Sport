@@ -58,7 +58,7 @@
             android:layout_margin="5dp"
             android:textColor="@color/dark_grey"
             android:text="@string/random_date"
-            android:id="@+id/goals_in_progress_amount"/>
+            android:id="@+id/creation_date"/>
 
     </LinearLayout>
 
