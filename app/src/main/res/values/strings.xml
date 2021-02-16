@@ -18,4 +18,21 @@
     <string name="done_not_done">❌✔</string>
     <string name="random_date">15/02/2021</string>
     <string name="add_activity">Add activity</string>
+    <string name="back_to_activities_list">back to activities list</string>
+    <string name="my_activities">My Activities</string>
+    <string name="activity_done">Activity done</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="reset">Reset</string>
+    <string name="current_time_recorded">Current time recorded :</string>
+    <string name="random_time">01:26 36:89</string>
+    <string name="resume">resume</string>
+    <string name="no_time_recorded">no time recorded</string>
+    <string name="remove">remove</string>
+    <string name="reset_time_message">Are you sure you want to delete this entry ?\nSaved time will be reset too !</string>
+    <string name="reset_time">Reset time</string>
+    <string name="remove_activity_msg">Do you want to remove this activity ?</string>
+    <string name="remove_activity">Remove activity</string>
+    <string name="remove_sport">Remove sport</string>
+    <string name="remove_sport_msg">Do you want to remove this sport ?</string>
 </resources>

@@ -62,7 +62,7 @@ public class DataManager {
         }
     }
 
-    public void save(){
+    public static void save(){
         Gson gson = new Gson();
         String sportsJson = gson.toJson(sports);
         String activitiesJson = gson.toJson(activities);

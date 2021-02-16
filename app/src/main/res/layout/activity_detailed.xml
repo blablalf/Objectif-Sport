@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.DetailedActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="80dp"
+        android:orientation="horizontal"
+        android:background="@color/design_default_color_secondary_variant"
+        android:layout_alignParentTop="true"
+        android:onClick="backToMyActivities"
+        android:id="@+id/back">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            android:contentDescription="@string/back_to_activities_list"
+            android:id="@+id/back_to_activities_list"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:layout_toEndOf="@+id/back_to_activities_list"
+            android:textColor="@color/design_default_color_on_primary"
+            android:text="@string/my_activities"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/back"
+        android:layout_above="@+id/complete_uncomplete"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textSize="26sp"
+            android:textColor="@color/design_default_color_secondary_variant"
+            android:text="@string/activity_description"
+            android:id="@+id/activity_description"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="18sp"
+                android:textColor="@color/design_default_color_secondary_variant"
+                android:text="@string/sport_name"
+                android:id="@+id/sport_name"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textSize="18sp"
+                android:textColor="@color/design_default_color_secondary_variant"
+                android:text="@string/random_date"
+                android:id="@+id/creation_date"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:id="@+id/time_part">
+
+            <Chronometer
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:textSize="50sp"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:id="@+id/chronometer"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/chronometer"
+                android:gravity="center"
+                style="?android:attr/buttonBarStyle"
+                android:id="@+id/buttonPanel">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start"
+                    android:layout_margin="10dp"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/start_pause"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reset"
+                    android:layout_margin="10dp"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/reset"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/buttonPanel"
+                android:textColor="@color/design_default_color_secondary_variant"
+                android:textSize="18sp"
+                android:layout_margin="10dp"
+                android:text="@string/current_time_recorded"
+                android:id="@+id/current_time_recorded"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/current_time_recorded"
+                android:layout_below="@+id/buttonPanel"
+                android:textColor="@color/design_default_color_secondary_variant"
+                android:textSize="18sp"
+                android:layout_margin="10dp"
+                android:text="@string/random_time"
+                android:id="@+id/saved_time"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/distance_part">
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:shadowColor="@color/design_default_color_secondary"
+        android:text="@string/activity_done"
+        android:id="@+id/complete_uncomplete"/>
+
+</RelativeLayout>

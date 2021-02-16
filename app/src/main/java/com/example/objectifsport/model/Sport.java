@@ -3,7 +3,7 @@ package com.example.objectifsport.model;
 public class Sport {
 
     private String name;
-    private int authorizedGoals; // 0 for all goals | 1 for time goal | 2 for distance goal
+    private final int authorizedGoals; // 0 for all goals | 1 for time goal | 2 for distance goal
 
     public Sport(String name) {
         this.name = name;

@@ -2,7 +2,10 @@ package com.example.objectifsport.model.activities;
 
 import com.example.objectifsport.model.Sport;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Activity {
 
@@ -17,10 +20,24 @@ public class Activity {
         this.activityDescription = activityDescription;
         creationDate = new Date();
         isAchieved = false;
+        activityTime = 0;
     }
 
     // Time part
-    //
+    private long activityTime;
+
+    public String getFormattedActivityTime() {
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss.SSS", Locale.getDefault());
+        return formatter.format(activityTime);
+    }
+
+    public long getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(long timestamp) {
+        this.activityTime = timestamp;
+    }
 
     // Distance part
     private double startCoordinateX, startCoordinateY, endCoordinateX, endCoordinateY, completedDistance;

@@ -2,6 +2,7 @@ package com.example.objectifsport.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
+import com.example.objectifsport.activities.DetailedActivity;
 import com.example.objectifsport.model.activities.Activity;
 
 import java.text.SimpleDateFormat;
@@ -56,22 +58,24 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
         activityStatus.setText((activity.isAchieved()) ? "✅":"❌");
 
         convertView.setOnClickListener(v -> {
-            //Intent intent = new Intent(context, DetailSportActivity.class);
-            //context.startActivity(intent);
+            Intent intent = new Intent(context, DetailedActivity.class);
+            intent.putExtra("position", position);
+            context.startActivity(intent);
         });
 
         convertView.setOnLongClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Do you want to remove this activity ?");
-            builder.setNegativeButton("CANCEL", (dialog, which) -> dialog.cancel());
+            new AlertDialog.Builder(context)
+                    .setTitle(context.getResources().getString(R.string.remove_activity))
+                    .setMessage(context.getResources().getString(R.string.remove_activity_msg))
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                    .setPositiveButton(R.string.remove, (dialog, which) -> {
+                        DataManager dataManager = DataManager.getInstance();
+                        dataManager.removeActivity(activity);
+                        notifyDataSetChanged();
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
 
-            builder.setPositiveButton("REMOVE", (dialog, which) -> {
-                DataManager dataManager = DataManager.getInstance();
-                dataManager.removeActivity(activity);
-                notifyDataSetChanged();
-            });
-
-            builder.show();
             return false;
         });
 

@@ -71,17 +71,17 @@ public class SportAdapter extends ArrayAdapter<Sport> {
         });
 
         convertView.setOnLongClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Do you want to remove this sport ?");
-            builder.setNegativeButton("CANCEL", (dialog, which) -> dialog.cancel());
-
-            builder.setPositiveButton("REMOVE", (dialog, which) -> {
-                DataManager dataManager = DataManager.getInstance();
-                dataManager.removeSport(position);
-                notifyDataSetChanged();
-            });
-
-            builder.show();
+            new AlertDialog.Builder(context)
+                    .setTitle(context.getResources().getString(R.string.remove_sport))
+                    .setMessage(context.getResources().getString(R.string.remove_sport_msg))
+                    .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
+                    .setPositiveButton(R.string.remove, (dialog, which) -> {
+                        DataManager dataManager = DataManager.getInstance();
+                        dataManager.removeSport(position);
+                        notifyDataSetChanged();
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
             return false;
         });
 
