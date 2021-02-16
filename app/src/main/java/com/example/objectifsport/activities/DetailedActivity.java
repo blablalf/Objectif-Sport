@@ -102,15 +102,15 @@ public class DetailedActivity extends AppCompatActivity {
                 .setTitle(getResources().getString(R.string.reset_time))
                 .setMessage(getResources().getString(R.string.reset_time_message))
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    chronometer.stop();
                     chronometer.setBase(SystemClock.elapsedRealtime());
                     timeToSave = 0;
                     activity.setActivityTime(0);
                     DataManager.save();
                     savedTime.setText(getResources().getString(R.string.no_time_recorded));
-                    if (started && !running) {
-                        started = false;
-                        start.setText(getResources().getString(R.string.start));
-                    }
+                    started = false;
+                    running = false;
+                    start.setText(getResources().getString(R.string.start));
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
