@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.example.objectifsport.model.Sport;
 import com.example.objectifsport.model.activities.Activity;
+import com.example.objectifsport.model.goals.Goal;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -17,6 +18,8 @@ public class DataManager {
 
     static SharedPreferences userData;
     private static ArrayList<Sport> sports;
+    private static ArrayList<Activity> activities;
+    private static ArrayList<Goal> goals;
 
     // first instantiation to get context
     public DataManager(Context context) {
@@ -43,12 +46,32 @@ public class DataManager {
         } else {
             sports = new ArrayList<>();
         }
+        json = userData.getString("activities", "");
+        if (!json.equals("")){
+            Type type = new TypeToken< ArrayList < Activity >>() {}.getType();
+            activities = gson.fromJson(json, type);
+        } else {
+            activities = new ArrayList<>();
+        }
+        json = userData.getString("goals", "");
+        if (!json.equals("")){
+            Type type = new TypeToken< ArrayList < Goal >>() {}.getType();
+            goals = gson.fromJson(json, type);
+        } else {
+            goals = new ArrayList<>();
+        }
     }
 
     public void save(){
         Gson gson = new Gson();
-        String json = gson.toJson(sports);
-        userData.edit().putString("sports", json).apply();
+        String sportsJson = gson.toJson(sports);
+        String activitiesJson = gson.toJson(activities);
+        String goalsJson = gson.toJson(goals);
+        userData.edit()
+                .putString("sports", sportsJson)
+                .putString("activities", activitiesJson)
+                .putString("goals", goalsJson)
+                .apply();
     }
 
     public static void generateFakeSports() {
@@ -62,11 +85,7 @@ public class DataManager {
         return sports;
     }
 
-    public ArrayList<Activity> getActivities() {
-        ArrayList<Activity> activities = new ArrayList<>();
-        for (Sport sport : getSports()) {
-            activities.addAll(sport.getActivities());
-        }
+    public static ArrayList<Activity> getActivities() {
         return activities;
     }
 
@@ -76,9 +95,25 @@ public class DataManager {
     }
 
     public void removeActivity(Activity activity) {
-        for (Sport sport : getSports()) {
-            if (sport.getName().equals(activity.getSportName())) sport.removeActivity(activity);
-        }
+        activities.remove(activity);
+        save();
+    }
+
+    public void addActivity(Activity activity) {
+        activities.add(activity);
+        save();
+    }
+
+    public static SharedPreferences getUserData() {
+        return userData;
+    }
+
+    public static ArrayList<Goal> getGoals() {
+        return goals;
+    }
+
+    public void addSport(Sport sport) {
+        sports.add(sport);
         save();
     }
 }

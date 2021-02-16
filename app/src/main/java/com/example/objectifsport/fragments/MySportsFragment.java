@@ -17,11 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class MySportsFragment extends Fragment {
 
     private DataManager dataManager;
-    private FloatingActionButton addSportButton;
 
     public static MySportsFragment newInstance() {
-        MySportsFragment fragment = new MySportsFragment();
-        return fragment;
+        return new MySportsFragment();
     }
 
     @Override
@@ -39,10 +37,11 @@ public class MySportsFragment extends Fragment {
         ListView listView = view.findViewById(R.id.sports_list);
         listView.setAdapter(sportAdapter);
 
-        addSportButton = view.findViewById(R.id.add_sport);
+        FloatingActionButton addSportButton = view.findViewById(R.id.add_sport);
         addSportButton.setOnClickListener(v -> {
             FragmentManager fm = getFragmentManager();
-            AddSportDialogFragment addSportDialogFragment = AddSportDialogFragment.newInstance("Add sport");
+            AddSportDialogFragment addSportDialogFragment = AddSportDialogFragment.newInstance();
+            assert fm != null;
             addSportDialogFragment.show(fm, "fragment_add_sport");
         });
 

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -42,6 +41,7 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
 
 
         // Populate the data into the template view using the data object
+        assert activity != null;
         activityDescription.setText(activity.getActivityDescription());
 
         convertView.setOnClickListener(v -> {

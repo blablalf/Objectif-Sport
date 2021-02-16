@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -14,6 +13,8 @@ import androidx.annotation.Nullable;
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.Sport;
+import com.example.objectifsport.model.activities.Activity;
+import com.example.objectifsport.model.goals.Goal;
 
 import java.util.ArrayList;
 
@@ -42,14 +43,27 @@ public class SportAdapter extends ArrayAdapter<Sport> {
         TextView activitiesAmount = convertView.findViewById(R.id.activities_amount);
         TextView goalsInProgressAmount = convertView.findViewById(R.id.goals_in_progress_amount);
         TextView goalsDoneAmount = convertView.findViewById(R.id.goals_done_amount);
-        LinearLayout sportView = convertView.findViewById(R.id.sport_view);
 
 
         // Populate the data into the template view using the data object
+        assert sport != null;
         sportName.setText(sport.getName());
-        activitiesAmount.setText(String.valueOf(sport.getActivities().size()));
-        goalsInProgressAmount.setText(String.valueOf(sport.getGoals().size()));
-        goalsDoneAmount.setText(String.valueOf(sport.getAchievedGoals().size()));
+
+        int activitiesAmountValue = 0;
+        for (Activity activity : DataManager.getActivities())
+            if (sport == activity.getSport()) activitiesAmountValue++;
+
+        int goalsAmountValue = 0;
+        for (Goal goal : DataManager.getGoals())
+            if (sport == goal.getSport()) goalsAmountValue++;
+
+        int achievedGoalsAmountValue = 0;
+        for (Goal goal : DataManager.getGoals())
+            if (sport == goal.getSport() && goal.isAchieved()) achievedGoalsAmountValue++;
+
+        activitiesAmount.setText(String.valueOf(activitiesAmountValue));
+        goalsInProgressAmount.setText(String.valueOf(goalsAmountValue));
+        goalsDoneAmount.setText(String.valueOf(achievedGoalsAmountValue));
 
         convertView.setOnClickListener(v -> {
             //Intent intent = new Intent(context, DetailSportActivity.class);

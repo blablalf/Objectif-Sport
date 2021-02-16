@@ -14,7 +14,7 @@ import com.example.objectifsport.adapters.SportAdapter;
 
 public class MyGoalsFragment extends Fragment {
 
-    private DataManager dataManager = DataManager.getInstance();
+    private final DataManager dataManager = DataManager.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,8 +22,7 @@ public class MyGoalsFragment extends Fragment {
     }
 
     public static MySportsFragment newInstance() {
-        MySportsFragment fragment = new MySportsFragment();
-        return fragment;
+        return new MySportsFragment();
     }
 
     @Override

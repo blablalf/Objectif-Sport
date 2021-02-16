@@ -1,5 +1,6 @@
 package com.example.objectifsport.adapters;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -10,8 +11,7 @@ import com.example.objectifsport.fragments.MySportsFragment;
 
 public class MainFragmentPageAdapter extends FragmentPagerAdapter {
 
-    private String tabTitles[] = new String[] { "My Sports", "My Activities", "My Goals" };
-    private final int PAGE_COUNT = 3;
+    private final String[] tabTitles = new String[] { "My Sports", "My Activities", "My Goals" };
 
     public MainFragmentPageAdapter(FragmentManager fm, int behavior) {
         super(fm, behavior);
@@ -19,9 +19,10 @@ public class MainFragmentPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return PAGE_COUNT;
+        return 3;
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int pagePosition) {
         switch (tabTitles[pagePosition]){

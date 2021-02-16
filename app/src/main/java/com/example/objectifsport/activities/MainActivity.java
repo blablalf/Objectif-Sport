@@ -12,14 +12,12 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DataManager dataManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataManager = new DataManager(this);
+        DataManager dataManager = new DataManager(this);
 
         // FOR TESTING PURPOSES ONLY
         //DataManager.generateFakeSports();
