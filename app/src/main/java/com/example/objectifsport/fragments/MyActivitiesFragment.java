@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -38,9 +39,16 @@ public class MyActivitiesFragment extends Fragment {
 
         FloatingActionButton addActivityButton = view.findViewById(R.id.add_activity);
         addActivityButton.setOnClickListener(v -> {
-            AddActivityDialogFragment addActivityDialogFragment = AddActivityDialogFragment.newInstance();
-            assert getFragmentManager() != null;
-            addActivityDialogFragment.show(getFragmentManager(), "fragment_add_activity");
+            if (DataManager.getSports().isEmpty()) {
+                Toast toast = Toast. makeText(view.getContext(),
+                        view.getContext().getResources().getString(R.string.create_sport_before),
+                        Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                AddActivityDialogFragment addActivityDialogFragment = AddActivityDialogFragment.newInstance();
+                assert getFragmentManager() != null;
+                addActivityDialogFragment.show(getFragmentManager(), "fragment_add_activity");
+            }
         });
 
         return view;

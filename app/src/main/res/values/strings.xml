@@ -35,4 +35,5 @@
     <string name="remove_activity">Remove activity</string>
     <string name="remove_sport">Remove sport</string>
     <string name="remove_sport_msg">Do you want to remove this sport ?\nAll associated activities will also be removed.</string>
+    <string name="create_sport_before">You should create a sport before !</string>
 </resources>
