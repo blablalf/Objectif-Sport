@@ -16,8 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MySportsFragment extends Fragment {
 
-    private DataManager dataManager;
-
     public static MySportsFragment newInstance() {
         return new MySportsFragment();
     }
@@ -25,7 +23,6 @@ public class MySportsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dataManager = DataManager.getInstance();
     }
 
     @Override
@@ -33,7 +30,7 @@ public class MySportsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.my_sports_fragment, container, false);
-        SportAdapter sportAdapter = new SportAdapter(view.getContext(), dataManager.getSports());
+        SportAdapter sportAdapter = new SportAdapter(view.getContext(), DataManager.getSports());
         ListView listView = view.findViewById(R.id.sports_list);
         listView.setAdapter(sportAdapter);
 
@@ -44,6 +41,8 @@ public class MySportsFragment extends Fragment {
             assert fm != null;
             addSportDialogFragment.show(fm, "fragment_add_sport");
         });
+
+
 
         return view;
     }

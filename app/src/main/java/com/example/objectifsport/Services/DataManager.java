@@ -11,6 +11,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.UUID;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -21,23 +23,15 @@ public class DataManager {
     private static ArrayList<Activity> activities;
     private static ArrayList<Goal> goals;
 
-    // first instantiation to get context
-    public DataManager(Context context) {
+    public static Sport getSport(UUID sportId) {
+        for (Sport sport : sports)
+            if (sport.getId().equals(sportId)) return sport;
+        return new Sport("error");
+    }
+
+    public static void load(Context context){
         userData = context.getSharedPreferences("USER_DATA", MODE_PRIVATE);
-        load();
-    }
 
-    // private constructor to make new instances
-    private DataManager(SharedPreferences userData) {
-        DataManager.userData = userData;
-    }
-
-    // others instantiations to get sharedActivity without context
-    public static DataManager getInstance() {
-        return new DataManager(userData);
-    }
-
-    public void load(){
         Gson gson = new Gson();
         String json = userData.getString("sports", "");
         if (!json.equals("")){
@@ -53,6 +47,7 @@ public class DataManager {
         } else {
             activities = new ArrayList<>();
         }
+
         json = userData.getString("goals", "");
         if (!json.equals("")){
             Type type = new TypeToken< ArrayList < Goal >>() {}.getType();
@@ -81,7 +76,7 @@ public class DataManager {
         }
     }
 
-    public ArrayList<Sport> getSports() {
+    public static ArrayList<Sport> getSports() {
         return sports;
     }
 
@@ -89,31 +84,31 @@ public class DataManager {
         return activities;
     }
 
-    public void removeSport(int position) {
-        sports.remove(position);
+    public static void removeSport(Sport sport) {
+        Iterator<Activity> activityIterator = activities.iterator();
+        while (activityIterator.hasNext())
+            if (activityIterator.next().getSport() == sport) activityIterator.remove();
+        sports.remove(sport);
         save();
     }
 
-    public void removeActivity(Activity activity) {
+    public static void removeActivity(Activity activity) {
         activities.remove(activity);
         save();
     }
 
-    public void addActivity(Activity activity) {
+    public static void addActivity(Activity activity) {
         activities.add(activity);
         save();
-    }
-
-    public static SharedPreferences getUserData() {
-        return userData;
     }
 
     public static ArrayList<Goal> getGoals() {
         return goals;
     }
 
-    public void addSport(Sport sport) {
+    public static void addSport(Sport sport) {
         sports.add(sport);
         save();
     }
+
 }

@@ -26,8 +26,6 @@ import java.util.Objects;
 public class AddActivityDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
     private EditText activityDescription;
-    private static DataManager dataManager;
-    private int selectedSport;
 
     public AddActivityDialogFragment() {
         // Empty constructor is required for DialogFragment
@@ -42,7 +40,6 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (dataManager == null) dataManager = DataManager.getInstance();
         return inflater.inflate(R.layout.add_activity_fragment, container);
     }
 
@@ -51,8 +48,6 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
         super.onViewCreated(view, savedInstanceState);
 
-        selectedSport = 0; // default value
-
         activityDescription = view.findViewById(R.id.activity_description);
         Spinner sportSelect = view.findViewById(R.id.sport_select);
         Button cancel = view.findViewById(R.id.cancel);
@@ -60,7 +55,7 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
         Objects.requireNonNull(getDialog()).setTitle("Add Activity");
         ArrayList<String> sportNames = new ArrayList<>();
-        for (Sport sport : dataManager.getSports()) sportNames.add(sport.getName());
+        for (Sport sport : DataManager.getSports()) sportNames.add(sport.getName());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, sportNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,9 +66,9 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
         addActivity.setOnClickListener(v -> {
             // Add activity
-            Activity activity = new Activity(dataManager.getSports().get(selectedSport),
+            Activity activity = new Activity(DataManager.getSports().get(sportSelect.getSelectedItemPosition()),
                     activityDescription.getText().toString());
-            dataManager.addActivity(activity);
+            DataManager.addActivity(activity);
             //dataManager.save();
 
             // close dialog
@@ -88,7 +83,7 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        selectedSport = position;
+        System.out.println("Selected_is_"+position);
     }
 
     @Override

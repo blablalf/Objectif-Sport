@@ -14,22 +14,20 @@ import com.example.objectifsport.adapters.SportAdapter;
 
 public class MyGoalsFragment extends Fragment {
 
-    private final DataManager dataManager = DataManager.getInstance();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public static MySportsFragment newInstance() {
-        return new MySportsFragment();
+    public static MyGoalsFragment newInstance() {
+        return new MyGoalsFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_sports_fragment, container, false);
-        SportAdapter sportAdapter = new SportAdapter(view.getContext(), dataManager.getSports());
+        SportAdapter sportAdapter = new SportAdapter(view.getContext(), DataManager.getSports());
         ListView listView = view.findViewById(R.id.sports_list);
         listView.setAdapter(sportAdapter);
         return view;

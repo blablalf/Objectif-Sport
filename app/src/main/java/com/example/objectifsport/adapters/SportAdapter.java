@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
+import com.example.objectifsport.activities.MainActivity;
 import com.example.objectifsport.model.Sport;
 import com.example.objectifsport.model.activities.Activity;
 import com.example.objectifsport.model.goals.Goal;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 
 public class SportAdapter extends ArrayAdapter<Sport> {
 
-    Context context;
+    private final Context context;
 
     public SportAdapter(Context context, ArrayList<Sport> announcements) {
         super(context, 0, announcements);
@@ -76,9 +77,11 @@ public class SportAdapter extends ArrayAdapter<Sport> {
                     .setMessage(context.getResources().getString(R.string.remove_sport_msg))
                     .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
                     .setPositiveButton(R.string.remove, (dialog, which) -> {
-                        DataManager dataManager = DataManager.getInstance();
-                        dataManager.removeSport(position);
+                        System.out.println("Sport_value : " + sport.getName());
+                        System.out.println("Sport_position : " + DataManager.getSports());
+                        DataManager.removeSport(sport);
                         notifyDataSetChanged();
+                        ((MainActivity) context).getMainFragmentPageAdapter().getMyActivitiesFragment().getActivityAdapter().notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();

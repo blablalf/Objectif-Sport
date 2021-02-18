@@ -69,8 +69,7 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
                     .setMessage(context.getResources().getString(R.string.remove_activity_msg))
                     .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
                     .setPositiveButton(R.string.remove, (dialog, which) -> {
-                        DataManager dataManager = DataManager.getInstance();
-                        dataManager.removeActivity(activity);
+                        DataManager.removeActivity(activity);
                         notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)

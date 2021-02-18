@@ -1,22 +1,23 @@
 package com.example.objectifsport.model.activities;
 
+import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.Sport;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class Activity {
 
     // General part
-    private Sport sport;
-    private Date creationDate;
-    private String activityDescription; // something like "skipping rope + pumps" for Boxing sport
+    private final UUID sportId;
+    private final Date creationDate;
+    private final String activityDescription; // something like "skipping rope + pumps" for Boxing sport
     private boolean isAchieved;
 
     public Activity(Sport sport, String activityDescription) {
-        this.sport = sport;
+        sportId = sport.getId();
         this.activityDescription = activityDescription;
         creationDate = new Date();
         isAchieved = false;
@@ -76,10 +77,6 @@ public class Activity {
         this.completedDistance += completedDistance;
     }
 
-    public Sport getSport() {
-        return sport;
-    }
-
     public String getActivityDescription() {
         return activityDescription;
     }
@@ -94,6 +91,10 @@ public class Activity {
 
     public void setAchieved(boolean achieved) {
         isAchieved = achieved;
+    }
+
+    public Sport getSport() {
+        return DataManager.getSport(sportId);
     }
 
 }

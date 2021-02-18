@@ -34,5 +34,5 @@
     <string name="remove_activity_msg">Do you want to remove this activity ?</string>
     <string name="remove_activity">Remove activity</string>
     <string name="remove_sport">Remove sport</string>
-    <string name="remove_sport_msg">Do you want to remove this sport ?</string>
+    <string name="remove_sport_msg">Do you want to remove this sport ?\nAll associated activities will also be removed.</string>
 </resources>

@@ -12,6 +12,9 @@ import com.example.objectifsport.fragments.MySportsFragment;
 public class MainFragmentPageAdapter extends FragmentPagerAdapter {
 
     private final String[] tabTitles = new String[] { "My Sports", "My Activities", "My Goals" };
+    private MyActivitiesFragment myActivitiesFragment;
+    private MyGoalsFragment myGoalsFragment;
+    private MySportsFragment mySportsFragment;
 
     public MainFragmentPageAdapter(FragmentManager fm, int behavior) {
         super(fm, behavior);
@@ -27,10 +30,13 @@ public class MainFragmentPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int pagePosition) {
         switch (tabTitles[pagePosition]){
             case "My Activities" :
-                return MyActivitiesFragment.newInstance();
-            case "My Objectives" :
-                return MyGoalsFragment.newInstance();
-            default: return MySportsFragment.newInstance();
+                myActivitiesFragment = MyActivitiesFragment.newInstance();
+                return myActivitiesFragment;
+            case "My Goals" :
+                myGoalsFragment = MyGoalsFragment.newInstance();
+                return myGoalsFragment;
+            default: mySportsFragment = MySportsFragment.newInstance();
+                return mySportsFragment;
         }
     }
 
@@ -38,5 +44,18 @@ public class MainFragmentPageAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         // Generate title based on item position
         return tabTitles[position];
+    }
+
+    public MyActivitiesFragment getMyActivitiesFragment() {
+        return myActivitiesFragment;
+    }
+
+
+    public com.example.objectifsport.fragments.MyGoalsFragment getMyGoalsFragment() {
+        return myGoalsFragment;
+    }
+
+    public com.example.objectifsport.fragments.MySportsFragment getMySportsFragment() {
+        return mySportsFragment;
     }
 }

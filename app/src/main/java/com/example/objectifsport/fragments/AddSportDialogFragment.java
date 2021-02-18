@@ -25,7 +25,6 @@ public class AddSportDialogFragment extends DialogFragment {
     private CheckBox timeGoal;
     private CheckBox distanceGoal;
     private Button addSport;
-    private static DataManager dataManager;
 
     public AddSportDialogFragment() {
         // Empty constructor is required for DialogFragment
@@ -40,7 +39,6 @@ public class AddSportDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (dataManager == null) dataManager = DataManager.getInstance();
         return inflater.inflate(R.layout.add_sport_fragment, container);
     }
 
@@ -72,7 +70,7 @@ public class AddSportDialogFragment extends DialogFragment {
             else authorizedGoals = 0;
 
             // create the new sport
-            dataManager.addSport(new Sport(sportName.getText().toString(), authorizedGoals));
+            DataManager.addSport(new Sport(sportName.getText().toString(), authorizedGoals));
 
             // close dialog
             dismiss();

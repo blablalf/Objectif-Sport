@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
@@ -15,6 +14,8 @@ import com.example.objectifsport.adapters.ActivityAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MyActivitiesFragment extends Fragment {
+
+    private ActivityAdapter activityAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,20 +32,21 @@ public class MyActivitiesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.my_activities_fragment, container, false);
 
-        ActivityAdapter activityAdapter = new ActivityAdapter(view.getContext(), DataManager.getActivities());
+        activityAdapter = new ActivityAdapter(view.getContext(), DataManager.getActivities());
         ListView listView = view.findViewById(R.id.activities_list);
         listView.setAdapter(activityAdapter);
 
         FloatingActionButton addActivityButton = view.findViewById(R.id.add_activity);
         addActivityButton.setOnClickListener(v -> {
-            FragmentManager fm = getFragmentManager();
             AddActivityDialogFragment addActivityDialogFragment = AddActivityDialogFragment.newInstance();
-            assert fm != null;
-            addActivityDialogFragment.show(fm, "fragment_add_activity");
+            assert getFragmentManager() != null;
+            addActivityDialogFragment.show(getFragmentManager(), "fragment_add_activity");
         });
 
         return view;
     }
 
-
+    public ActivityAdapter getActivityAdapter() {
+        return activityAdapter;
+    }
 }

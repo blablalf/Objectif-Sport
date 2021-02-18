@@ -12,23 +12,30 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MainFragmentPageAdapter mainFragmentPageAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new DataManager(this);
+        DataManager.load(this);
 
         // FOR TESTING PURPOSES ONLY
         //DataManager.generateFakeSports();
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(new MainFragmentPageAdapter(getSupportFragmentManager(),
-                R.layout.activity_main));
+        mainFragmentPageAdapter = new MainFragmentPageAdapter(getSupportFragmentManager(),
+                R.layout.activity_main);
+        viewPager.setAdapter(mainFragmentPageAdapter);
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    public MainFragmentPageAdapter getMainFragmentPageAdapter() {
+        return mainFragmentPageAdapter;
     }
 }

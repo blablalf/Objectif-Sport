@@ -1,14 +1,16 @@
 package com.example.objectifsport.model.goals;
 
+import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.Sport;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 public abstract class Goal {
 
     private String type; // Could be time, distance or timeDistance
     private Calendar startDate, endDate;
-    private Sport sport;
+    private UUID sportId;
 
     public boolean isAchieved() {
         return achieved;
@@ -45,11 +47,11 @@ public abstract class Goal {
     }
 
     public Sport getSport() {
-        return sport;
+        return DataManager.getSport(sportId);
     }
 
     public Goal(Sport sport, Calendar startDate, Calendar endDate) {
-        this.sport = sport;
+        sportId = sport.getId();
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
