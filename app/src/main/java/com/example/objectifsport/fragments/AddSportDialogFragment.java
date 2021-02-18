@@ -72,7 +72,8 @@ public class AddSportDialogFragment extends DialogFragment {
             else authorizedGoals = 0;
 
             // create the new sport
-            dataManager.addSport(new Sport(sportName.getText().toString(), authorizedGoals));
+            DataManager.getSports().add(new Sport(sportName.getText().toString(), authorizedGoals));
+            DataManager.save();
 
             // close dialog
             dismiss();

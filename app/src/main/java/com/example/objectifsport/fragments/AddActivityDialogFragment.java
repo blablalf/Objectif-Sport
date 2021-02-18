@@ -26,7 +26,6 @@ import java.util.Objects;
 public class AddActivityDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
     private EditText activityDescription;
-    private static DataManager dataManager;
     private int selectedSport;
 
     public AddActivityDialogFragment() {
@@ -42,7 +41,6 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (dataManager == null) dataManager = DataManager.getInstance();
         return inflater.inflate(R.layout.add_activity_fragment, container);
     }
 
@@ -60,7 +58,7 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
         Objects.requireNonNull(getDialog()).setTitle("Add Activity");
         ArrayList<String> sportNames = new ArrayList<>();
-        for (Sport sport : dataManager.getSports()) sportNames.add(sport.getName());
+        for (Sport sport : DataManager.getSports()) sportNames.add(sport.getName());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, sportNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,10 +69,11 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
         addActivity.setOnClickListener(v -> {
             // Add activity
-            Activity activity = new Activity(dataManager.getSports().get(selectedSport),
+            selectedSport = sportSelect.getSelectedItemPosition();
+            /*Activity activity = new Activity(DataManager.getSports().get(0), PROBLEM
                     activityDescription.getText().toString());
-            dataManager.addActivity(activity);
-            //dataManager.save();
+            DataManager.getActivities().add(activity);
+            DataManager.save();*/
 
             // close dialog
             dismiss();

@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new DataManager(this);
+        //new DataManager(this);
 
         // FOR TESTING PURPOSES ONLY
         //DataManager.generateFakeSports();

@@ -50,7 +50,7 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
         // Populate the data into the template view using the data object
         assert activity != null;
         activityDescription.setText(activity.getActivityDescription());
-        sportName.setText(activity.getSport().getName());
+        //sportName.setText(activity.getSport().getName()); PROBLEM
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
         creationDate.setText(formatter.format(activity.getCreationDate()));
@@ -69,8 +69,8 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
                     .setMessage(context.getResources().getString(R.string.remove_activity_msg))
                     .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
                     .setPositiveButton(R.string.remove, (dialog, which) -> {
-                        DataManager dataManager = DataManager.getInstance();
-                        dataManager.removeActivity(activity);
+                        DataManager.getActivities().remove(activity);
+                        DataManager.save();
                         notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)

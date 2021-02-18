@@ -1,19 +1,25 @@
 package com.example.objectifsport.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.activities.Activity;
+
+import org.osmdroid.views.MapView;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -34,9 +40,11 @@ public class DetailedActivity extends AppCompatActivity {
         TextView sportName = findViewById((R.id.sport_name));
         TextView creationDate = findViewById(R.id.creation_date);
 
+        // System.out.println("WTF"+activity.getSport().getAuthorizedGoals()); PROBLEM
+
         // ne pas oublier de rendre le layout temps et distance gone dans le xml
 
-        if (activity.getSport().getAuthorizedGoals() == 1) // Only time
+        /*if (activity.getSport().getAuthorizedGoals() == 1) // Only time PROBLEM
             setTimeLayout();
         else if (activity.getSport().getAuthorizedGoals() == 2) // Only distance
             setDistanceLayout();
@@ -49,22 +57,27 @@ public class DetailedActivity extends AppCompatActivity {
         activityDescription.setText(activity.getActivityDescription());
         sportName.setText(activity.getSport().getName());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
-        creationDate.setText(formatter.format(activity.getCreationDate()));
+        creationDate.setText(formatter.format(activity.getCreationDate()));*/
     }
 
     private void setDistanceLayout() {
+        // checkOSMPermission
+        checkPermission(Manifest.permission.ACCESS_NETWORK_STATE, 0);
+
+        findViewById(R.id.distance_part).setVisibility(View.VISIBLE); // set the view visible
+        MapView myOpenMapView = findViewById(R.id.mapview);
+        myOpenMapView.setBuiltInZoomControls(true);
+        myOpenMapView.setClickable(true);
+        myOpenMapView.getController().setZoom(15);
     }
 
     private void setTimeLayout() {
-        RelativeLayout timePart = findViewById(R.id.time_part);
+        findViewById(R.id.time_part).setVisibility(View.VISIBLE);
         Chronometer chronometer = findViewById(R.id.chronometer);
         Button start = findViewById(R.id.start_pause);
         Button reset = findViewById(R.id.reset);
         TextView savedTime = findViewById(R.id.saved_time);
 
-        timePart.setVisibility(View.VISIBLE);
-
-        // correction
         timeToSave = activity.getActivityTime();
         running = false;
         if (timeToSave == 0) started = false;
@@ -72,7 +85,6 @@ public class DetailedActivity extends AppCompatActivity {
             started = true;
             start.setText(getResources().getString(R.string.resume));
         }
-
 
         chronometer.setFormat("%s");
         chronometer.setBase(SystemClock.elapsedRealtime() - timeToSave);
@@ -116,6 +128,59 @@ public class DetailedActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show());
 
+    }
+
+    public void checkPermission(String permission, int requestCode){
+        // Checking if permission is not granted
+        if (ContextCompat.checkSelfPermission(this,
+                permission)
+                == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat
+                    .requestPermissions(
+                            this,
+                            new String[] { permission },
+                            requestCode);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,
+                        permissions,
+                        grantResults);
+
+        if (grantResults.length == 0
+                || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            switch (requestCode) {
+                // Checking whether user granted the permission or not.
+                case 0:
+                    checkPermission(Manifest.permission.ACCESS_NETWORK_STATE, 0);
+                    break;
+                case 1:
+                    checkPermission(Manifest.permission.INTERNET, 1);
+                    break;
+                case 2:
+                    checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 2);
+                    break;
+                case 3:
+                    checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, 3);
+                    break;
+            }
+        } else {
+            switch (requestCode) {
+                case 0:
+                    checkPermission(Manifest.permission.INTERNET, 1);
+                    break;
+                case 1:
+                    checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 2);
+                    break;
+                case 2:
+                    checkPermission(Manifest.permission.ACCESS_NETWORK_STATE, 3);
+                    break;
+            }
+        }
     }
 
     public void backToMyActivities(View view) {

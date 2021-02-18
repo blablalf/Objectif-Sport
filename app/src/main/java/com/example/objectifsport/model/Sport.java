@@ -1,10 +1,19 @@
 package com.example.objectifsport.model;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Sport {
 
-    private String name;
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+
+    private final String name;
     private final int authorizedGoals; // 0 for all goals | 1 for time goal | 2 for distance goal
 
+    @Ignore
     public Sport(String name) {
         this.name = name;
         authorizedGoals = 0;
@@ -19,11 +28,15 @@ public class Sport {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getAuthorizedGoals() {
         return authorizedGoals;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

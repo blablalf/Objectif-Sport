@@ -50,16 +50,16 @@ public class SportAdapter extends ArrayAdapter<Sport> {
         sportName.setText(sport.getName());
 
         int activitiesAmountValue = 0;
-        for (Activity activity : DataManager.getActivities())
-            if (sport == activity.getSport()) activitiesAmountValue++;
+        /*for (Activity activity : DataManager.getActivities()) PROBLEM
+            if (sport.equals(activity.getSport())) activitiesAmountValue++;*/
 
         int goalsAmountValue = 0;
         for (Goal goal : DataManager.getGoals())
-            if (sport == goal.getSport()) goalsAmountValue++;
+            if (sport.equals(goal.getSport())) goalsAmountValue++;
 
         int achievedGoalsAmountValue = 0;
         for (Goal goal : DataManager.getGoals())
-            if (sport == goal.getSport() && goal.isAchieved()) achievedGoalsAmountValue++;
+            if (sport.equals(goal.getSport()) && goal.isAchieved()) achievedGoalsAmountValue++;
 
         activitiesAmount.setText(String.valueOf(activitiesAmountValue));
         goalsInProgressAmount.setText(String.valueOf(goalsAmountValue));
@@ -76,8 +76,19 @@ public class SportAdapter extends ArrayAdapter<Sport> {
                     .setMessage(context.getResources().getString(R.string.remove_sport_msg))
                     .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel())
                     .setPositiveButton(R.string.remove, (dialog, which) -> {
-                        DataManager dataManager = DataManager.getInstance();
-                        dataManager.removeSport(position);
+
+                        for (Activity activity : DataManager.getActivities())
+                            /*if (activity.getSport() == DataManager.getSports().get(position)){ PROBLEM
+                                DataManager.getActivities().remove(activity);
+                                // notify les listes
+                            }*/
+
+
+                        for (Goal goal : DataManager.getGoals())
+                            if (goal.getSport() == DataManager.getSports().get(position))
+                                DataManager.getGoals().remove(goal);
+
+                        DataManager.getSports().remove(position);
                         notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)

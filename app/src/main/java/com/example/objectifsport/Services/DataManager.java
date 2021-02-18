@@ -3,6 +3,7 @@ package com.example.objectifsport.Services;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.objectifsport.Services.database.ObjectifSportDatabase;
 import com.example.objectifsport.model.Sport;
 import com.example.objectifsport.model.activities.Activity;
 import com.example.objectifsport.model.goals.Goal;
@@ -20,6 +21,13 @@ public class DataManager {
     private static ArrayList<Sport> sports;
     private static ArrayList<Activity> activities;
     private static ArrayList<Goal> goals;
+
+    private ObjectifSportDatabase database;
+
+    // first instantiation to set up Database
+    public DataManager() {
+
+    }
 
     // first instantiation to get context
     public DataManager(Context context) {
@@ -81,27 +89,12 @@ public class DataManager {
         }
     }
 
-    public ArrayList<Sport> getSports() {
+    public static ArrayList<Sport> getSports() {
         return sports;
     }
 
     public static ArrayList<Activity> getActivities() {
         return activities;
-    }
-
-    public void removeSport(int position) {
-        sports.remove(position);
-        save();
-    }
-
-    public void removeActivity(Activity activity) {
-        activities.remove(activity);
-        save();
-    }
-
-    public void addActivity(Activity activity) {
-        activities.add(activity);
-        save();
     }
 
     public static SharedPreferences getUserData() {
@@ -112,8 +105,4 @@ public class DataManager {
         return goals;
     }
 
-    public void addSport(Sport sport) {
-        sports.add(sport);
-        save();
-    }
 }
