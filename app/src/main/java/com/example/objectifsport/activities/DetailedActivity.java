@@ -15,6 +15,7 @@ import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.activities.Activity;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -45,7 +46,6 @@ public class DetailedActivity extends AppCompatActivity {
             setDistanceLayout();
         }
 
-
         activityDescription.setText(activity.getActivityDescription());
         sportName.setText(activity.getSport().getName());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
@@ -64,7 +64,6 @@ public class DetailedActivity extends AppCompatActivity {
 
         timePart.setVisibility(View.VISIBLE);
 
-        // correction
         timeToSave = activity.getActivityTime();
         running = false;
         if (timeToSave == 0) started = false;
@@ -72,7 +71,6 @@ public class DetailedActivity extends AppCompatActivity {
             started = true;
             start.setText(getResources().getString(R.string.resume));
         }
-
 
         chronometer.setFormat("%s");
         chronometer.setBase(SystemClock.elapsedRealtime() - timeToSave);
@@ -104,6 +102,7 @@ public class DetailedActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                     chronometer.stop();
                     chronometer.setBase(SystemClock.elapsedRealtime());
+                    Timestamp tempTimestamp = new Timestamp(0);
                     timeToSave = 0;
                     activity.setActivityTime(0);
                     DataManager.save();

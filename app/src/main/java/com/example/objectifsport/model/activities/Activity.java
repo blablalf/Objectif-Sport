@@ -3,10 +3,12 @@ package com.example.objectifsport.model.activities;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.Sport;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class Activity {
 
@@ -21,23 +23,23 @@ public class Activity {
         this.activityDescription = activityDescription;
         creationDate = new Date();
         isAchieved = false;
-        activityTime = 0;
+        activityTime = new Timestamp(0);
     }
 
     // Time part
-    private long activityTime;
+    private final Timestamp activityTime;
 
     public String getFormattedActivityTime() {
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss.SSS", Locale.getDefault());
-        return formatter.format(activityTime);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault());
+        return formatter.format(activityTime.getTime() - 3600000L);
     }
 
     public long getActivityTime() {
-        return activityTime;
+        return activityTime.getTime();
     }
 
     public void setActivityTime(long timestamp) {
-        this.activityTime = timestamp;
+        this.activityTime.setTime(timestamp);
     }
 
     // Distance part
