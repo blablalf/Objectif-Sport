@@ -36,4 +36,12 @@
     <string name="remove_sport">Remove sport</string>
     <string name="remove_sport_msg">Do you want to remove this sport ?\nAll associated activities will also be removed.</string>
     <string name="create_sport_before">You should create a sport before !</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoid3JvbmdqdWljZSIsImEiOiJja2xiajk3aHYwZm41MnBzNHpsbWZkZDNlIn0.ehH9r8d1OoVfwB5je_pnGA</string>
+    <string name="start_stop_tracking">Start tracking</string>
+    <string name="reset_tracking">Reset tracking</string>
+    <string name="distance_travelled">Distance travelled :</string>
+    <string name="no_distance_travelled">No distance travelled</string>
+    <string name="user_location_permission_explanation">Localization authorization needed.</string>
+    <string name="user_location_permission_not_granted">You have not granted location authorization.</string>
+    <string name="line_distance_tap_instruction">Click in 2 places on the map to draw a line</string>
 </resources>
