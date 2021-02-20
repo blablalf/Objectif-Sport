@@ -32,6 +32,7 @@ import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
@@ -47,12 +48,12 @@ import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.turf.TurfMeasurement;
 
-
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.mapbox.mapboxsdk.style.layers.Property.LINE_JOIN_ROUND;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
@@ -68,12 +69,12 @@ public class DetailedActivity extends AppCompatActivity implements
     private Activity activity;
     private long startTime, timeToSave;
     private boolean timeRunning, timeStarted;
-    private boolean distanceRunning, distanceStarted;
+    private boolean distanceRunning = false;
+    private boolean distanceStarted = false;
     private MapView mapView;
     private MapboxMap mapboxMap;
     private double totalLineDistance = 0;
     private final List<Point> pointList = new ArrayList<>();
-    public boolean markerNeeded = false;
     private LatLng lastLocation;
 
     private static final String SOURCE_ID = "SOURCE_ID";
@@ -88,11 +89,9 @@ public class DetailedActivity extends AppCompatActivity implements
 
     // Variables needed to add the location engine
     private LocationEngine locationEngine;
-    private final long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
-    private final long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
-    private List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+    private final List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
     // Variables needed to listen to location updates
-    private DetailedActivityLocationCallback callback = new DetailedActivityLocationCallback(this);
+    private final DetailedActivityLocationCallback callback = new DetailedActivityLocationCallback(this);
 
     // Adjust private static final variables below to change the example's UI
     private static final String STYLE_URI = "mapbox://styles/mapbox/cjv6rzz4j3m4b1fqcchuxclhb";
@@ -149,7 +148,8 @@ public class DetailedActivity extends AppCompatActivity implements
 
         chronometer.setFormat("%s");
         chronometer.setBase(SystemClock.elapsedRealtime() - timeToSave);
-        savedTime.setText((timeToSave == 0) ? getResources().getString(R.string.no_time_recorded) : activity.getFormattedActivityTime());
+        savedTime.setText((timeToSave == 0) ? getResources().getString(R.string.no_time_recorded)
+                : activity.getFormattedActivityTime());
 
         start.setOnClickListener(v -> {
             if (timeRunning) { // chronometer was running
@@ -197,11 +197,42 @@ public class DetailedActivity extends AppCompatActivity implements
 
         Button startStop = findViewById(R.id.start_stop_tracking);
         startStop.setOnClickListener(v -> {
-            mapboxMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
-                    .title(getResources().getString(R.string.start)));
+            if (!distanceRunning || !distanceStarted) {
+                distanceStarted = true;
+                distanceRunning = true;
+                startStop.setText(getResources().getString(R.string.stop));
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
+                        .title(getResources().getString(R.string.start)));
+                // launch tracking
+            } else {
+                distanceRunning = false;
+                startStop.setText(getResources().getString(R.string.resume));
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
+                        .title(getResources().getString(R.string.finish)));
+                // stop tracking
+            }
         });
 
+        Button reset = findViewById(R.id.reset_tracking);
+        reset.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle(getResources().getString(R.string.reset_tracking))
+                    .setMessage(getResources().getString(R.string.reset_tracking_message))
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        distanceStarted = false;
+                        distanceRunning = false;
+                        startStop.setText(getResources().getString(R.string.start));
+                        for (Marker marker : mapboxMap.getMarkers()) {
+                            marker.remove();
+                        }
+                        // clear tracking and tracking data
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        });
     }
 
     public void backToMyActivities(View view) {
@@ -211,7 +242,6 @@ public class DetailedActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-        //DetailedActivity.this.mapboxMap.addOnMapClickListener(DetailedActivity.this);
         mapboxMap.setStyle(new Style.Builder()
                 .fromUri(STYLE_URI)
 
@@ -232,7 +262,7 @@ public class DetailedActivity extends AppCompatActivity implements
                         lineJoin(LINE_JOIN_ROUND)
                 ), CIRCLE_LAYER_ID),
 
-                this::enableLocationComponent); // travailler sur un style en fonction de l'heure
+                this::enableLocationComponent);
     }
 
     /**
@@ -280,6 +310,8 @@ public class DetailedActivity extends AppCompatActivity implements
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
+        long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
+        long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
         LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
                 .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
                 .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build();
@@ -334,7 +366,7 @@ public class DetailedActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
@@ -436,7 +468,7 @@ public class DetailedActivity extends AppCompatActivity implements
          */
         @Override
         public void onFailure(@NonNull Exception exception) {
-            Log.d("LocationChangeActivity", exception.getLocalizedMessage());
+            Log.d("LocationChangeActivity", Objects.requireNonNull(exception.getLocalizedMessage()));
             DetailedActivity activity = activityWeakReference.get();
             if (activity != null) {
                 Toast.makeText(activity, exception.getLocalizedMessage(),

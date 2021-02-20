@@ -44,4 +44,6 @@
     <string name="user_location_permission_explanation">Localization authorization needed.</string>
     <string name="user_location_permission_not_granted">You have not granted location authorization.</string>
     <string name="line_distance_tap_instruction">Click in 2 places on the map to draw a line</string>
+    <string name="finish">Finish</string>
+    <string name="reset_tracking_message">Are you sure you want to reset the tracking ?\nThe recorded data will be deleted.</string>
 </resources>
