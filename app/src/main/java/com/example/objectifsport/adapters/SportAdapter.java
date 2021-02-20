@@ -81,7 +81,10 @@ public class SportAdapter extends ArrayAdapter<Sport> {
                         System.out.println("Sport_position : " + DataManager.getSports());
                         DataManager.removeSport(sport);
                         notifyDataSetChanged();
-                        ((MainActivity) context).getMainFragmentPageAdapter().getMyActivitiesFragment().getActivityAdapter().notifyDataSetChanged();
+                        ((MainActivity) context).getMainFragmentPageAdapter()
+                                .getMyActivitiesFragment()
+                                .getActivityAdapter()
+                                .notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();

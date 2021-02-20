@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,12 +14,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
+import com.example.objectifsport.adapters.ActivityAdapter;
 import com.example.objectifsport.model.activities.Activity;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
@@ -44,16 +47,20 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.CircleLayer;
+import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.style.sources.Source;
 import com.mapbox.turf.TurfMeasurement;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.mapbox.mapboxsdk.style.layers.Property.LINE_JOIN_ROUND;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
@@ -74,8 +81,9 @@ public class DetailedActivity extends AppCompatActivity implements
     private MapView mapView;
     private MapboxMap mapboxMap;
     private double totalLineDistance = 0;
-    private final List<Point> pointList = new ArrayList<>();
     private LatLng lastLocation;
+    private int currentLinePosition;
+    private Bundle savedInstanceState;
 
     private static final String SOURCE_ID = "SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
@@ -89,7 +97,6 @@ public class DetailedActivity extends AppCompatActivity implements
 
     // Variables needed to add the location engine
     private LocationEngine locationEngine;
-    private final List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
     // Variables needed to listen to location updates
     private final DetailedActivityLocationCallback callback = new DetailedActivityLocationCallback(this);
 
@@ -99,6 +106,8 @@ public class DetailedActivity extends AppCompatActivity implements
     private static final int LINE_COLOR = CIRCLE_COLOR;
     private static final float CIRCLE_RADIUS = 2f;
     private static final float LINE_WIDTH = 4f;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,14 +123,29 @@ public class DetailedActivity extends AppCompatActivity implements
 
         // ne pas oublier de rendre le layout temps et distance gone dans le xml
 
+        this.savedInstanceState = savedInstanceState;
+
         if (activity.getSport().getAuthorizedGoals() == 1) // Only time
             setTimeLayout();
         else if (activity.getSport().getAuthorizedGoals() == 2) // Only distance
-            setDistanceLayout(savedInstanceState);
-        else {
+            setDistanceLayout();
+        else { // all
             setTimeLayout();
-            setDistanceLayout(savedInstanceState);
+            setDistanceLayout();
         }
+
+        Button completeUncompleteButton = findViewById(R.id.complete_uncomplete);
+        completeUncompleteButton.setText((activity.isAchieved())?
+                getResources().getString(R.string.activity_unfinished) :
+                getResources().getString(R.string.activity_complete));
+
+        completeUncompleteButton.setOnClickListener(v -> {
+            activity.setAchieved(!activity.isAchieved());
+            DataManager.save();
+            completeUncompleteButton.setText((activity.isAchieved())?
+                    getResources().getString(R.string.activity_unfinished) :
+                    getResources().getString(R.string.activity_complete));
+        });
 
         activityDescription.setText(activity.getActivityDescription());
         sportName.setText(activity.getSport().getName());
@@ -189,7 +213,7 @@ public class DetailedActivity extends AppCompatActivity implements
                 .show());
     }
 
-    private void setDistanceLayout(Bundle savedInstanceState) {
+    private void setDistanceLayout() {
         findViewById(R.id.distance_part).setVisibility(View.VISIBLE); // set the view visible
         mapView = findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
@@ -204,14 +228,28 @@ public class DetailedActivity extends AppCompatActivity implements
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
                         .title(getResources().getString(R.string.start)));
-                // launch tracking
+                currentLinePosition = activity.getTrajectories().size();
+                activity.getTrajectories().add(new ArrayList<>());
+                if (lastLocation != null) {
+                    activity.getTrajectories().get(currentLinePosition)
+                            .add(Point.fromLngLat(lastLocation.getLongitude(),
+                                    lastLocation.getLatitude(),
+                                    lastLocation.getAltitude()));
+                }
             } else {
                 distanceRunning = false;
                 startStop.setText(getResources().getString(R.string.resume));
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
                         .title(getResources().getString(R.string.finish)));
-                // stop tracking
+                activity.setCompletedDistance(activity.getCompletedDistance() + totalLineDistance);
+                if (lastLocation != null) {
+                    activity.getTrajectories().get(currentLinePosition)
+                            .add(Point.fromLngLat(lastLocation.getLongitude(),
+                                    lastLocation.getLatitude(),
+                                    lastLocation.getAltitude()));
+                }
+                DataManager.save();
             }
         });
 
@@ -227,7 +265,14 @@ public class DetailedActivity extends AppCompatActivity implements
                         for (Marker marker : mapboxMap.getMarkers()) {
                             marker.remove();
                         }
-                        // clear tracking and tracking data
+                        mapboxMap.getStyle(style -> {
+                            for (Layer layer : style.getLayers()) style.removeLayer(layer);
+                            for (Source source : style.getSources()) style.removeSource(source);
+                        });
+                        totalLineDistance = 0;
+                        activity.setCompletedDistance(totalLineDistance);
+                        activity.getTrajectories().clear();
+                        DataManager.save();
                     })
                     .setNegativeButton(android.R.string.no, null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -240,29 +285,45 @@ public class DetailedActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(new Style.Builder()
-                .fromUri(STYLE_URI)
-
-                // Add the source to the map
-                .withSource(new GeoJsonSource(SOURCE_ID,
-                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
-
-                // Style and add the CircleLayer to the map
-                .withLayer(new CircleLayer(CIRCLE_LAYER_ID, SOURCE_ID).withProperties(
-                        circleColor(CIRCLE_COLOR),
-                        circleRadius(CIRCLE_RADIUS)
-                ))
-
-                // Style and add the LineLayer to the map. The LineLayer is placed below the CircleLayer.
-                .withLayerBelow(new LineLayer(LINE_LAYER_ID, SOURCE_ID).withProperties(
-                        lineColor(LINE_COLOR),
-                        lineWidth(LINE_WIDTH),
-                        lineJoin(LINE_JOIN_ROUND)
-                ), CIRCLE_LAYER_ID),
-
+                .fromUri(STYLE_URI),
                 this::enableLocationComponent);
+
+
+        // init data
+        if (!activity.getTrajectories().isEmpty()) {
+
+            for (ArrayList<Point> points : activity.getTrajectories()){
+                mapboxMap.getStyle(style -> {
+                    GeoJsonSource geoJsonSource = new GeoJsonSource(UUID.randomUUID().toString());
+                    geoJsonSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(points)));
+                    style.addSource(geoJsonSource);
+                    style.addLayer(new LineLayer(geoJsonSource.getId(), geoJsonSource.getId()).withProperties(
+                            lineColor(LINE_COLOR),
+                            lineWidth(LINE_WIDTH),
+                            lineJoin(LINE_JOIN_ROUND)));
+                });
+
+                if(points.size() != 0) {
+                    mapboxMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(points.get(0).latitude(), points.get(0).longitude()))
+                            .title(getResources().getString(R.string.start)));
+
+                    mapboxMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(
+                                    points.get(points.size() - 1).latitude(),
+                                    points.get(points.size() - 1).longitude()))
+                            .title(getResources().getString(R.string.finish)));
+                }
+            }
+        }
     }
 
     /**
@@ -295,6 +356,7 @@ public class DetailedActivity extends AppCompatActivity implements
             locationComponent.setRenderMode(RenderMode.COMPASS);
 
             initLocationEngine();
+
         } else {
 
             permissionsManager = new PermissionsManager(this);
@@ -310,7 +372,7 @@ public class DetailedActivity extends AppCompatActivity implements
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
-        long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
+        long DEFAULT_INTERVAL_IN_MILLISECONDS = 3000L;
         long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
         LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
                 .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
@@ -388,32 +450,29 @@ public class DetailedActivity extends AppCompatActivity implements
     }
 
     /**
-     * Handle the map click location and re-draw the circle and line data.
-     *
-     * @param latLng where the map was tapped on.
+     * Handle the the line data drawing.
      */
-    private void addPointToLine(@NonNull LatLng latLng) {
-
-        lastLocation = latLng;
+    private void addPointToLine() {
 
         mapboxMap.getStyle(style -> {
 
             // Get the source from the map's style
-            GeoJsonSource geoJsonSource = style.getSourceAs(SOURCE_ID);
+            GeoJsonSource geoJsonSource = style.getSourceAs(Integer.toString(currentLinePosition));
             if (geoJsonSource != null) {
 
-                Point point = Point.fromLngLat(latLng.getLongitude(), latLng.getLatitude());
+                Point point = Point.fromLngLat(lastLocation.getLongitude(), lastLocation.getLatitude());
 
-                pointList.add(point);
+                activity.getTrajectories().get(currentLinePosition).add(point);
 
-                int pointListSize = pointList.size();
+                int pointListSize = activity.getTrajectories().get(currentLinePosition).size();
 
                 double distanceBetweenLastAndSecondToLastClickPoint = 0;
 
                 // Make the Turf calculation between the last tap point and the second-to-last tap point.
-                if (pointList.size() >= 2) {
+                if (activity.getTrajectories().get(currentLinePosition).size() >= 2) {
                     distanceBetweenLastAndSecondToLastClickPoint = TurfMeasurement.distance(
-                            pointList.get(pointListSize - 2), pointList.get(pointListSize - 1));
+                            activity.getTrajectories().get(currentLinePosition).get(pointListSize - 2),
+                            activity.getTrajectories().get(currentLinePosition).get(pointListSize - 1));
                 }
 
                 // Re-draw the new GeoJSON data
@@ -423,10 +482,16 @@ public class DetailedActivity extends AppCompatActivity implements
                     totalLineDistance += distanceBetweenLastAndSecondToLastClickPoint;
 
                     // Set the specific source's GeoJSON data
-                    geoJsonSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(pointList)));
+                    geoJsonSource.setGeoJson(
+                            Feature.fromGeometry(
+                                    LineString.fromLngLats(
+                                            activity.getTrajectories().get(currentLinePosition))));
+
                 }
+
             }
         });
+
     }
 
     private static class DetailedActivityLocationCallback
@@ -452,12 +517,11 @@ public class DetailedActivity extends AppCompatActivity implements
                 if (location == null) return;
 
                 // Pass the new location to the Maps SDK's LocationComponent
-                if (activity.mapboxMap != null && result.getLastLocation() != null){
+                if (activity.mapboxMap != null && result.getLastLocation() != null) {
                     activity.mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
-                    LatLng lastLocation = new LatLng(result.getLastLocation());
-                    activity.addPointToLine(lastLocation);
+                    activity.lastLocation = new LatLng(result.getLastLocation());
+                    if (activity.distanceRunning) activity.addPointToLine();
                 }
-
             }
         }
 
@@ -470,10 +534,8 @@ public class DetailedActivity extends AppCompatActivity implements
         public void onFailure(@NonNull Exception exception) {
             Log.d("LocationChangeActivity", Objects.requireNonNull(exception.getLocalizedMessage()));
             DetailedActivity activity = activityWeakReference.get();
-            if (activity != null) {
-                Toast.makeText(activity, exception.getLocalizedMessage(),
-                        Toast.LENGTH_SHORT).show();
-            }
+            if (activity != null)
+                Toast.makeText(activity, exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

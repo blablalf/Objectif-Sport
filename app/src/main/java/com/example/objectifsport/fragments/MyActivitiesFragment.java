@@ -57,4 +57,6 @@ public class MyActivitiesFragment extends Fragment {
     public ActivityAdapter getActivityAdapter() {
         return activityAdapter;
     }
+
+
 }

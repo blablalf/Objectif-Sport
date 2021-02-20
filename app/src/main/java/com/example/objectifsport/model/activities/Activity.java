@@ -2,8 +2,10 @@ package com.example.objectifsport.model.activities;
 
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.Sport;
+import com.mapbox.geojson.Point;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -22,6 +24,9 @@ public class Activity {
         creationDate = new Date();
         isAchieved = false;
         activityTime = 0;
+        if (sport.getAuthorizedGoals() != 1) { // time only
+            trajectories = new ArrayList<>();
+        }
     }
 
     // Time part
@@ -41,32 +46,15 @@ public class Activity {
     }
 
     // Distance part
-    private double startCoordinateX, startCoordinateY, endCoordinateX, endCoordinateY, completedDistance;
+    private double completedDistance;
+    private ArrayList<ArrayList<Point>> trajectories;
 
-    public double getStartCoordinateX() {
-        return startCoordinateX;
+    public ArrayList<ArrayList<Point>> getTrajectories() {
+        return trajectories;
     }
 
-    public double getStartCoordinateY() {
-        return startCoordinateY;
-    }
-
-    public double getEndCoordinateX() {
-        return endCoordinateX;
-    }
-
-    public double getEndCoordinateY() {
-        return endCoordinateY;
-    }
-
-    public void setStartCoordinate(double startCoordinateX, double startCoordinateY) {
-        this.startCoordinateX = startCoordinateX;
-        this.startCoordinateY = startCoordinateY;
-    }
-
-    public void setEndCoordinate(double endCoordinateX, double endCoordinateY) {
-        this.endCoordinateX = endCoordinateX;
-        this.endCoordinateY = endCoordinateY;
+    public void setTrajectories(ArrayList<ArrayList<Point>> trajectories) {
+        this.trajectories = trajectories;
     }
 
     public double getCompletedDistance() {

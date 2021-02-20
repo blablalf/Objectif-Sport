@@ -46,4 +46,6 @@
     <string name="line_distance_tap_instruction">Click in 2 places on the map to draw a line</string>
     <string name="finish">Finish</string>
     <string name="reset_tracking_message">Are you sure you want to reset the tracking ?\nThe recorded data will be deleted.</string>
+    <string name="activity_complete">Activity complete</string>
+    <string name="activity_unfinished">Activity unfinished</string>
 </resources>
