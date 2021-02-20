@@ -84,6 +84,7 @@ public class DetailedActivity extends AppCompatActivity implements
     private LatLng lastLocation;
     private int currentLinePosition;
     private Bundle savedInstanceState;
+    private String currentGeoJsonSource;
 
     private static final String SOURCE_ID = "SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
@@ -116,6 +117,13 @@ public class DetailedActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_detailed);
 
         activity = DataManager.getActivities().get(getIntent().getIntExtra("position", 0));
+
+        for (ArrayList<Point> points : activity.getTrajectories()) {
+            System.out.println("Trajectory :");
+            for (Point point : points) {
+                System.out.println("Point|Long="+point.longitude()+"/lat="+point.latitude()+"/id=");
+            }
+        }
 
         TextView activityDescription = findViewById(R.id.activity_description);
         TextView sportName = findViewById((R.id.sport_name));
@@ -236,6 +244,19 @@ public class DetailedActivity extends AppCompatActivity implements
                                     lastLocation.getLatitude(),
                                     lastLocation.getAltitude()));
                 }
+
+                // Starting the line
+                mapboxMap.getStyle(style -> {
+                    currentGeoJsonSource = UUID.randomUUID().toString();
+                    GeoJsonSource geoJsonSource = new GeoJsonSource(currentGeoJsonSource);
+                    geoJsonSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(
+                            activity.getTrajectories().get(currentLinePosition))));
+                    style.addSource(geoJsonSource);
+                    style.addLayer(new LineLayer(geoJsonSource.getId(), geoJsonSource.getId()).withProperties(
+                            lineColor(LINE_COLOR),
+                            lineWidth(LINE_WIDTH),
+                            lineJoin(LINE_JOIN_ROUND)));
+                });
             } else {
                 distanceRunning = false;
                 startStop.setText(getResources().getString(R.string.resume));
@@ -372,7 +393,7 @@ public class DetailedActivity extends AppCompatActivity implements
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
 
-        long DEFAULT_INTERVAL_IN_MILLISECONDS = 3000L;
+        long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
         long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
         LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
                 .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
@@ -457,7 +478,7 @@ public class DetailedActivity extends AppCompatActivity implements
         mapboxMap.getStyle(style -> {
 
             // Get the source from the map's style
-            GeoJsonSource geoJsonSource = style.getSourceAs(Integer.toString(currentLinePosition));
+            GeoJsonSource geoJsonSource = style.getSourceAs(currentGeoJsonSource);
             if (geoJsonSource != null) {
 
                 Point point = Point.fromLngLat(lastLocation.getLongitude(), lastLocation.getLatitude());
@@ -519,8 +540,10 @@ public class DetailedActivity extends AppCompatActivity implements
                 // Pass the new location to the Maps SDK's LocationComponent
                 if (activity.mapboxMap != null && result.getLastLocation() != null) {
                     activity.mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
-                    activity.lastLocation = new LatLng(result.getLastLocation());
-                    if (activity.distanceRunning) activity.addPointToLine();
+                    activity.lastLocation = new LatLng(location.getLatitude(), location.getLongitude(), location.getAltitude());
+                    if (activity.distanceRunning) {
+                        activity.addPointToLine();
+                    }
                 }
             }
         }
