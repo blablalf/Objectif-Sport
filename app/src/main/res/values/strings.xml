@@ -50,4 +50,12 @@
     <string name="activity_unfinished">Activity unfinished</string>
     <string name="distance_unit_m">m</string>
     <string name="distance_unit_km">km</string>
+    <string name="goal_description">Goal description</string>
+    <string name="goal_status">Goal status</string>
+    <string name="remove_goal">Remove goal</string>
+    <string name="remove_goal_msg">Are you sure you want to delete this goal ? All progress will be lost.</string>
+    <string name="add_goal">Add goal</string>
+    <string name="distance_goal_km">Distance goal (km)</string>
+    <string name="deadline">Deadline</string>
+    <string name="goal_deadline">Goal deadline</string>
 </resources>

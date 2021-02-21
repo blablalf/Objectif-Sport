@@ -6,11 +6,11 @@ import com.example.objectifsport.model.Sport;
 import java.util.Calendar;
 import java.util.UUID;
 
-public abstract class Goal {
+public class Goal {
 
-    private String type; // Could be time, distance or timeDistance
-    private Calendar startDate, endDate;
+    private Calendar creationDate, startDate, endDate;
     private UUID sportId;
+    private String description;
 
     public boolean isAchieved() {
         return achieved;
@@ -21,14 +21,6 @@ public abstract class Goal {
     }
 
     private boolean achieved;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public Calendar getStartDate() {
         return startDate;
@@ -52,10 +44,20 @@ public abstract class Goal {
 
     public Goal(Sport sport, Calendar startDate, Calendar endDate) {
         sportId = sport.getId();
-        this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
         achieved = false;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Calendar getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Calendar creationDate) {
+        this.creationDate = creationDate;
+    }
 }

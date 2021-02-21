@@ -66,10 +66,9 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
         addActivity.setOnClickListener(v -> {
             // Add activity
-            Activity activity = new Activity(DataManager.getSports().get(sportSelect.getSelectedItemPosition()),
-                    activityDescription.getText().toString());
+            Activity activity = new Activity(DataManager.getSports().get(
+                    sportSelect.getSelectedItemPosition()), activityDescription.getText().toString());
             DataManager.addActivity(activity);
-            //dataManager.save();
 
             // close dialog
             dismiss();

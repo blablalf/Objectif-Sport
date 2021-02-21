@@ -112,4 +112,8 @@ public class DataManager {
         save();
     }
 
+    public static void removeGoal(Goal goal) {
+        goals.remove(goal);
+        save();
+    }
 }
