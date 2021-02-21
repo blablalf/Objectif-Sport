@@ -3,6 +3,7 @@ package com.example.objectifsport.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.activities.DetailedActivity;
+import com.example.objectifsport.activities.MainActivity;
 import com.example.objectifsport.model.activities.Activity;
 
 import java.text.SimpleDateFormat;
@@ -71,6 +73,10 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
                     .setPositiveButton(R.string.remove, (dialog, which) -> {
                         DataManager.removeActivity(activity);
                         notifyDataSetChanged();
+                        ((MainActivity) context).getMainFragmentPageAdapter()
+                                .getMySportsFragment()
+                                .getSportAdapter()
+                                .notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();

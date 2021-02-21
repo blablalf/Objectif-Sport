@@ -38,4 +38,16 @@ public class MainActivity extends AppCompatActivity {
     public MainFragmentPageAdapter getMainFragmentPageAdapter() {
         return mainFragmentPageAdapter;
     }
+
+
+    // Useful when activity is updated into DetailedActivity
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (getMainFragmentPageAdapter().getMyActivitiesFragment() != null)
+        getMainFragmentPageAdapter()
+                .getMyActivitiesFragment()
+                .getActivityAdapter()
+                .notifyDataSetChanged();
+    }
 }

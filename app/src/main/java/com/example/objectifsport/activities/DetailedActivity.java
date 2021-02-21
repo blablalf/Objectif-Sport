@@ -1,11 +1,7 @@
 package com.example.objectifsport.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -14,14 +10,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
-import com.example.objectifsport.adapters.ActivityAdapter;
 import com.example.objectifsport.model.activities.Activity;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
@@ -31,7 +28,6 @@ import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -46,7 +42,6 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.CircleLayer;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
@@ -54,24 +49,22 @@ import com.mapbox.mapboxsdk.style.sources.Source;
 import com.mapbox.turf.TurfMeasurement;
 
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
 import static com.mapbox.mapboxsdk.style.layers.Property.LINE_JOIN_ROUND;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleRadius;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 
-public class DetailedActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener {
+public class DetailedActivity extends AppCompatActivity implements OnMapReadyCallback,
+        PermissionsListener {
 
     private Activity activity;
     private long startTime, timeToSave;
@@ -85,13 +78,16 @@ public class DetailedActivity extends AppCompatActivity implements
     private int currentLinePosition;
     private Bundle savedInstanceState;
     private String currentGeoJsonSource;
+    private ArrayList<String> layersList;
 
-    private static final String SOURCE_ID = "SOURCE_ID";
-    private static final String ICON_ID = "ICON_ID";
-    private static final String LAYER_ID = "LAYER_ID";
-    private static final String CIRCLE_LAYER_ID = "CIRCLE_LAYER_ID";
-    private static final String LINE_LAYER_ID = "LINE_LAYER_ID";
-    public static final int PERMISSION_ID = 1;
+    // distance part views
+    private TextView totalDistance;
+    private Button startDistanceButton;
+    private Button resetDistanceButton;
+
+    // time part views
+    private Button resetTimeButton;
+    private Button startTimeButton;
 
     // Variables needed to handle location permissions
     private PermissionsManager permissionsManager;
@@ -103,12 +99,8 @@ public class DetailedActivity extends AppCompatActivity implements
 
     // Adjust private static final variables below to change the example's UI
     private static final String STYLE_URI = "mapbox://styles/mapbox/cjv6rzz4j3m4b1fqcchuxclhb";
-    private static final int CIRCLE_COLOR = Color.parseColor("#FF6200EE");
-    private static final int LINE_COLOR = CIRCLE_COLOR;
-    private static final float CIRCLE_RADIUS = 2f;
+    private static final int LINE_COLOR = Color.parseColor("#FF6200EE");;
     private static final float LINE_WIDTH = 4f;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,12 +139,40 @@ public class DetailedActivity extends AppCompatActivity implements
                 getResources().getString(R.string.activity_unfinished) :
                 getResources().getString(R.string.activity_complete));
 
+        if (resetDistanceButton != null) {
+            resetDistanceButton.setEnabled(!activity.isAchieved());
+            startDistanceButton.setEnabled(!activity.isAchieved());
+        }
+
+        if (resetTimeButton != null) {
+            resetTimeButton.setEnabled(!activity.isAchieved());
+            startTimeButton.setEnabled(!activity.isAchieved());
+        }
+
         completeUncompleteButton.setOnClickListener(v -> {
             activity.setAchieved(!activity.isAchieved());
             DataManager.save();
+
+            // notify ActivityAdapter
+            /*((MainActivity) (getParent().getF)).getMainFragmentPageAdapter()
+                    .getMyActivitiesFragment()
+                    .getActivityAdapter()
+                    .notifyDataSetChanged();*/
+
             completeUncompleteButton.setText((activity.isAchieved())?
                     getResources().getString(R.string.activity_unfinished) :
                     getResources().getString(R.string.activity_complete));
+
+            if (resetDistanceButton != null) {
+                resetDistanceButton.setEnabled(!activity.isAchieved());
+                startDistanceButton.setEnabled(!activity.isAchieved());
+            }
+
+            if (resetTimeButton != null) {
+                resetTimeButton.setEnabled(!activity.isAchieved());
+                startTimeButton.setEnabled(!activity.isAchieved());
+            }
+
         });
 
         activityDescription.setText(activity.getActivityDescription());
@@ -164,8 +184,8 @@ public class DetailedActivity extends AppCompatActivity implements
     private void setTimeLayout() {
         RelativeLayout timePart = findViewById(R.id.time_part);
         Chronometer chronometer = findViewById(R.id.chronometer);
-        Button start = findViewById(R.id.start_pause);
-        Button reset = findViewById(R.id.reset);
+        startTimeButton = findViewById(R.id.start_pause);
+        resetTimeButton = findViewById(R.id.reset);
         TextView savedTime = findViewById(R.id.saved_time);
 
         timePart.setVisibility(View.VISIBLE);
@@ -175,7 +195,7 @@ public class DetailedActivity extends AppCompatActivity implements
         if (timeToSave == 0) timeStarted = false;
         else {
             timeStarted = true;
-            start.setText(getResources().getString(R.string.resume));
+            startTimeButton.setText(getResources().getString(R.string.resume));
         }
 
         chronometer.setFormat("%s");
@@ -183,13 +203,13 @@ public class DetailedActivity extends AppCompatActivity implements
         savedTime.setText((timeToSave == 0) ? getResources().getString(R.string.no_time_recorded)
                 : activity.getFormattedActivityTime());
 
-        start.setOnClickListener(v -> {
+        startTimeButton.setOnClickListener(v -> {
             if (timeRunning) { // chronometer was running
                 chronometer.stop();
                 timeRunning = false;
                 timeToSave += System.currentTimeMillis() - startTime;
                 chronometer.setBase(SystemClock.elapsedRealtime() - timeToSave);
-                start.setText(getResources().getString(R.string.resume));
+                startTimeButton.setText(getResources().getString(R.string.resume));
                 activity.setActivityTime(timeToSave);
                 savedTime.setText(activity.getFormattedActivityTime());
                 DataManager.save();
@@ -199,11 +219,11 @@ public class DetailedActivity extends AppCompatActivity implements
                 chronometer.setBase(SystemClock.elapsedRealtime() - timeToSave);
                 chronometer.start();
                 timeRunning = true;
-                start.setText(getResources().getString(R.string.stop));
+                startTimeButton.setText(getResources().getString(R.string.stop));
             }
         });
 
-        reset.setOnClickListener(v -> new AlertDialog.Builder(this)
+        resetTimeButton.setOnClickListener(v -> new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.reset_time))
                 .setMessage(getResources().getString(R.string.reset_time_message))
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
@@ -213,8 +233,8 @@ public class DetailedActivity extends AppCompatActivity implements
                     activity.setActivityTime(0);
                     DataManager.save();
                     savedTime.setText(getResources().getString(R.string.no_time_recorded));
+                    startTimeButton.setText(getResources().getString(R.string.start));
                     timeStarted = false;
-                    start.setText(getResources().getString(R.string.start));
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -222,17 +242,19 @@ public class DetailedActivity extends AppCompatActivity implements
     }
 
     private void setDistanceLayout() {
+        layersList = new ArrayList<>();
         findViewById(R.id.distance_part).setVisibility(View.VISIBLE); // set the view visible
+        totalDistance = findViewById(R.id.distance_travelled);
         mapView = findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        Button startStop = findViewById(R.id.start_stop_tracking);
-        startStop.setOnClickListener(v -> {
-            if (!distanceRunning || !distanceStarted) {
+        startDistanceButton = findViewById(R.id.start_stop_tracking);
+        startDistanceButton.setOnClickListener(v -> {
+            if (!distanceRunning || !distanceStarted) { // we start/resume
                 distanceStarted = true;
                 distanceRunning = true;
-                startStop.setText(getResources().getString(R.string.stop));
+                startDistanceButton.setText(getResources().getString(R.string.stop));
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
                         .title(getResources().getString(R.string.start)));
@@ -252,47 +274,58 @@ public class DetailedActivity extends AppCompatActivity implements
                     geoJsonSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(
                             activity.getTrajectories().get(currentLinePosition))));
                     style.addSource(geoJsonSource);
+                    layersList.add(geoJsonSource.getId());
                     style.addLayer(new LineLayer(geoJsonSource.getId(), geoJsonSource.getId()).withProperties(
                             lineColor(LINE_COLOR),
                             lineWidth(LINE_WIDTH),
                             lineJoin(LINE_JOIN_ROUND)));
                 });
-            } else {
+            } else { // we stop
                 distanceRunning = false;
-                startStop.setText(getResources().getString(R.string.resume));
+                startDistanceButton.setText(getResources().getString(R.string.resume));
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
                         .title(getResources().getString(R.string.finish)));
                 activity.setCompletedDistance(activity.getCompletedDistance() + totalLineDistance);
+                totalLineDistance = 0; // reset distance for next itinerary
                 if (lastLocation != null) {
                     activity.getTrajectories().get(currentLinePosition)
                             .add(Point.fromLngLat(lastLocation.getLongitude(),
                                     lastLocation.getLatitude(),
                                     lastLocation.getAltitude()));
                 }
+                String totalDistanceText = (activity.getCompletedDistance() > 1) ?
+                        new DecimalFormat("#.##").format(activity.getCompletedDistance())
+                                + " " + getResources().getString(R.string.distance_unit_km) :
+                        (int) (activity.getCompletedDistance() * 1000)
+                                + " " + getResources().getString(R.string.distance_unit_m);
+                totalDistance.setText(totalDistanceText);
                 DataManager.save();
             }
         });
 
-        Button reset = findViewById(R.id.reset_tracking);
-        reset.setOnClickListener(v -> {
+        resetDistanceButton = findViewById(R.id.reset_tracking);
+        resetDistanceButton.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setTitle(getResources().getString(R.string.reset_tracking))
                     .setMessage(getResources().getString(R.string.reset_tracking_message))
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                         distanceStarted = false;
                         distanceRunning = false;
-                        startStop.setText(getResources().getString(R.string.start));
+                        resetDistanceButton.setText(getResources().getString(R.string.start));
                         for (Marker marker : mapboxMap.getMarkers()) {
                             marker.remove();
                         }
                         mapboxMap.getStyle(style -> {
-                            for (Layer layer : style.getLayers()) style.removeLayer(layer);
+                            for (Layer layer : style.getLayers())
+                                if (layersList.contains(layer.getId())) style.removeLayer(layer);
                             for (Source source : style.getSources()) style.removeSource(source);
                         });
+                        layersList.clear();
                         totalLineDistance = 0;
                         activity.setCompletedDistance(totalLineDistance);
                         activity.getTrajectories().clear();
+                        totalDistance.setText(getResources().getText(R.string.no_distance_travelled));
                         DataManager.save();
                     })
                     .setNegativeButton(android.R.string.no, null)
@@ -312,11 +345,22 @@ public class DetailedActivity extends AppCompatActivity implements
 
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
+        // set displayed distance travelled value
+        if (activity.getCompletedDistance() == 0) // prevent the "distance travelled : 0m"
+            totalDistance.setText(getResources().getText(R.string.no_distance_travelled));
+        else {
+            String totalDistanceText = (activity.getCompletedDistance() > 1) ?
+                    new DecimalFormat("#.##").format(activity.getCompletedDistance())
+                            + " " + getResources().getString(R.string.distance_unit_km) :
+                    (int) (activity.getCompletedDistance() * 1000)
+                            + " " + getResources().getString(R.string.distance_unit_m);
+            totalDistance.setText(totalDistanceText);
+        }
+
         this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(new Style.Builder()
                 .fromUri(STYLE_URI),
                 this::enableLocationComponent);
-
 
         // init data
         if (!activity.getTrajectories().isEmpty()) {
@@ -326,6 +370,7 @@ public class DetailedActivity extends AppCompatActivity implements
                     GeoJsonSource geoJsonSource = new GeoJsonSource(UUID.randomUUID().toString());
                     geoJsonSource.setGeoJson(Feature.fromGeometry(LineString.fromLngLats(points)));
                     style.addSource(geoJsonSource);
+                    layersList.add(geoJsonSource.getId());
                     style.addLayer(new LineLayer(geoJsonSource.getId(), geoJsonSource.getId()).withProperties(
                             lineColor(LINE_COLOR),
                             lineWidth(LINE_WIDTH),
@@ -482,11 +527,8 @@ public class DetailedActivity extends AppCompatActivity implements
             if (geoJsonSource != null) {
 
                 Point point = Point.fromLngLat(lastLocation.getLongitude(), lastLocation.getLatitude());
-
                 activity.getTrajectories().get(currentLinePosition).add(point);
-
                 int pointListSize = activity.getTrajectories().get(currentLinePosition).size();
-
                 double distanceBetweenLastAndSecondToLastClickPoint = 0;
 
                 // Make the Turf calculation between the last tap point and the second-to-last tap point.
@@ -507,7 +549,6 @@ public class DetailedActivity extends AppCompatActivity implements
                             Feature.fromGeometry(
                                     LineString.fromLngLats(
                                             activity.getTrajectories().get(currentLinePosition))));
-
                 }
 
             }

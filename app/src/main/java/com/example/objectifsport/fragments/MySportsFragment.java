@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,8 @@ import com.example.objectifsport.adapters.SportAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MySportsFragment extends Fragment {
+
+    private SportAdapter sportAdapter;
 
     public static MySportsFragment newInstance() {
         return new MySportsFragment();
@@ -30,7 +33,7 @@ public class MySportsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.my_sports_fragment, container, false);
-        SportAdapter sportAdapter = new SportAdapter(view.getContext(), DataManager.getSports());
+        sportAdapter = new SportAdapter(view.getContext(), DataManager.getSports());
         ListView listView = view.findViewById(R.id.sports_list);
         listView.setAdapter(sportAdapter);
 
@@ -47,4 +50,7 @@ public class MySportsFragment extends Fragment {
         return view;
     }
 
+    public BaseAdapter getSportAdapter() {
+        return sportAdapter;
+    }
 }

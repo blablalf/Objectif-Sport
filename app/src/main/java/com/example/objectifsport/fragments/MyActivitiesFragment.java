@@ -1,12 +1,16 @@
 package com.example.objectifsport.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.objectifsport.R;
@@ -52,6 +56,53 @@ public class MyActivitiesFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @NonNull
+    @Override
+    public LayoutInflater onGetLayoutInflater(@Nullable Bundle savedInstanceState) {
+        return super.onGetLayoutInflater(savedInstanceState);
+    }
+
+    @Override
+    public void onInflate(@NonNull Context context, @NonNull AttributeSet attrs, @Nullable Bundle savedInstanceState) {
+        super.onInflate(context, attrs, savedInstanceState);
+        getActivityAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (getActivityAdapter() != null)
+        getActivityAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getActivityAdapter() != null)
+        getActivityAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivityAdapter() != null)
+        getActivityAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (getActivityAdapter() != null)
+        getActivityAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivityAdapter() != null)
+            getActivityAdapter().notifyDataSetChanged();
     }
 
     public ActivityAdapter getActivityAdapter() {

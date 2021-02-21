@@ -62,7 +62,7 @@ public class Activity {
     }
 
     public void setCompletedDistance(double completedDistance) {
-        this.completedDistance += completedDistance;
+        this.completedDistance = completedDistance;
     }
 
     public String getActivityDescription() {
