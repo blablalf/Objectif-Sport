@@ -47,7 +47,8 @@
                     android:layout_below="@+id/time_goal"
                     android:layout_marginStart="30dp"
                     android:autofillHints="0"
-                    android:inputType="datetime"
+                    android:inputType="none"
+                    android:focusable="false"
                     android:visibility="gone"
                     android:id="@+id/time_goal_input"/>
 
@@ -71,8 +72,8 @@
                     android:layout_marginStart="30dp"
                     android:layout_below="@+id/distance_goal"
                     android:autofillHints="0"
-                    android:visibility="gone"
                     android:inputType="numberDecimal"
+                    android:visibility="gone"
                     android:id="@+id/distance_goal_input"/>
 
             </RelativeLayout>
@@ -96,7 +97,8 @@
                     android:layout_marginStart="30dp"
                     android:autofillHints="0"
                     android:visibility="gone"
-                    android:inputType="date"
+                    android:inputType="none"
+                    android:focusable="false"
                     android:id="@+id/deadline_goal_input"/>
 
             </RelativeLayout>
@@ -125,5 +127,6 @@
         </LinearLayout>
 
     </LinearLayout>
+
 </ScrollView>
 

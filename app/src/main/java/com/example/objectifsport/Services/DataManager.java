@@ -116,4 +116,9 @@ public class DataManager {
         goals.remove(goal);
         save();
     }
+
+    public static void addGoal(Goal goal) {
+        goals.add(goal);
+        save();
+    }
 }

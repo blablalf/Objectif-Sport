@@ -58,4 +58,7 @@
     <string name="distance_goal_km">Distance goal (km)</string>
     <string name="deadline">Deadline</string>
     <string name="goal_deadline">Goal deadline</string>
+    <string name="time_goal_duration_msg">Please set the duration goal.</string>
+    <string name="distance_goal_duration_msg">PLease set a distance goal in kilometers.</string>
+    <string name="deadline_goal_duration_msg">Please set the deadline goal date.</string>
 </resources>
