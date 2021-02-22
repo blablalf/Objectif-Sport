@@ -83,22 +83,26 @@ public class DetailedGoalActivity extends AppCompatActivity {
             double percentage = (goal.getTimeProgress() == 0)?
                     0:((double) goal.getTimeProgress()/(double) goal.getDuration().toMillis())*100;
             if (percentage > 100 || goal.isAchieved()) percentage = 100;
-            timePercentage.setText(new DecimalFormat("#.##").format(percentage));
+            String percentageStr = new DecimalFormat("#.##").format(percentage) + "%";
+            timePercentage.setText(percentageStr);
             timeProgress.setProgress((int) percentage);
         }
 
         // distance part
         if (goal.getAuthorizedGoal() == 2 || goal.getAuthorizedGoal() == 0) {
             distanceGoalContainer.setVisibility(View.VISIBLE);
-            distanceGoal.setText(String.valueOf(goal.getDistance()));
+            String distanceGoalStr = goal.getDistance() + " "
+                    + getResources().getString(R.string.distance_unit_km);
+            distanceGoal.setText(distanceGoalStr);
             String distanceReachedText =
-                    new DecimalFormat("#.##").format(goal.getDistanceProgress())
+                    new DecimalFormat("#.##").format(goal.getDistanceProgress()) + " "
                     + getResources().getString(R.string.distance_unit_km);
             distanceReached.setText(distanceReachedText);
             double percentage = (goal.getDistanceProgress() == 0)?
                     0:((double) goal.getDistanceProgress()/goal.getDistance())*100;
             if (percentage > 100 || goal.isAchieved()) percentage = 100;
-            distancePercentage.setText(new DecimalFormat("#.##").format(percentage));
+            String percentageStr = new DecimalFormat("#.##").format(percentage) + "%";
+            distancePercentage.setText(percentageStr);
             distanceProgress.setProgress((int) percentage);
         }
     }
