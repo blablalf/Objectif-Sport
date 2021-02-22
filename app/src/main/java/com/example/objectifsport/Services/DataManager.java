@@ -70,13 +70,6 @@ public class DataManager {
                 .apply();
     }
 
-    public static void generateFakeSports() {
-        Sport tempSport = new Sport("Sport Name");
-        for (int i = 0; i < 10 ; i++){
-            sports.add(tempSport);
-        }
-    }
-
     public static ArrayList<Sport> getSports() {
         return sports;
     }

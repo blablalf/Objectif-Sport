@@ -57,10 +57,10 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         sportName.setText(goal.getSport().getName());
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
-        creationDate.setText(formatter.format(goal.getCreationDate().getTime()));
+        creationDate.setText(formatter.format(goal.getCreationDate()));
 
         goalStatus.setText((goal.isAchieved()) ? "✅":
-                (goal.hasDeadlineDate() && new Date().before(goal.getDeadlineDate().getTime()))?"❌":"❗️");
+                (goal.hasDeadlineDate() && new Date().after(goal.getDeadlineDate()))?"❌":"❗️");
 
 
 

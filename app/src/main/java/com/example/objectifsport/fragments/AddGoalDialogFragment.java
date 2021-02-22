@@ -166,7 +166,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                         // we add (sport 1)
                         if (deadline.isChecked())
                             DataManager.addGoal(new Goal(selectedSport,
-                                    goalDescription.getText().toString(), deadlineDate, timeGoalDuration));
+                                    goalDescription.getText().toString(), deadlineDate.getTime(), timeGoalDuration));
                         else DataManager.addGoal(new Goal(selectedSport, goalDescription.getText().toString(), timeGoalDuration));
                         dismiss();
                         break;
@@ -185,7 +185,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                         // we add (sport 2)
                         if (deadline.isChecked())
                             DataManager.addGoal(new Goal(selectedSport,
-                                    goalDescription.getText().toString(), deadlineDate, distance));
+                                    goalDescription.getText().toString(), deadlineDate.getTime(), distance));
                         else DataManager.addGoal(new Goal(selectedSport, goalDescription.getText().toString(), distance));
                         dismiss();
                         break;
@@ -204,7 +204,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                                 // we add (sport 0 with 1 checked)
                                 if (deadline.isChecked())
                                     DataManager.addGoal(new Goal(selectedSport,
-                                            goalDescription.getText().toString(), deadlineDate, timeGoalDuration));
+                                            goalDescription.getText().toString(), deadlineDate.getTime(), timeGoalDuration));
                                 else DataManager.addGoal(new Goal(selectedSport, goalDescription.getText().toString(), timeGoalDuration));
                                 dismiss();
                                 break;
@@ -223,7 +223,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                                 // we add (sport 0 with 2 checked)
                                 if (deadline.isChecked())
                                     DataManager.addGoal(new Goal(selectedSport,
-                                            goalDescription.getText().toString(), deadlineDate, distance));
+                                            goalDescription.getText().toString(), deadlineDate.getTime(), distance));
                                 else DataManager.addGoal(new Goal(selectedSport, goalDescription.getText().toString(), distance));
                                 dismiss();
                                 break;
@@ -245,7 +245,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                                 // we add (sport 0 with 0 checked)
                                 if (deadline.isChecked())
                                     DataManager.addGoal(new Goal(selectedSport,
-                                            goalDescription.getText().toString(), deadlineDate, timeGoalDuration, distance));
+                                            goalDescription.getText().toString(), deadlineDate.getTime(), timeGoalDuration, distance));
                                 else DataManager.addGoal(new Goal(selectedSport, goalDescription.getText().toString(), timeGoalDuration, distance));
                                 dismiss();
                                 break;
@@ -289,8 +289,9 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
         DatePickerDialog picker = new DatePickerDialog(context,
                 (view, year1, monthOfYear, dayOfMonth) -> {
                     deadlineDate = Calendar.getInstance();
-                    deadlineDate.set(year, month, day);
-                    String dateText = day + "/" + (month + 1) + "/" + year;
+                    deadlineDate.set(year1, monthOfYear, dayOfMonth);
+                    String dateText = deadlineDate.get(Calendar.DAY_OF_MONTH) + "/" +
+                            (deadlineDate.get(Calendar.MONTH) + 1) + "/" + deadlineDate.get(Calendar.YEAR);
                     deadlineGoalInput.setText(dateText);
                 }, year, month, day);
         picker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);

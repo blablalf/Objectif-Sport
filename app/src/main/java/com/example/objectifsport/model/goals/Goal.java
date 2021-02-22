@@ -6,12 +6,12 @@ import com.example.objectifsport.model.activities.Activity;
 
 import org.threeten.bp.Duration;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class Goal {
 
-    private Calendar creationDate, deadlineDate;
+    private Date creationDate, deadlineDate;
     private final UUID sportId;
     private final String description;
     private int authorizedGoal;
@@ -23,30 +23,30 @@ public class Goal {
     // distance part
     private double distance;
 
-    public Goal(Sport sport, String goalDescription, Calendar deadlineDate, Duration durationGoal) {
+    public Goal(Sport sport, String goalDescription, Date deadlineDate, Duration durationGoal) {
         sportId = sport.getId();
         description = goalDescription;
-        creationDate = Calendar.getInstance();
+        creationDate = new Date();
         this.deadlineDate = deadlineDate;
         achieved = false;
         duration = durationGoal;
         authorizedGoal = 1;
     }
 
-    public Goal(Sport sport, String goalDescription, Calendar deadlineDate, double distanceGoal) {
+    public Goal(Sport sport, String goalDescription, Date deadlineDate, double distanceGoal) {
         sportId = sport.getId();
         description = goalDescription;
-        creationDate = Calendar.getInstance();
+        creationDate = new Date();
         this.deadlineDate = deadlineDate;
         achieved = false;
         distance = distanceGoal;
         authorizedGoal = 2;
     }
 
-    public Goal(Sport sport, String goalDescription, Calendar deadlineDate, Duration durationGoal, double distanceGoal) {
+    public Goal(Sport sport, String goalDescription, Date deadlineDate, Duration durationGoal, double distanceGoal) {
         sportId = sport.getId();
         description = goalDescription;
-        creationDate = Calendar.getInstance();
+        creationDate = new Date();
         this.deadlineDate = deadlineDate;
         achieved = false;
         duration = durationGoal;
@@ -57,7 +57,7 @@ public class Goal {
     public Goal(Sport sport, String goalDescription, Duration durationGoal) {
         sportId = sport.getId();
         description = goalDescription;
-        creationDate = Calendar.getInstance();
+        creationDate = new Date();
         achieved = false;
         duration = durationGoal;
         authorizedGoal = 1;
@@ -66,7 +66,7 @@ public class Goal {
     public Goal(Sport sport, String goalDescription, double distanceGoal) {
         sportId = sport.getId();
         description = goalDescription;
-        creationDate = Calendar.getInstance();
+        creationDate = new Date();
         achieved = false;
         distance = distanceGoal;
         authorizedGoal = 2;
@@ -75,7 +75,7 @@ public class Goal {
     public Goal(Sport sport, String goalDescription, Duration durationGoal, double distanceGoal) {
         sportId = sport.getId();
         description = goalDescription;
-        creationDate = Calendar.getInstance();
+        creationDate = new Date();
         achieved = false;
         duration = durationGoal;
         distance = distanceGoal;
@@ -98,19 +98,19 @@ public class Goal {
         return description;
     }
 
-    public Calendar getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Calendar creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Calendar getDeadlineDate() {
+    public Date getDeadlineDate() {
         return deadlineDate;
     }
 
-    public void setDeadlineDate(Calendar deadlineDate) {
+    public void setDeadlineDate(Date deadlineDate) {
         this.deadlineDate = deadlineDate;
     }
 
@@ -145,7 +145,7 @@ public class Goal {
     public long getTimeProgress() {
         long totalTimeProgress = 0;
         for (Activity activity : DataManager.getActivities())
-            if (activity.getCreationDate().after(creationDate.getTime()) && activity.getSport() == getSport())
+            if (activity.getCreationDate().after(creationDate) && activity.getSport() == getSport())
                 totalTimeProgress += activity.getActivityTime();
         return totalTimeProgress;
     }
@@ -153,25 +153,28 @@ public class Goal {
     public double getDistanceProgress() {
         double totalDistanceProgress = 0;
         for (Activity activity : DataManager.getActivities())
-            if (activity.getCreationDate().after(creationDate.getTime()) && activity.getSport() == getSport())
+            if (activity.getCreationDate().after(creationDate) && activity.getSport() == getSport())
                 totalDistanceProgress += activity.getCompletedDistance();
         return totalDistanceProgress;
     }
 
     public void verify(){
-        switch (authorizedGoal) {
-            case 1 :
-                if (getTimeProgress() >= duration.toMillis())
-                    achieved = true;
-                break;
-            case 2 :
-                if (getDistanceProgress() >= distance)
-                    achieved = true;
-                break;
-            default :
-                if (getTimeProgress() >= duration.toMillis() && getDistanceProgress() >= distance)
-                    achieved = true;
-                break;
+        if (hasDeadlineDate() && deadlineDate.before(new Date())) {
+            System.out.println("YEAH");
+            switch (authorizedGoal) {
+                case 1 :
+                    if (getTimeProgress() >= duration.toMillis())
+                        achieved = true;
+                    break;
+                case 2 :
+                    if (getDistanceProgress() >= distance)
+                        achieved = true;
+                    break;
+                default :
+                    if (getTimeProgress() >= duration.toMillis() && getDistanceProgress() >= distance)
+                        achieved = true;
+                    break;
+            }
         }
     }
 }

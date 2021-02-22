@@ -50,19 +50,20 @@ public class DetailedGoalActivity extends AppCompatActivity {
         goalDescription.setText(goal.getDescription());
         sportName.setText(goal.getSport().getName());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
-        creationDate.setText(formatter.format(goal.getCreationDate().getTime()));
+        creationDate.setText(formatter.format(goal.getCreationDate()));
         goalStatus.setText((goal.isAchieved()) ? getResources().getString(R.string.goal_achieved):
-                (goal.hasDeadlineDate() && new Date().before(goal.getDeadlineDate().getTime()))?
+                (goal.hasDeadlineDate() && new Date().after(goal.getDeadlineDate()))?
                         getResources().getString(R.string.goal_not_achieved):
                         getResources().getString(R.string.goal_in_progress));
         goalStatus.setBackgroundColor((goal.isAchieved()) ? getResources().getColor(R.color.good):
-                (goal.hasDeadlineDate() && new Date().before(goal.getDeadlineDate().getTime()))?
+                (goal.hasDeadlineDate() && new Date().after(goal.getDeadlineDate()))?
                         getResources().getColor(R.color.not_good):
                         getResources().getColor(R.color.in_progress));
 
         if (goal.hasDeadlineDate()) {
             deadlineDateContainer.setVisibility(View.VISIBLE);
-            deadlineDate.setText(formatter.format(goal.getDeadlineDate().getTime()));
+            deadlineDate.setText(formatter.format(goal.getDeadlineDate()));
+            System.out.println("YYYYY"+formatter.format(goal.getDeadlineDate()));
         }
 
         // time part
