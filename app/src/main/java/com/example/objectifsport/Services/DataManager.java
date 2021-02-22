@@ -86,6 +86,9 @@ public class DataManager {
     }
 
     public static void removeSport(Sport sport) {
+        Iterator<Goal> goalIterator = goals.iterator();
+        while (goalIterator.hasNext())
+            if (goalIterator.next().getSport() == sport) goalIterator.remove();
         Iterator<Activity> activityIterator = activities.iterator();
         while (activityIterator.hasNext())
             if (activityIterator.next().getSport() == sport) activityIterator.remove();

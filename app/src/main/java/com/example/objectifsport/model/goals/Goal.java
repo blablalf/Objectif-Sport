@@ -2,6 +2,7 @@ package com.example.objectifsport.model.goals;
 
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.Sport;
+import com.example.objectifsport.model.activities.Activity;
 
 import org.threeten.bp.Duration;
 
@@ -139,5 +140,39 @@ public class Goal {
 
     public Sport getSport(){
         return DataManager.getSport(sportId);
+    }
+
+    public long getTimeProgress() {
+        long totalTimeProgress = 0;
+        for (Activity activity : DataManager.getActivities())
+            if (activity.getCreationDate().after(creationDate.getTime()) && activity.getSport() == getSport())
+                totalTimeProgress += activity.getActivityTime();
+        return totalTimeProgress;
+    }
+
+    public long getDistanceProgress() {
+        long totalDistanceProgress = 0;
+        for (Activity activity : DataManager.getActivities())
+            if (activity.getCreationDate().after(creationDate.getTime()) && activity.getSport() == getSport())
+                totalDistanceProgress += activity.getCompletedDistance();
+        return totalDistanceProgress;
+    }
+
+    public void verify(){
+        switch (authorizedGoal) {
+            case 1 :
+                if (getTimeProgress() >= duration.toMillis())
+                    achieved = true;
+                break;
+            case 2 :
+                if (getDistanceProgress() >= distance)
+                    achieved = true;
+                break;
+            default :
+                if (getTimeProgress() >= duration.toMillis() && getDistanceProgress() >= distance)
+                    achieved = true;
+                break;
+        }
+
     }
 }

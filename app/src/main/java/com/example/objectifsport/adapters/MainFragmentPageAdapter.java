@@ -58,4 +58,5 @@ public class MainFragmentPageAdapter extends FragmentPagerAdapter {
     public com.example.objectifsport.fragments.MySportsFragment getMySportsFragment() {
         return mySportsFragment;
     }
+
 }

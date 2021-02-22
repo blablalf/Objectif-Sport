@@ -19,6 +19,8 @@ import com.example.objectifsport.activities.MainActivity;
 import com.example.objectifsport.model.goals.Goal;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -57,7 +59,10 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
         creationDate.setText(formatter.format(goal.getCreationDate().getTime()));
 
-        goalStatus.setText((goal.isAchieved()) ? "✅":"❌");
+        goalStatus.setText((goal.isAchieved()) ? "✅":
+                (goal.hasDeadlineDate() && new Date().before(goal.getDeadlineDate().getTime()))?"❌":"❗️");
+
+
 
         convertView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailedGoalActivity.class);

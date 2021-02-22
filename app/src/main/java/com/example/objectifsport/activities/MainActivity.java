@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.adapters.MainFragmentPageAdapter;
+import com.example.objectifsport.model.goals.Goal;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,12 +45,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        if (getMainFragmentPageAdapter().getMyActivitiesFragment() != null)
-        getMainFragmentPageAdapter()
-                .getMyActivitiesFragment()
-                .getActivityAdapter()
-                .notifyDataSetChanged();
 
-        // update goals
+        for (Goal goal : DataManager.getGoals()) {
+            goal.verify();
+        }
+
+        if (getMainFragmentPageAdapter().getMyActivitiesFragment() != null) {
+            getMainFragmentPageAdapter()
+                    .getMyActivitiesFragment()
+                    .getActivityAdapter()
+                    .notifyDataSetChanged();
+
+            getMainFragmentPageAdapter()
+                    .getMyGoalsFragment()
+                    .getGoalAdapter()
+                    .notifyDataSetChanged();
+        }
+
     }
 }

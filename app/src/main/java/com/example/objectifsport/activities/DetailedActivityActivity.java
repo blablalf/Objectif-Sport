@@ -48,6 +48,8 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.style.sources.Source;
 import com.mapbox.turf.TurfMeasurement;
 
+import org.threeten.bp.Duration;
+
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -109,13 +111,6 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
         setContentView(R.layout.activity_detailed_activity);
 
         activity = DataManager.getActivities().get(getIntent().getIntExtra("position", 0));
-
-        for (ArrayList<Point> points : activity.getTrajectories()) {
-            System.out.println("Trajectory :");
-            for (Point point : points) {
-                System.out.println("Point|Long="+point.longitude()+"/lat="+point.latitude()+"/id=");
-            }
-        }
 
         TextView activityDescription = findViewById(R.id.activity_description);
         TextView sportName = findViewById((R.id.sport_name));
@@ -470,47 +465,50 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
     @Override
     protected void onStart() {
         super.onStart();
-        mapView.onStart();
+        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mapView.onResume();
+        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mapView.onPause();
+        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mapView.onStop();
+        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onStop();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Prevent leaks
-        if (locationEngine != null) {
-            locationEngine.removeLocationUpdates(callback);
+
+        if (activity.getSport().getAuthorizedGoals() != 1){
+            // Prevent leaks
+            if (locationEngine != null) {
+                locationEngine.removeLocationUpdates(callback);
+            }
+            mapView.onDestroy();
         }
-        mapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onLowMemory();
     }
 
     /**

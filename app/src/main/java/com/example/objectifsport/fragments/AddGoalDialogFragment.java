@@ -206,7 +206,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                                 if (deadline.isChecked())
                                     DataManager.addGoal(new Goal(selectedSport,
                                             goalDescription.getText().toString(), deadlineDate, timeGoalDuration));
-                                else DataManager.addGoal(new Goal(selectedSport, goalDescription.getText().toString(), distance));
+                                else DataManager.addGoal(new Goal(selectedSport, goalDescription.getText().toString(), timeGoalDuration));
                                 dismiss();
                                 break;
                             }
@@ -317,19 +317,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
             String durationStr = hours + "h:" + minutes + "m:" + seconds + "s";
             timeGoalInput.setText(durationStr);
         }, 0);
-        picker.show();/*
-        final Calendar cldr = Calendar.getInstance();
-        int day = cldr.get(Calendar.DAY_OF_MONTH);
-        int month = cldr.get(Calendar.MONTH);
-        int year = cldr.get(Calendar.YEAR);
-        // date picker dialog
-        picker[0] = new DatePickerDialog(context,
-                (view, year1, monthOfYear, dayOfMonth) -> {
-                    String dateText = day + "/" + (month + 1) + "/" + year;
-                    deadlineGoalInput.setText(dateText);
-                }, year, month, day);
-        picker[0].getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-        picker[0].show();*/
+        picker.show();
     }
 
 }

@@ -18,19 +18,24 @@ public class Activity {
     private final String activityDescription; // something like "skipping rope + pumps" for Boxing sport
     private boolean isAchieved;
 
+    // Time part
+    private long activityTime;
+
+    // Distance part
+    private double completedDistance;
+    private ArrayList<ArrayList<Point>> trajectories;
+
     public Activity(Sport sport, String activityDescription) {
         sportId = sport.getId();
         this.activityDescription = activityDescription;
         creationDate = new Date();
         isAchieved = false;
         activityTime = 0;
+        completedDistance = 0;
         if (sport.getAuthorizedGoals() != 1) { // time only
             trajectories = new ArrayList<>();
         }
     }
-
-    // Time part
-    private long activityTime;
 
     public String getFormattedActivityTime() {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault());
@@ -44,10 +49,6 @@ public class Activity {
     public void setActivityTime(long timestamp) {
         activityTime = timestamp;
     }
-
-    // Distance part
-    private double completedDistance;
-    private ArrayList<ArrayList<Point>> trajectories;
 
     public ArrayList<ArrayList<Point>> getTrajectories() {
         return trajectories;
