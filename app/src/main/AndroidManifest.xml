@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.ObjectifSport">
-        <activity android:name=".activities.DetailedActivity"
+        <activity android:name=".activities.DetailedActivityActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.DetailedGoalActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activities.MainActivity">
             <intent-filter>

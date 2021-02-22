@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_grey">#FF2F4F4F</color>
     <color name="transparent">#00000000</color>
+    <color name="not_good">#eb4034</color>
+    <color name="in_progress">#f57716</color>
+    <color name="good">#6cad4b</color>
 </resources>

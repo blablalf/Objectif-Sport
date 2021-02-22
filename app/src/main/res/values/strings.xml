@@ -51,7 +51,7 @@
     <string name="distance_unit_m">m</string>
     <string name="distance_unit_km">km</string>
     <string name="goal_description">Goal description</string>
-    <string name="goal_status">Goal status</string>
+    <string name="goal_status">Goal status :</string>
     <string name="remove_goal">Remove goal</string>
     <string name="remove_goal_msg">Are you sure you want to delete this goal ? All progress will be lost.</string>
     <string name="add_goal">Add goal</string>
@@ -61,4 +61,22 @@
     <string name="time_goal_duration_msg">Please set the duration goal.</string>
     <string name="distance_goal_duration_msg">PLease set a distance goal in kilometers.</string>
     <string name="deadline_goal_duration_msg">Please set the deadline goal date.</string>
+    <string name="back_to_goals_list">My Goals</string>
+    <string name="my_goals">My Goals</string>
+    <string name="goal_not_achieved">Goal not achieved</string>
+    <string name="goal_in_progress">Goal in progress</string>
+    <string name="goal_achieved">Goal achieved</string>
+    <string name="deadline_date">Deadline date :</string>
+    <string name="no_deadline_date">No deadline date</string>
+    <string name="time_goal_title">Time goal :</string>
+    <string name="no_time_goal">No time goal</string>
+    <string name="time_reached">Time reached :</string>
+    <string name="no_time_reached">No time reached</string>
+    <string name="no_time_percentage">No time percentage</string>
+    <string name="distance_goal_title">Distance goal :</string>
+    <string name="no_distance_goal">No distance goal</string>
+    <string name="distance_reached">Distance reached :</string>
+    <string name="no_distance_reached">No distance reached</string>
+    <string name="completion">Completion percentage :</string>
+    <string name="no_distance_percentage">No distance percentage</string>
 </resources>

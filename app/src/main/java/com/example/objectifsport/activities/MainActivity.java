@@ -49,5 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 .getMyActivitiesFragment()
                 .getActivityAdapter()
                 .notifyDataSetChanged();
+
+        // update goals
     }
 }

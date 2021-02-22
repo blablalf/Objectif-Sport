@@ -13,7 +13,8 @@ import androidx.annotation.NonNull;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
-import com.example.objectifsport.activities.DetailedActivity;
+import com.example.objectifsport.activities.DetailedActivityActivity;
+import com.example.objectifsport.activities.DetailedGoalActivity;
 import com.example.objectifsport.activities.MainActivity;
 import com.example.objectifsport.model.goals.Goal;
 
@@ -59,7 +60,7 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         goalStatus.setText((goal.isAchieved()) ? "✅":"❌");
 
         convertView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DetailedActivity.class);
+            Intent intent = new Intent(context, DetailedGoalActivity.class);
             intent.putExtra("position", position);
             context.startActivity(intent);
         });

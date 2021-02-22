@@ -3,7 +3,6 @@ package com.example.objectifsport.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
-import com.example.objectifsport.activities.DetailedActivity;
+import com.example.objectifsport.activities.DetailedActivityActivity;
 import com.example.objectifsport.activities.MainActivity;
 import com.example.objectifsport.model.activities.Activity;
 
@@ -60,7 +59,7 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
         activityStatus.setText((activity.isAchieved()) ? "✅":"❌");
 
         convertView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, DetailedActivity.class);
+            Intent intent = new Intent(context, DetailedActivityActivity.class);
             intent.putExtra("position", position);
             context.startActivity(intent);
         });

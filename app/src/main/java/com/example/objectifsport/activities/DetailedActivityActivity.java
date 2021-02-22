@@ -63,7 +63,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 
-public class DetailedActivity extends AppCompatActivity implements OnMapReadyCallback,
+public class DetailedActivityActivity extends AppCompatActivity implements OnMapReadyCallback,
         PermissionsListener {
 
     private Activity activity;
@@ -106,7 +106,7 @@ public class DetailedActivity extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
-        setContentView(R.layout.activity_detailed);
+        setContentView(R.layout.activity_detailed_activity);
 
         activity = DataManager.getActivities().get(getIntent().getIntExtra("position", 0));
 
@@ -120,8 +120,6 @@ public class DetailedActivity extends AppCompatActivity implements OnMapReadyCal
         TextView activityDescription = findViewById(R.id.activity_description);
         TextView sportName = findViewById((R.id.sport_name));
         TextView creationDate = findViewById(R.id.creation_date);
-
-        // ne pas oublier de rendre le layout temps et distance gone dans le xml
 
         this.savedInstanceState = savedInstanceState;
 
@@ -559,9 +557,9 @@ public class DetailedActivity extends AppCompatActivity implements OnMapReadyCal
     private static class DetailedActivityLocationCallback
             implements LocationEngineCallback<LocationEngineResult> {
 
-        private final WeakReference<DetailedActivity> activityWeakReference;
+        private final WeakReference<DetailedActivityActivity> activityWeakReference;
 
-        DetailedActivityLocationCallback(DetailedActivity activity) {
+        DetailedActivityLocationCallback(DetailedActivityActivity activity) {
             this.activityWeakReference = new WeakReference<>(activity);
         }
 
@@ -572,7 +570,7 @@ public class DetailedActivity extends AppCompatActivity implements OnMapReadyCal
          */
         @Override
         public void onSuccess(LocationEngineResult result) {
-            DetailedActivity activity = activityWeakReference.get();
+            DetailedActivityActivity activity = activityWeakReference.get();
 
             if (activity != null) {
                 Location location = result.getLastLocation();
@@ -597,7 +595,7 @@ public class DetailedActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         public void onFailure(@NonNull Exception exception) {
             Log.d("LocationChangeActivity", Objects.requireNonNull(exception.getLocalizedMessage()));
-            DetailedActivity activity = activityWeakReference.get();
+            DetailedActivityActivity activity = activityWeakReference.get();
             if (activity != null)
                 Toast.makeText(activity, exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
