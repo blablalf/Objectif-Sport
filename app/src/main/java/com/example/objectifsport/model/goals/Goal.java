@@ -150,8 +150,8 @@ public class Goal {
         return totalTimeProgress;
     }
 
-    public long getDistanceProgress() {
-        long totalDistanceProgress = 0;
+    public double getDistanceProgress() {
+        double totalDistanceProgress = 0;
         for (Activity activity : DataManager.getActivities())
             if (activity.getCreationDate().after(creationDate.getTime()) && activity.getSport() == getSport())
                 totalDistanceProgress += activity.getCompletedDistance();
@@ -173,6 +173,5 @@ public class Goal {
                     achieved = true;
                 break;
         }
-
     }
 }

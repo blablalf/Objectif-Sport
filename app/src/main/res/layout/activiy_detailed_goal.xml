@@ -43,6 +43,17 @@
 
         <TextView
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/goal_in_progress"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:background="@color/in_progress"
+            android:textSize="22sp"
+            android:textColor="@color/design_default_color_on_primary"
+            android:id="@+id/goal_status"/>
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
@@ -80,18 +91,6 @@
                 android:id="@+id/creation_date"/>
 
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="@string/goal_in_progress"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:background="@color/in_progress"
-            android:textSize="22sp"
-            android:textColor="@color/design_default_color_on_primary"
-            android:id="@+id/goal_status"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -159,7 +158,8 @@
                         android:layout_marginStart="5dp"
                         android:textSize="18sp"
                         android:textColor="@color/design_default_color_secondary_variant"
-                        android:text="@string/no_time_goal"/>
+                        android:text="@string/no_time_goal"
+                        android:id="@+id/time_goal"/>
 
                 </LinearLayout>
 
@@ -207,7 +207,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/design_default_color_secondary_variant"
                         android:text="@string/no_time_percentage"
-                        android:id="@+id/no_time_percentage"/>
+                        android:id="@+id/time_percentage"/>
 
                 </LinearLayout>
 
@@ -216,7 +216,8 @@
                     android:layout_height="20dp"
                     android:max="100"
                     android:progress="25"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:id="@+id/time_progress"/>
 
             </LinearLayout>
 
@@ -250,7 +251,8 @@
                         android:layout_marginStart="5dp"
                         android:textSize="18sp"
                         android:textColor="@color/design_default_color_secondary_variant"
-                        android:text="@string/no_distance_goal"/>
+                        android:text="@string/no_distance_goal"
+                        android:id="@+id/distance_goal"/>
 
                 </LinearLayout>
 
@@ -274,7 +276,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/design_default_color_secondary_variant"
                         android:text="@string/no_distance_reached"
-                        android:id="@+id/no_distance_reached"/>
+                        android:id="@+id/distance_reached"/>
 
                 </LinearLayout>
 
@@ -298,7 +300,7 @@
                         android:textSize="18sp"
                         android:textColor="@color/design_default_color_secondary_variant"
                         android:text="@string/no_distance_percentage"
-                        android:id="@+id/no_distance_percentage"/>
+                        android:id="@+id/distance_percentage"/>
 
                 </LinearLayout>
 
@@ -307,7 +309,8 @@
                     android:layout_height="20dp"
                     android:max="100"
                     android:progress="48"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:id="@+id/distanceProgress"/>
 
             </LinearLayout>
 

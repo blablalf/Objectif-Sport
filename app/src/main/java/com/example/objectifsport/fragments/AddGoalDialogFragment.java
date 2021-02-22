@@ -22,7 +22,6 @@ import androidx.fragment.app.DialogFragment;
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
 import com.example.objectifsport.model.Sport;
-import com.example.objectifsport.model.activities.Activity;
 import com.example.objectifsport.model.goals.Goal;
 
 import org.threeten.bp.Duration;
@@ -253,16 +252,6 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                             }
                     }
             }
-
-            // Add activity
-
-                /*
-            Goal goal = new Goal(DataManager.getGoals().get(sportSelect.getSelectedItemPosition()),
-                    goalDescription.getText().toString());
-            DataManager.addActivity(activity);
-            //dataManager.save();
-*/
-            // close dialog
         });
 
         cancel.setOnClickListener(v -> {

@@ -146,12 +146,6 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
             activity.setAchieved(!activity.isAchieved());
             DataManager.save();
 
-            // notify ActivityAdapter
-            /*((MainActivity) (getParent().getF)).getMainFragmentPageAdapter()
-                    .getMyActivitiesFragment()
-                    .getActivityAdapter()
-                    .notifyDataSetChanged();*/
-
             completeUncompleteButton.setText((activity.isAchieved())?
                     getResources().getString(R.string.activity_unfinished) :
                     getResources().getString(R.string.activity_complete));
