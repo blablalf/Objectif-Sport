@@ -47,6 +47,7 @@ public class DetailedGoalActivity extends AppCompatActivity {
         ProgressBar distanceProgress = findViewById(R.id.distanceProgress);
 
         Goal goal = DataManager.getGoals().get(getIntent().getIntExtra("position", 0));
+
         goalDescription.setText(goal.getDescription());
         sportName.setText(goal.getSport().getName());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
@@ -110,5 +111,10 @@ public class DetailedGoalActivity extends AppCompatActivity {
 
     public void backToMyGoals(View view) {
         onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

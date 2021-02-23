@@ -1,24 +1,26 @@
-package com.example.objectifsport.activities;
+/*
+package com.example.objectifsport.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Chronometer;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
+import com.example.objectifsport.activities.DetailedActivityActivity;
 import com.example.objectifsport.model.activities.Activity;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
@@ -48,14 +50,10 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.style.sources.Source;
 import com.mapbox.turf.TurfMeasurement;
 
-import org.threeten.bp.Duration;
-
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -64,32 +62,25 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-
-public class DetailedActivityActivity extends AppCompatActivity implements OnMapReadyCallback,
+public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
         PermissionsListener {
 
-    private Activity activity;
     private boolean distanceRunning = false;
     private boolean distanceStarted = false;
-    private MapView mapView;
-    private MapboxMap mapboxMap;
     private double totalLineDistance = 0;
-    private LatLng lastLocation;
     private int currentLinePosition;
+    private Activity activity;
     private Bundle savedInstanceState;
+    private LatLng lastLocation;
     private String currentGeoJsonSource;
     private ArrayList<String> layersList;
 
-    // distance part views
+    // views
     private TextView totalDistance;
     private Button startDistanceButton;
     private Button resetDistanceButton;
-
-    // time part views
-    private Button resetTimeButton;
-    private Button startTimeButton;
-    private long startTime, timeToSave;
-    private boolean timeRunning, timeStarted;
+    private MapView mapView;
+    private MapboxMap mapboxMap;
 
     // Variables needed to handle location permissions
     private PermissionsManager permissionsManager;
@@ -97,138 +88,28 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
     // Variables needed to add the location engine
     private LocationEngine locationEngine;
     // Variables needed to listen to location updates
-    private final DetailedActivityLocationCallback callback = new DetailedActivityLocationCallback(this);
+    private final ActivityMapFragment.ActivityMapFragmentLocationCallback callback =
+            new ActivityMapFragment.ActivityMapFragmentLocationCallback(this);
 
     // Adjust private static final variables below to change the example's UI
     private static final String STYLE_URI = "mapbox://styles/mapbox/cjv6rzz4j3m4b1fqcchuxclhb";
     private static final int LINE_COLOR = Color.parseColor("#FF6200EE");;
     private static final float LINE_WIDTH = 4f;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
-        setContentView(R.layout.activity_detailed_activity);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        Mapbox.getInstance(inflater.getContext(), getString(R.string.mapbox_access_token));
 
         activity = DataManager.getActivities().get(getIntent().getIntExtra("position", 0));
-
-        TextView activityDescription = findViewById(R.id.activity_description);
-        TextView sportName = findViewById((R.id.sport_name));
-        TextView creationDate = findViewById(R.id.creation_date);
-
         this.savedInstanceState = savedInstanceState;
-
-        if (activity.getSport().getAuthorizedGoals() == 1) // Only time
-            setTimeLayout();
-        else if (activity.getSport().getAuthorizedGoals() == 2) // Only distance
-            setDistanceLayout();
-        else { // all
-            setTimeLayout();
-            setDistanceLayout();
-        }
-
-        Button completeUncompleteButton = findViewById(R.id.complete_uncomplete);
-        completeUncompleteButton.setText((activity.isAchieved())?
-                getResources().getString(R.string.activity_unfinished) :
-                getResources().getString(R.string.activity_complete));
 
         if (resetDistanceButton != null) {
             resetDistanceButton.setEnabled(!activity.isAchieved());
             startDistanceButton.setEnabled(!activity.isAchieved());
         }
 
-        if (resetTimeButton != null) {
-            resetTimeButton.setEnabled(!activity.isAchieved());
-            startTimeButton.setEnabled(!activity.isAchieved());
-        }
-
-        completeUncompleteButton.setOnClickListener(v -> {
-            activity.setAchieved(!activity.isAchieved());
-            DataManager.save();
-
-            completeUncompleteButton.setText((activity.isAchieved())?
-                    getResources().getString(R.string.activity_unfinished) :
-                    getResources().getString(R.string.activity_complete));
-
-            if (resetDistanceButton != null) {
-                resetDistanceButton.setEnabled(!activity.isAchieved());
-                startDistanceButton.setEnabled(!activity.isAchieved());
-            }
-
-            if (resetTimeButton != null) {
-                resetTimeButton.setEnabled(!activity.isAchieved());
-                startTimeButton.setEnabled(!activity.isAchieved());
-            }
-
-        });
-
-        activityDescription.setText(activity.getActivityDescription());
-        sportName.setText(activity.getSport().getName());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
-        creationDate.setText(formatter.format(activity.getCreationDate()));
-    }
-
-    private void setTimeLayout() {
-        RelativeLayout timePart = findViewById(R.id.time_part);
-        Chronometer chronometer = findViewById(R.id.chronometer);
-        startTimeButton = findViewById(R.id.start_pause);
-        resetTimeButton = findViewById(R.id.reset);
-        TextView savedTime = findViewById(R.id.saved_time);
-
-        timePart.setVisibility(View.VISIBLE);
-
-        timeToSave = activity.getActivityTime();
-        timeRunning = false;
-        if (timeToSave == 0) timeStarted = false;
-        else {
-            timeStarted = true;
-            startTimeButton.setText(getResources().getString(R.string.resume));
-        }
-
-        chronometer.setFormat("%s");
-        chronometer.setBase(SystemClock.elapsedRealtime() - timeToSave);
-        savedTime.setText((timeToSave == 0) ? getResources().getString(R.string.no_time_recorded)
-                : activity.getFormattedActivityTime());
-
-        startTimeButton.setOnClickListener(v -> {
-            if (timeRunning) { // chronometer was running
-                chronometer.stop();
-                timeRunning = false;
-                timeToSave += System.currentTimeMillis() - startTime;
-                chronometer.setBase(SystemClock.elapsedRealtime() - timeToSave);
-                startTimeButton.setText(getResources().getString(R.string.resume));
-                activity.setActivityTime(timeToSave);
-                savedTime.setText(activity.getFormattedActivityTime());
-                DataManager.save();
-            } else { // chronometer was paused / not started
-                if (!timeStarted) timeStarted = true;
-                startTime = System.currentTimeMillis();
-                chronometer.setBase(SystemClock.elapsedRealtime() - timeToSave);
-                chronometer.start();
-                timeRunning = true;
-                startTimeButton.setText(getResources().getString(R.string.stop));
-            }
-        });
-
-        resetTimeButton.setOnClickListener(v -> new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.reset_time))
-                .setMessage(getResources().getString(R.string.reset_time_message))
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    chronometer.stop();
-                    chronometer.setBase(SystemClock.elapsedRealtime());
-                    timeToSave = 0;
-                    activity.setActivityTime(0);
-                    DataManager.save();
-                    savedTime.setText(getResources().getString(R.string.no_time_recorded));
-                    startTimeButton.setText(getResources().getString(R.string.start));
-                    timeStarted = false;
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show());
-    }
-
-    private void setDistanceLayout() {
         layersList = new ArrayList<>();
         findViewById(R.id.distance_part).setVisibility(View.VISIBLE); // set the view visible
         totalDistance = findViewById(R.id.distance_travelled);
@@ -299,7 +180,7 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                         distanceStarted = false;
                         distanceRunning = false;
-                        startDistanceButton.setText(getResources().getString(R.string.start_tracking));
+                        resetDistanceButton.setText(getResources().getString(R.string.start));
                         for (Marker marker : mapboxMap.getMarkers()) {
                             marker.remove();
                         }
@@ -319,16 +200,9 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         });
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    public void backToMyActivities(View view) {
-        onBackPressed();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
 
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
@@ -346,7 +220,7 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
 
         this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(new Style.Builder()
-                .fromUri(STYLE_URI),
+                        .fromUri(STYLE_URI),
                 this::enableLocationComponent);
 
         // init data
@@ -379,9 +253,11 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
         }
     }
 
-    /**
+    */
+/**
      * Initialize the Maps SDK's LocationComponent
-     */
+     *//*
+
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
@@ -418,9 +294,11 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
         }
     }
 
-    /**
+    */
+/**
      * Set up the LocationEngine and the parameters for querying the device's location
-     */
+     *//*
+
     @SuppressLint("MissingPermission")
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(this);
@@ -450,53 +328,10 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
         if (granted)
             if (mapboxMap.getStyle() != null)
                 enableLocationComponent(mapboxMap.getStyle());
-        else {
-            Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
-            finish();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onStop();
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (activity.getSport().getAuthorizedGoals() != 1){
-            // Prevent leaks
-            if (locationEngine != null) {
-                locationEngine.removeLocationUpdates(callback);
+            else {
+                Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
+                finish();
             }
-            mapView.onDestroy();
-        }
     }
 
     @Override
@@ -505,9 +340,11 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
         if (activity.getSport().getAuthorizedGoals() != 1) mapView.onLowMemory();
     }
 
-    /**
+    */
+/**
      * Handle the the line data drawing.
-     */
+     *//*
+
     private void addPointToLine() {
 
         mapboxMap.getStyle(style -> {
@@ -545,51 +382,57 @@ public class DetailedActivityActivity extends AppCompatActivity implements OnMap
         });
     }
 
-    private static class DetailedActivityLocationCallback
+    private static class ActivityMapFragmentLocationCallback
             implements LocationEngineCallback<LocationEngineResult> {
 
-        private final WeakReference<DetailedActivityActivity> activityWeakReference;
+        private final WeakReference<ActivityMapFragment> activityWeakReference;
 
-        DetailedActivityLocationCallback(DetailedActivityActivity activity) {
+        ActivityMapFragmentLocationCallback(ActivityMapFragment activity) {
             this.activityWeakReference = new WeakReference<>(activity);
         }
 
-        /**
+        */
+/**
          * The LocationEngineCallback interface's method which fires when the device's location has changed.
          *
          * @param result the LocationEngineResult object which has the last known location within it.
-         */
+         *//*
+
         @Override
         public void onSuccess(LocationEngineResult result) {
-            DetailedActivityActivity activity = activityWeakReference.get();
+            ActivityMapFragment fragment = activityWeakReference.get();
 
-            if (activity != null) {
+            if (fragment != null) {
                 Location location = result.getLastLocation();
                 if (location == null) return;
 
                 // Pass the new location to the Maps SDK's LocationComponent
-                if (activity.mapboxMap != null && result.getLastLocation() != null) {
-                    activity.mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
-                    activity.lastLocation = new LatLng(location.getLatitude(), location.getLongitude(), location.getAltitude());
-                    if (activity.distanceRunning) {
-                        activity.addPointToLine();
+                if (fragment.mapboxMap != null && result.getLastLocation() != null) {
+                    fragment.mapboxMap.getLocationComponent().forceLocationUpdate(result.getLastLocation());
+                    fragment.lastLocation = new LatLng(location.getLatitude(), location.getLongitude(), location.getAltitude());
+                    if (fragment.distanceRunning) {
+                        fragment.addPointToLine();
                     }
                 }
             }
         }
 
-        /**
+        */
+/**
          * The LocationEngineCallback interface's method which fires when the device's location can not be captured
          *
          * @param exception the exception message
-         */
+         *//*
+
         @Override
         public void onFailure(@NonNull Exception exception) {
             Log.d("LocationChangeActivity", Objects.requireNonNull(exception.getLocalizedMessage()));
-            DetailedActivityActivity activity = activityWeakReference.get();
-            if (activity != null)
-                Toast.makeText(activity, exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            ActivityMapFragment fragment = activityWeakReference.get();
+            if (fragment != null)
+                Toast.makeText(fragment.getContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show(); // will the context be good ?
         }
     }
 
+
 }
+*/

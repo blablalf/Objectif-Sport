@@ -1,8 +1,12 @@
 package com.example.objectifsport.activities;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.objectifsport.R;
@@ -13,7 +17,10 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String CHANNEL_ID = "CHANNEL_ID";
+
     private MainFragmentPageAdapter mainFragmentPageAdapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,18 +29,20 @@ public class MainActivity extends AppCompatActivity {
 
         DataManager.load(this);
 
-        // FOR TESTING PURPOSES ONLY
-        //DataManager.generateFakeSports();
-
         // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         mainFragmentPageAdapter = new MainFragmentPageAdapter(getSupportFragmentManager(),
                 R.layout.activity_main);
         viewPager.setAdapter(mainFragmentPageAdapter);
 
+        // If we com from a goal achieved notification
+        if (getIntent().getBooleanExtra("notification", false))
+            viewPager.setCurrentItem(2);
+
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
     public MainFragmentPageAdapter getMainFragmentPageAdapter() {
@@ -47,7 +56,36 @@ public class MainActivity extends AppCompatActivity {
         super.onResumeFragments();
 
         for (Goal goal : DataManager.getGoals()) {
-            goal.verify();
+            if (goal.verify()) {
+                // notify
+                Intent backIntent = new Intent(this, MainActivity.class);
+                backIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                backIntent.putExtra("notification", true);
+
+                Intent intent = new Intent(MainActivity.this, DetailedGoalActivity.class);
+                intent.putExtra("position", DataManager.getGoals().indexOf(goal));
+
+                PendingIntent pendingIntent = PendingIntent.getActivities(MainActivity.this,
+                        0, new Intent[] {backIntent, intent}, PendingIntent.FLAG_ONE_SHOT);
+
+                String notificationMessage = getResources()
+                        .getString(R.string.congratulation) + " " + goal.getDescription() + " " +
+                         getResources().getString(R.string.goal_achieved_notification_msg);
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_baseline_directions_run_24)
+                        .setContentTitle(getResources().getString(R.string.goal_achieved_notification_title))
+                        .setContentText(notificationMessage)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        // Set the intent that will fire when the user taps the notification
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+                // notificationId is a unique int for each notification that you must define
+                notificationManager.notify(0, builder.build());
+            }
         }
 
         if (getMainFragmentPageAdapter().getMyActivitiesFragment() != null) {
@@ -63,4 +101,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 }

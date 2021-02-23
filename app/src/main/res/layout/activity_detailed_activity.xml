@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -204,7 +205,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     style="?android:attr/buttonBarButtonStyle"
-                    android:text="@string/start_stop_tracking"
+                    android:text="@string/start_tracking"
                     android:id="@+id/start_stop_tracking"/>
 
                 <Button

@@ -158,23 +158,31 @@ public class Goal {
         return totalDistanceProgress;
     }
 
-    public void verify(){
-        if (hasDeadlineDate() && deadlineDate.before(new Date())) {
-            System.out.println("YEAH");
+    public boolean verify(){
+        if (((hasDeadlineDate() && deadlineDate.after(new Date())) || !hasDeadlineDate()) && !isAchieved()) {
             switch (authorizedGoal) {
                 case 1 :
-                    if (getTimeProgress() >= duration.toMillis())
+                    if (getTimeProgress() >= duration.toMillis()) {
                         achieved = true;
+                        DataManager.save();
+                        return true;
+                    }
                     break;
                 case 2 :
-                    if (getDistanceProgress() >= distance)
+                    if (getDistanceProgress() >= distance) {
                         achieved = true;
+                        DataManager.save();
+                        return true;
+                    }
                     break;
                 default :
-                    if (getTimeProgress() >= duration.toMillis() && getDistanceProgress() >= distance)
+                    if (getTimeProgress() >= duration.toMillis() && getDistanceProgress() >= distance) {
                         achieved = true;
-                    break;
+                        DataManager.save();
+                        return true;
+                    }
             }
         }
+        return false;
     }
 }

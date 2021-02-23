@@ -41,6 +41,7 @@ public class DataManager {
         } else {
             sports = new ArrayList<>();
         }
+
         json = userData.getString("activities", "");
         if (!json.equals("")){
             Type type = new TypeToken< ArrayList < Activity >>() {}.getType();
