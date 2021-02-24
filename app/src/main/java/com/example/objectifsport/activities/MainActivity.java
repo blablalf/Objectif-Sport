@@ -1,7 +1,10 @@
 package com.example.objectifsport.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +21,8 @@ import com.google.android.material.tabs.TabLayout;
 public class MainActivity extends AppCompatActivity {
 
     private static final String CHANNEL_ID = "CHANNEL_ID";
+    private static final String CHANNEL_DESCRIPTION = "CHANNEL_DESCRIPTION";
+    private static final CharSequence CHANNEL_NAME = "CHANNEL_NAME";
 
     private MainFragmentPageAdapter mainFragmentPageAdapter;
     private ViewPager viewPager;
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        createNotificationChannel();
 
     }
 
@@ -70,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String notificationMessage = getResources()
                         .getString(R.string.congratulation) + " " + goal.getDescription() + " " +
-                         getResources().getString(R.string.goal_achieved_notification_msg);
+                        getResources().getString(R.string.goal_achieved_notification_msg);
 
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_baseline_directions_run_24)
@@ -81,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true);
 
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
 
                 // notificationId is a unique int for each notification that you must define
-                notificationManager.notify(0, builder.build());
+                notificationManagerCompat.notify(0, builder.build());
             }
         }
 
@@ -100,6 +107,20 @@ public class MainActivity extends AppCompatActivity {
                     .notifyDataSetChanged();
         }
 
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+            channel.setDescription(CHANNEL_DESCRIPTION);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 }

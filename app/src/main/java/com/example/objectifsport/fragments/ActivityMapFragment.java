@@ -1,4 +1,3 @@
-/*
 package com.example.objectifsport.fragments;
 
 import android.annotation.SuppressLint;
@@ -17,17 +16,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
-import com.example.objectifsport.activities.DetailedActivityActivity;
 import com.example.objectifsport.model.activities.Activity;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.location.LocationEngineRequest;
 import com.mapbox.android.core.location.LocationEngineResult;
-import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.LineString;
@@ -57,13 +55,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import static android.os.Looper.getMainLooper;
 import static com.mapbox.mapboxsdk.style.layers.Property.LINE_JOIN_ROUND;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
-        PermissionsListener {
+public class ActivityMapFragment extends Fragment implements OnMapReadyCallback {
 
     private boolean distanceRunning = false;
     private boolean distanceStarted = false;
@@ -82,8 +80,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
     private MapView mapView;
     private MapboxMap mapboxMap;
 
-    // Variables needed to handle location permissions
-    private PermissionsManager permissionsManager;
+    private FragmentActivity context;
 
     // Variables needed to add the location engine
     private LocationEngine locationEngine;
@@ -102,22 +99,17 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
 
         Mapbox.getInstance(inflater.getContext(), getString(R.string.mapbox_access_token));
 
-        activity = DataManager.getActivities().get(getIntent().getIntExtra("position", 0));
+        context = getActivity();
+        activity = DataManager.getActivities().get(context.getIntent().getIntExtra("position", 0));
         this.savedInstanceState = savedInstanceState;
 
-        if (resetDistanceButton != null) {
-            resetDistanceButton.setEnabled(!activity.isAchieved());
-            startDistanceButton.setEnabled(!activity.isAchieved());
-        }
-
         layersList = new ArrayList<>();
-        findViewById(R.id.distance_part).setVisibility(View.VISIBLE); // set the view visible
-        totalDistance = findViewById(R.id.distance_travelled);
-        mapView = findViewById(R.id.mapview);
+        totalDistance = context.findViewById(R.id.distance_travelled);
+        mapView = context.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        startDistanceButton = findViewById(R.id.start_stop_tracking);
+        startDistanceButton = context.findViewById(R.id.start_stop_tracking);
         startDistanceButton.setOnClickListener(v -> {
             if (!distanceRunning || !distanceStarted) { // we start/resume
                 distanceStarted = true;
@@ -172,9 +164,13 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
             }
         });
 
-        resetDistanceButton = findViewById(R.id.reset_tracking);
+        resetDistanceButton = context.findViewById(R.id.reset_tracking);
+        if (resetDistanceButton != null) {
+            resetDistanceButton.setEnabled(!activity.isAchieved());
+            startDistanceButton.setEnabled(!activity.isAchieved());
+        }
         resetDistanceButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(this)
+            new AlertDialog.Builder(context)
                     .setTitle(getResources().getString(R.string.reset_tracking))
                     .setMessage(getResources().getString(R.string.reset_tracking_message))
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {
@@ -203,6 +199,23 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    public void enablingDisablingTrackingButtons() {
+        if (resetDistanceButton != null) {
+            resetDistanceButton.setEnabled(!activity.isAchieved());
+            startDistanceButton.setEnabled(!activity.isAchieved());
+        }
+    }
+
+    public MapView getMapView() {
+        return mapView;
+    }
+
+    public void preventLeak() {
+        if (locationEngine != null) {
+            locationEngine.removeLocationUpdates(callback);
+        }
+        mapView.onDestroy();
+    }
 
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
@@ -253,22 +266,21 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    */
-/**
+    /**
      * Initialize the Maps SDK's LocationComponent
-     *//*
-
+     */
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+
         // Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(this)) {
+        if (PermissionsManager.areLocationPermissionsGranted(context)) {
 
             // Get an instance of the component
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
 
             // Set the LocationComponent activation options
             LocationComponentActivationOptions locationComponentActivationOptions =
-                    LocationComponentActivationOptions.builder(this, loadedMapStyle)
+                    LocationComponentActivationOptions.builder(context, loadedMapStyle)
                             .useDefaultLocationEngine(false)
                             .build();
 
@@ -286,22 +298,16 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
 
             initLocationEngine();
 
-        } else {
-
-            permissionsManager = new PermissionsManager(this);
-            permissionsManager.requestLocationPermissions(this);
-
         }
     }
 
-    */
-/**
+    /**
      * Set up the LocationEngine and the parameters for querying the device's location
-     *//*
+     */
 
     @SuppressLint("MissingPermission")
     private void initLocationEngine() {
-        locationEngine = LocationEngineProvider.getBestLocationEngine(this);
+        locationEngine = LocationEngineProvider.getBestLocationEngine(context);
 
         long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
         long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
@@ -313,24 +319,20 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
         locationEngine.getLastLocation(callback);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    public void treatOnExplanationNeeded(List<String> permissionsToExplain) {
+        Toast.makeText(context, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onExplanationNeeded(List<String> permissionsToExplain) {
-        Toast.makeText(this, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onPermissionResult(boolean granted) {
+    public void treatOnPermissionResult(boolean granted) {
         if (granted)
-            if (mapboxMap.getStyle() != null)
+            if (mapboxMap.getStyle() != null) {
                 enableLocationComponent(mapboxMap.getStyle());
+                System.out.println("gfyhjkgjk");
+            }
             else {
-                Toast.makeText(this, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
-                finish();
+                System.out.println("SAAAAAd");
+                Toast.makeText(context, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
+                Objects.requireNonNull(getActivity()).finish();
             }
     }
 
@@ -340,10 +342,10 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
         if (activity.getSport().getAuthorizedGoals() != 1) mapView.onLowMemory();
     }
 
-    */
-/**
+
+    /**
      * Handle the the line data drawing.
-     *//*
+     */
 
     private void addPointToLine() {
 
@@ -391,12 +393,12 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
             this.activityWeakReference = new WeakReference<>(activity);
         }
 
-        */
+
 /**
          * The LocationEngineCallback interface's method which fires when the device's location has changed.
          *
          * @param result the LocationEngineResult object which has the last known location within it.
-         *//*
+         */
 
         @Override
         public void onSuccess(LocationEngineResult result) {
@@ -417,12 +419,12 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
             }
         }
 
-        */
-/**
+
+        /**
          * The LocationEngineCallback interface's method which fires when the device's location can not be captured
          *
          * @param exception the exception message
-         *//*
+         */
 
         @Override
         public void onFailure(@NonNull Exception exception) {
@@ -435,4 +437,4 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback,
 
 
 }
-*/
+
