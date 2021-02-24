@@ -58,5 +58,9 @@ public class MyActivitiesFragment extends Fragment {
         return activityAdapter;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        activityAdapter.notifyDataSetChanged();
+    }
 }

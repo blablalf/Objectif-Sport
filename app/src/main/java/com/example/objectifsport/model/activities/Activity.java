@@ -54,10 +54,6 @@ public class Activity {
         return trajectories;
     }
 
-    public void setTrajectories(ArrayList<ArrayList<Point>> trajectories) {
-        this.trajectories = trajectories;
-    }
-
     public double getCompletedDistance() {
         return completedDistance;
     }

@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private static final CharSequence CHANNEL_NAME = "CHANNEL_NAME";
 
     private MainFragmentPageAdapter mainFragmentPageAdapter;
-    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         DataManager.load(this);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
-        viewPager = findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         mainFragmentPageAdapter = new MainFragmentPageAdapter(getSupportFragmentManager(),
                 R.layout.activity_main);
         viewPager.setAdapter(mainFragmentPageAdapter);
@@ -93,18 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 // notificationId is a unique int for each notification that you must define
                 notificationManagerCompat.notify(0, builder.build());
             }
-        }
-
-        if (getMainFragmentPageAdapter().getMyActivitiesFragment() != null) {
-            getMainFragmentPageAdapter()
-                    .getMyActivitiesFragment()
-                    .getActivityAdapter()
-                    .notifyDataSetChanged();
-
-            getMainFragmentPageAdapter()
-                    .getMyGoalsFragment()
-                    .getGoalAdapter()
-                    .notifyDataSetChanged();
         }
 
     }

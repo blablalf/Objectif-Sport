@@ -13,13 +13,11 @@ import androidx.annotation.NonNull;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
-import com.example.objectifsport.activities.DetailedActivityActivity;
 import com.example.objectifsport.activities.DetailedGoalActivity;
 import com.example.objectifsport.activities.MainActivity;
 import com.example.objectifsport.model.goals.Goal;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -78,10 +76,11 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
                     .setPositiveButton(R.string.remove, (dialog, which) -> {
                         DataManager.removeGoal(goal);
                         notifyDataSetChanged();
-                        ((MainActivity) context).getMainFragmentPageAdapter()
-                                .getMySportsFragment()
-                                .getSportAdapter()
-                                .notifyDataSetChanged();
+                        MainFragmentPageAdapter mFPA = ((MainActivity) context).getMainFragmentPageAdapter();
+                        if (mFPA.getMyActivitiesFragment() != null)
+                            mFPA.getMyActivitiesFragment().getActivityAdapter().notifyDataSetChanged();
+                        if (mFPA.getMySportsFragment() != null)
+                            mFPA.getMySportsFragment().getSportAdapter().notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();

@@ -3,7 +3,6 @@ package com.example.objectifsport.Services;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.objectifsport.adapters.ActivityAdapter;
 import com.example.objectifsport.model.Sport;
 import com.example.objectifsport.model.activities.Activity;
 import com.example.objectifsport.model.goals.Goal;

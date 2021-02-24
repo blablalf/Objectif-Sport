@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
@@ -51,7 +50,6 @@ import com.mapbox.turf.TurfMeasurement;
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -68,7 +66,6 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     private double totalLineDistance = 0;
     private int currentLinePosition;
     private Activity activity;
-    private Bundle savedInstanceState;
     private LatLng lastLocation;
     private String currentGeoJsonSource;
     private ArrayList<String> layersList;
@@ -79,18 +76,19 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     private Button resetDistanceButton;
     private MapView mapView;
     private MapboxMap mapboxMap;
+    View view;
 
-    private FragmentActivity context;
 
     // Variables needed to add the location engine
     private LocationEngine locationEngine;
+
     // Variables needed to listen to location updates
     private final ActivityMapFragment.ActivityMapFragmentLocationCallback callback =
             new ActivityMapFragment.ActivityMapFragmentLocationCallback(this);
 
     // Adjust private static final variables below to change the example's UI
     private static final String STYLE_URI = "mapbox://styles/mapbox/cjv6rzz4j3m4b1fqcchuxclhb";
-    private static final int LINE_COLOR = Color.parseColor("#FF6200EE");;
+    private static final int LINE_COLOR = Color.parseColor("#FF6200EE");
     private static final float LINE_WIDTH = 4f;
 
     @Nullable
@@ -98,18 +96,19 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Mapbox.getInstance(inflater.getContext(), getString(R.string.mapbox_access_token));
+        view = inflater.inflate(R.layout.activity_map_fragment, container, false);
 
-        context = getActivity();
-        activity = DataManager.getActivities().get(context.getIntent().getIntExtra("position", 0));
-        this.savedInstanceState = savedInstanceState;
+        //context = getActivity();
+        activity = DataManager.getActivities().get(Objects.requireNonNull(
+                getActivity()).getIntent().getIntExtra("position", 0));
 
         layersList = new ArrayList<>();
-        totalDistance = context.findViewById(R.id.distance_travelled);
-        mapView = context.findViewById(R.id.mapview);
+        totalDistance = view.findViewById(R.id.distance_travelled);
+        mapView = view.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        startDistanceButton = context.findViewById(R.id.start_stop_tracking);
+        startDistanceButton = view.findViewById(R.id.start_stop_tracking);
         startDistanceButton.setOnClickListener(v -> {
             if (!distanceRunning || !distanceStarted) { // we start/resume
                 distanceStarted = true;
@@ -164,39 +163,38 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
             }
         });
 
-        resetDistanceButton = context.findViewById(R.id.reset_tracking);
+        resetDistanceButton = view.findViewById(R.id.reset_tracking);
         if (resetDistanceButton != null) {
             resetDistanceButton.setEnabled(!activity.isAchieved());
             startDistanceButton.setEnabled(!activity.isAchieved());
         }
-        resetDistanceButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(context)
-                    .setTitle(getResources().getString(R.string.reset_tracking))
-                    .setMessage(getResources().getString(R.string.reset_tracking_message))
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                        distanceStarted = false;
-                        distanceRunning = false;
-                        resetDistanceButton.setText(getResources().getString(R.string.start));
-                        for (Marker marker : mapboxMap.getMarkers()) {
-                            marker.remove();
-                        }
-                        mapboxMap.getStyle(style -> {
-                            for (Layer layer : style.getLayers())
-                                if (layersList.contains(layer.getId())) style.removeLayer(layer);
-                            for (Source source : style.getSources()) style.removeSource(source);
-                        });
-                        layersList.clear();
-                        totalLineDistance = 0;
-                        activity.setCompletedDistance(totalLineDistance);
-                        activity.getTrajectories().clear();
-                        totalDistance.setText(getResources().getText(R.string.no_distance_travelled));
-                        DataManager.save();
-                    })
-                    .setNegativeButton(android.R.string.no, null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-        });
-        return super.onCreateView(inflater, container, savedInstanceState);
+        resetDistanceButton.setOnClickListener(v -> new AlertDialog.Builder(view.getContext())
+                .setTitle(getResources().getString(R.string.reset_tracking))
+                .setMessage(getResources().getString(R.string.reset_tracking_message))
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    distanceStarted = false;
+                    distanceRunning = false;
+                    resetDistanceButton.setText(getResources().getString(R.string.start));
+                    for (Marker marker : mapboxMap.getMarkers()) {
+                        marker.remove();
+                    }
+                    mapboxMap.getStyle(style -> {
+                        for (Layer layer : style.getLayers())
+                            if (layersList.contains(layer.getId())) style.removeLayer(layer);
+                        for (Source source : style.getSources()) style.removeSource(source);
+                    });
+                    layersList.clear();
+                    totalLineDistance = 0;
+                    activity.setCompletedDistance(totalLineDistance);
+                    activity.getTrajectories().clear();
+                    totalDistance.setText(getResources().getText(R.string.no_distance_travelled));
+                    DataManager.save();
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show());
+
+        return view;
     }
 
     public void enablingDisablingTrackingButtons() {
@@ -273,14 +271,14 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
 
         // Check if permissions are enabled and if not request
-        if (PermissionsManager.areLocationPermissionsGranted(context)) {
+        if (PermissionsManager.areLocationPermissionsGranted(view.getContext())) {
 
             // Get an instance of the component
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
 
             // Set the LocationComponent activation options
             LocationComponentActivationOptions locationComponentActivationOptions =
-                    LocationComponentActivationOptions.builder(context, loadedMapStyle)
+                    LocationComponentActivationOptions.builder(view.getContext(), loadedMapStyle)
                             .useDefaultLocationEngine(false)
                             .build();
 
@@ -307,7 +305,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
 
     @SuppressLint("MissingPermission")
     private void initLocationEngine() {
-        locationEngine = LocationEngineProvider.getBestLocationEngine(context);
+        locationEngine = LocationEngineProvider.getBestLocationEngine(view.getContext());
 
         long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
         long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
@@ -319,8 +317,8 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
         locationEngine.getLastLocation(callback);
     }
 
-    public void treatOnExplanationNeeded(List<String> permissionsToExplain) {
-        Toast.makeText(context, R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
+    public void treatOnExplanationNeeded() {
+        Toast.makeText(view.getContext(), R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
     }
 
     public void treatOnPermissionResult(boolean granted) {
@@ -331,7 +329,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
             }
             else {
                 System.out.println("SAAAAAd");
-                Toast.makeText(context, R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
+                Toast.makeText(view.getContext(), R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
                 Objects.requireNonNull(getActivity()).finish();
             }
     }
@@ -393,8 +391,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
             this.activityWeakReference = new WeakReference<>(activity);
         }
 
-
-/**
+        /**
          * The LocationEngineCallback interface's method which fires when the device's location has changed.
          *
          * @param result the LocationEngineResult object which has the last known location within it.
@@ -434,7 +431,6 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
                 Toast.makeText(fragment.getContext(), exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show(); // will the context be good ?
         }
     }
-
 
 }
 

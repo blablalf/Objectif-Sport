@@ -57,4 +57,10 @@ public class MyGoalsFragment extends Fragment {
     public GoalAdapter getGoalAdapter() {
         return goalAdapter;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        goalAdapter.notifyDataSetChanged();
+    }
 }

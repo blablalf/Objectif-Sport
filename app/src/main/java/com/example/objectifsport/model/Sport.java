@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Sport {
 
-    private String name;
+    private final String name;
     private final UUID id;
     private final int authorizedGoals; // 0 for all goals | 1 for time goal | 2 for distance goal
 
@@ -22,10 +22,6 @@ public class Sport {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getAuthorizedGoals() {

@@ -72,10 +72,11 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
                     .setPositiveButton(R.string.remove, (dialog, which) -> {
                         DataManager.removeActivity(activity);
                         notifyDataSetChanged();
-                        ((MainActivity) context).getMainFragmentPageAdapter()
-                                .getMySportsFragment()
-                                .getSportAdapter()
-                                .notifyDataSetChanged();
+                        MainFragmentPageAdapter mFPA = ((MainActivity) context).getMainFragmentPageAdapter();
+                        if (mFPA.getMySportsFragment() != null)
+                            mFPA.getMySportsFragment().getSportAdapter().notifyDataSetChanged();
+                        if (mFPA.getMyGoalsFragment() != null)
+                            mFPA.getMyGoalsFragment().getGoalAdapter().notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();

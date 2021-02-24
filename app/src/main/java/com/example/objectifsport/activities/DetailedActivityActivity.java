@@ -6,7 +6,6 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -95,7 +94,7 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
     }
 
     private void setTimeLayout() {
-        RelativeLayout timePart = findViewById(R.id.time_part);
+        View timePart = findViewById(R.id.time_part);
         Chronometer chronometer = findViewById(R.id.chronometer);
         startTimeButton = findViewById(R.id.start_pause);
         resetTimeButton = findViewById(R.id.reset);
@@ -233,7 +232,7 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
 
     @Override
     public void onExplanationNeeded(List<String> permissionsToExplain) {
-        activityMapFragment.treatOnExplanationNeeded(permissionsToExplain);
+        activityMapFragment.treatOnExplanationNeeded();
     }
 
     @Override
