@@ -11,10 +11,11 @@ import java.util.UUID;
 
 public class Goal {
 
-    private Date creationDate, deadlineDate;
+    private final Date creationDate;
+    private Date deadlineDate;
     private final UUID sportId;
     private final String description;
-    private int authorizedGoal;
+    private final int authorizedGoal;
     private boolean achieved;
 
     // time part
@@ -90,10 +91,6 @@ public class Goal {
         return achieved;
     }
 
-    public void setAchieved(boolean achieved) {
-        this.achieved = achieved;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -102,40 +99,20 @@ public class Goal {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public Date getDeadlineDate() {
         return deadlineDate;
-    }
-
-    public void setDeadlineDate(Date deadlineDate) {
-        this.deadlineDate = deadlineDate;
     }
 
     public int getAuthorizedGoal() {
         return authorizedGoal;
     }
 
-    public void setAuthorizedGoal(int authorizedGoal) {
-        this.authorizedGoal = authorizedGoal;
-    }
-
     public Duration getDuration() {
         return duration;
     }
 
-    public void setDuration(Duration duration) {
-        this.duration = duration;
-    }
-
     public double getDistance() {
         return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
     }
 
     public Sport getSport(){
