@@ -44,8 +44,6 @@ public class MySportsFragment extends Fragment {
             addSportDialogFragment.show(fm, "fragment_add_sport");
         });
 
-
-
         return view;
     }
 

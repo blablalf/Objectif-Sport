@@ -299,7 +299,6 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     /**
      * Set up the LocationEngine and the parameters for querying the device's location
      */
-
     @SuppressLint("MissingPermission")
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(view.getContext());
@@ -339,7 +338,6 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     /**
      * Handle the the line data drawing.
      */
-
     private void addPointToLine() {
 
         mapboxMap.getStyle(style -> {
@@ -391,7 +389,6 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
          *
          * @param result the LocationEngineResult object which has the last known location within it.
          */
-
         @Override
         public void onSuccess(LocationEngineResult result) {
             ActivityMapFragment fragment = activityWeakReference.get();

@@ -21,6 +21,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
+import com.example.objectifsport.activities.MainActivity;
+import com.example.objectifsport.adapters.MainFragmentPageAdapter;
 import com.example.objectifsport.model.Sport;
 import com.example.objectifsport.model.goals.Goal;
 
@@ -119,6 +121,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                     distanceGoal.setOnCheckedChangeListener((buttonView, isChecked) -> {
                         inputVisibiliytyManager();
                         addGoal.setEnabled(isChecked);
+                        distanceGoalInput.requestFocus();
                     });
                     deadline.setOnCheckedChangeListener((buttonView, isChecked) -> {
                         inputVisibiliytyManager();
@@ -129,16 +132,17 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                     distanceContainer.setVisibility(View.VISIBLE);
                     timeGoal.setOnCheckedChangeListener((buttonView, isChecked) -> {
                         inputVisibiliytyManager();
-                        if (timeGoal.isChecked()) displayTimePicker(view.getContext());
+                        if (timeGoal.isChecked()) displayTimePicker(getActivity());
                         addGoal.setEnabled(isChecked || distanceGoal.isChecked());
                     });
                     distanceGoal.setOnCheckedChangeListener((buttonView, isChecked) -> {
                         inputVisibiliytyManager();
                         addGoal.setEnabled(isChecked || timeGoal.isChecked());
+                        distanceGoalInput.requestFocus();
                     });
                     deadline.setOnCheckedChangeListener((buttonView, isChecked) -> {
                         inputVisibiliytyManager();
-                        if (deadline.isChecked()) displayDatePicker(view.getContext());
+                        if (deadline.isChecked()) displayDatePicker(getActivity());
                     });
                 }
             }
@@ -252,6 +256,9 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
                             }
                     }
             }
+            MainFragmentPageAdapter mFPA = ((MainActivity) getActivity()).getMainFragmentPageAdapter();
+            if (mFPA.getMyGoalsFragment() != null)
+                mFPA.getMyGoalsFragment().getGoalAdapter().notifyDataSetChanged();
         });
 
         cancel.setOnClickListener(v -> {

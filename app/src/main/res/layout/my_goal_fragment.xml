@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="25dp"
         android:src="@android:drawable/ic_input_add"
-        android:contentDescription="@string/add_sport"
+        android:contentDescription="@string/add_goal"
         android:backgroundTint="@color/purple_500"
         app:tint="@color/white"
         android:id="@+id/add_goal"/>

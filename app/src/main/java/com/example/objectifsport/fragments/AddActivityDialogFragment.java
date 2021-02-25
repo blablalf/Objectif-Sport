@@ -17,6 +17,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.objectifsport.R;
 import com.example.objectifsport.Services.DataManager;
+import com.example.objectifsport.activities.MainActivity;
+import com.example.objectifsport.adapters.MainFragmentPageAdapter;
 import com.example.objectifsport.model.Sport;
 import com.example.objectifsport.model.activities.Activity;
 
@@ -69,6 +71,9 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
             Activity activity = new Activity(DataManager.getSports().get(
                     sportSelect.getSelectedItemPosition()), activityDescription.getText().toString());
             DataManager.addActivity(activity);
+            MainFragmentPageAdapter mFPA = ((MainActivity) getActivity()).getMainFragmentPageAdapter();
+            if (mFPA.getMyActivitiesFragment() != null)
+                mFPA.getMyActivitiesFragment().getActivityAdapter().notifyDataSetChanged();
 
             // close dialog
             dismiss();

@@ -121,6 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?android:attr/buttonBarButtonStyle"
+                android:contentDescription="@string/add_goal"
                 android:text="@string/add_goal"
                 android:id="@+id/add_goal"/>
 
