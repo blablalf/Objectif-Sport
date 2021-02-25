@@ -78,7 +78,6 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     private MapboxMap mapboxMap;
     View view;
 
-
     // Variables needed to add the location engine
     private LocationEngine locationEngine;
 
@@ -94,11 +93,9 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         Mapbox.getInstance(inflater.getContext(), getString(R.string.mapbox_access_token));
         view = inflater.inflate(R.layout.activity_map_fragment, container, false);
 
-        //context = getActivity();
         activity = DataManager.getActivities().get(Objects.requireNonNull(
                 getActivity()).getIntent().getIntExtra("position", 0));
 
@@ -325,10 +322,8 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
         if (granted)
             if (mapboxMap.getStyle() != null) {
                 enableLocationComponent(mapboxMap.getStyle());
-                System.out.println("gfyhjkgjk");
             }
             else {
-                System.out.println("SAAAAAd");
                 Toast.makeText(view.getContext(), R.string.user_location_permission_not_granted, Toast.LENGTH_LONG).show();
                 Objects.requireNonNull(getActivity()).finish();
             }
@@ -337,7 +332,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        if (activity.getSport().getAuthorizedGoals() != 1) mapView.onLowMemory();
+        mapView.onLowMemory();
     }
 
 

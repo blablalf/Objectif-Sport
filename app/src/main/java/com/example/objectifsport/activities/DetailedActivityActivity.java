@@ -18,7 +18,6 @@ import com.example.objectifsport.fragments.ActivityMapFragment;
 import com.example.objectifsport.model.activities.Activity;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.mapboxsdk.Mapbox;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -28,8 +27,10 @@ import java.util.Locale;
 public class DetailedActivityActivity extends AppCompatActivity implements PermissionsListener {
 
     private Activity activity;
-    private ActivityMapFragment activityMapFragment;
 
+    // distance part
+    private PermissionsManager permissionsManager;
+    private ActivityMapFragment activityMapFragment;
 
     // time part views
     private Button resetTimeButton;
@@ -37,13 +38,9 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
     private long startTime, timeToSave;
     private boolean timeRunning, timeStarted;
 
-    // distance part
-    private PermissionsManager permissionsManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_detailed_activity);
 
         activity = DataManager.getActivities().get(getIntent().getIntExtra("position", 0));
@@ -83,7 +80,9 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
                 resetTimeButton.setEnabled(!activity.isAchieved());
                 startTimeButton.setEnabled(!activity.isAchieved());
             }
-            activityMapFragment.enablingDisablingTrackingButtons();
+
+            if (activity.getSport().getAuthorizedGoals() != 1)
+                activityMapFragment.enablingDisablingTrackingButtons();
 
         });
 
@@ -138,7 +137,7 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
         resetTimeButton.setOnClickListener(v -> new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.reset_time))
                 .setMessage(getResources().getString(R.string.reset_time_message))
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                .setPositiveButton(R.string.reset, (dialog, which) -> {
                     chronometer.stop();
                     chronometer.setBase(SystemClock.elapsedRealtime());
                     timeToSave = 0;
@@ -148,7 +147,7 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
                     startTimeButton.setText(getResources().getString(R.string.start));
                     timeStarted = false;
                 })
-                .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show());
     }

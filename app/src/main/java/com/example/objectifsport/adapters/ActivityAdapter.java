@@ -3,6 +3,7 @@ package com.example.objectifsport.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,8 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
         });
 
         convertView.setOnLongClickListener(v -> {
+            ((Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE))
+                    .vibrate(30);
             new AlertDialog.Builder(context)
                     .setTitle(context.getResources().getString(R.string.remove_activity))
                     .setMessage(context.getResources().getString(R.string.remove_activity_msg))
@@ -75,8 +78,6 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
                         MainFragmentPageAdapter mFPA = ((MainActivity) context).getMainFragmentPageAdapter();
                         if (mFPA.getMySportsFragment() != null)
                             mFPA.getMySportsFragment().getSportAdapter().notifyDataSetChanged();
-                        if (mFPA.getMyGoalsFragment() != null)
-                            mFPA.getMyGoalsFragment().getGoalAdapter().notifyDataSetChanged();
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();

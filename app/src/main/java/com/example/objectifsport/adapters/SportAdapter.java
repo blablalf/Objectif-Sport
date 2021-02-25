@@ -2,6 +2,7 @@ package com.example.objectifsport.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,8 @@ public class SportAdapter extends ArrayAdapter<Sport> {
         });
 
         convertView.setOnLongClickListener(v -> {
+            ((Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE))
+                    .vibrate(30);
             new AlertDialog.Builder(context)
                     .setTitle(context.getResources().getString(R.string.remove_sport))
                     .setMessage(context.getResources().getString(R.string.remove_sport_msg))
