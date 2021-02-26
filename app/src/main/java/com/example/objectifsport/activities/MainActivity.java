@@ -20,6 +20,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Notification part
     private static final String CHANNEL_ID = "CHANNEL_ID";
     private static final String CHANNEL_DESCRIPTION = "CHANNEL_DESCRIPTION";
     private static final CharSequence CHANNEL_NAME = "CHANNEL_NAME";
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Class used to get data everywhere from SharedPreferences
         DataManager.load(this);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResumeFragments() {
         super.onResumeFragments();
 
+        // Update ListViews if goal(s) are updated and/or send notification if a goal is achieved
         for (Goal goal : DataManager.getGoals()) {
             if (goal.verify()) {
                 // notify

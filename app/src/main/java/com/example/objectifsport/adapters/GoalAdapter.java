@@ -58,17 +58,18 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
         creationDate.setText(formatter.format(goal.getCreationDate()));
 
+        // Get the status and set the good icon according to its status
         goalStatus.setText((goal.isAchieved()) ? "✅":
                 (goal.hasDeadlineDate() && new Date().after(goal.getDeadlineDate()))?"❌":"❗️");
 
-
-
+        // Start DetailedGoalActivity activity
         convertView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailedGoalActivity.class);
             intent.putExtra("position", position);
             context.startActivity(intent);
         });
 
+        // Remove a goal
         convertView.setOnLongClickListener(v -> {
             ((Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE))
                     .vibrate(30);

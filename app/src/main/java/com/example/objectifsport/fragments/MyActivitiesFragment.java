@@ -30,13 +30,17 @@ public class MyActivitiesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // inflate
         View view = inflater.inflate(R.layout.my_activities_fragment, container, false);
 
+        // initialize adapter with model and context
         activityAdapter = new ActivityAdapter(view.getContext(), DataManager.getActivities());
+
+        // get ListView and set it the adapter
         ListView listView = view.findViewById(R.id.activities_list);
         listView.setAdapter(activityAdapter);
 
+        // get FloatingActionButton and populate it
         FloatingActionButton addActivityButton = view.findViewById(R.id.add_activity);
         addActivityButton.setOnClickListener(v -> {
             if (DataManager.getSports().isEmpty()) {
@@ -54,6 +58,7 @@ public class MyActivitiesFragment extends Fragment {
         return view;
     }
 
+    // useful to notify
     public ActivityAdapter getActivityAdapter() {
         return activityAdapter;
     }

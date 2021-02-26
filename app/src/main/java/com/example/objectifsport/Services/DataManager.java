@@ -29,6 +29,7 @@ public class DataManager {
         return new Sport("error");
     }
 
+    // Load all data from SharedPreferences
     public static void load(Context context){
         userData = context.getSharedPreferences("USER_DATA", MODE_PRIVATE);
 
@@ -58,6 +59,7 @@ public class DataManager {
         }
     }
 
+    // Save all data into SharedPreferences
     public static void save(){
         Gson gson = new Gson();
         String sportsJson = gson.toJson(sports);

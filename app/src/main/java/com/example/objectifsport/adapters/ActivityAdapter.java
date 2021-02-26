@@ -59,12 +59,14 @@ public class ActivityAdapter extends ArrayAdapter<Activity> {
 
         activityStatus.setText((activity.isAchieved()) ? "✅":"❌");
 
+        // Start the DetailedActivity activity page
         convertView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailedActivityActivity.class);
             intent.putExtra("position", position);
             context.startActivity(intent);
         });
 
+        // Remove an activity
         convertView.setOnLongClickListener(v -> {
             ((Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE))
                     .vibrate(30);

@@ -11,12 +11,12 @@ import java.util.UUID;
 
 public class Goal {
 
-    private final Date creationDate;
-    private Date deadlineDate;
-    private final UUID sportId;
-    private final String description;
-    private final int authorizedGoal;
-    private boolean achieved;
+    private final Date creationDate; // Goal creation date
+    private Date deadlineDate; // If user decide to use a deadline date
+    private final UUID sportId; // To restore the good instances from shared instance we need to store id rather than a sport instance
+    private final String description; // Goal title
+    private final int authorizedGoal; // Type of goal 1 for time goal, 2 for distance and 0 for both
+    private boolean achieved; // Is the goal actually achieved
 
     // time part
     private Duration duration;

@@ -69,6 +69,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
 
         super.onViewCreated(view, savedInstanceState);
 
+        // Get views
         EditText goalDescription = view.findViewById(R.id.activity_description);
         Spinner sportSelect = view.findViewById(R.id.sport_select);
         Button cancel = view.findViewById(R.id.cancel);
@@ -82,6 +83,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
         RelativeLayout timeContainer = view.findViewById(R.id.time_container);
         RelativeLayout distanceContainer = view.findViewById(R.id.distance_container);
 
+        // Populate views
         Objects.requireNonNull(getDialog()).setTitle("Add Activity");
         ArrayList<String> sportNames = new ArrayList<>();
         for (Sport sport : DataManager.getSports()) sportNames.add(sport.getName());
@@ -95,11 +97,12 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
 
         addGoal.setEnabled(false); // disabled by default
 
+        // When you select a new sport
         sportSelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
-
+                // get the sport associated
                 selectedSport = DataManager.getSports().get(sportSelect.getSelectedItemPosition());
                 if (selectedSport.getAuthorizedGoals() == 1) {
                     distanceContainer.setVisibility(View.GONE);
@@ -158,6 +161,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
         // If we click on the timeGoalInput we re-post the timePickerDialog
         timeGoalInput.setOnClickListener(v -> displayTimePicker(view.getContext()));
 
+        // Try to add the goal
         addGoal.setOnClickListener(v -> {
             // valid inputs
             switch (selectedSport.getAuthorizedGoals()) {
@@ -278,6 +282,7 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
 
     }
 
+    // Repeated code, if a specific sport is selected, some views need to disappear
     public void inputVisibiliytyManager(){
         if (timeGoal.isChecked()) timeGoalInput.setVisibility(View.VISIBLE);
         else timeGoalInput.setVisibility(View.GONE);

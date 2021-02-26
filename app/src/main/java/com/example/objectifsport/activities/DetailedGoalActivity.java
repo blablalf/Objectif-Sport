@@ -26,6 +26,7 @@ public class DetailedGoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activiy_detailed_goal);
 
+        // Get views
         TextView goalDescription = findViewById(R.id.goal_description);
         TextView sportName = findViewById(R.id.sport_name);
         TextView creationDate = findViewById(R.id.creation_date);
@@ -46,8 +47,10 @@ public class DetailedGoalActivity extends AppCompatActivity {
         TextView distancePercentage = findViewById(R.id.distance_percentage);
         ProgressBar distanceProgress = findViewById(R.id.distanceProgress);
 
+        // Get the model
         Goal goal = DataManager.getGoals().get(getIntent().getIntExtra("position", 0));
 
+        // Set Data into the views
         goalDescription.setText(goal.getDescription());
         sportName.setText(goal.getSport().getName());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
@@ -64,7 +67,7 @@ public class DetailedGoalActivity extends AppCompatActivity {
         if (goal.hasDeadlineDate()) {
             deadlineDateContainer.setVisibility(View.VISIBLE);
             deadlineDate.setText(formatter.format(goal.getDeadlineDate()));
-            System.out.println("YYYYY"+formatter.format(goal.getDeadlineDate()));
+            System.out.println("YYYYY" + formatter.format(goal.getDeadlineDate()));
         }
 
         // time part

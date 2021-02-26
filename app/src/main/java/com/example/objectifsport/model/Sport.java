@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public class Sport {
 
-    private final String name;
-    private final UUID id;
+    private final String name; // Sport title
+    private final UUID id; // To restore the good sport instances (stored in the goals) from shared instance we need to store id rather than a sport instance
     private final int authorizedGoals; // 0 for all goals | 1 for time goal | 2 for distance goal
 
     public Sport(String name) {

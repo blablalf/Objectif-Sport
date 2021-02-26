@@ -47,11 +47,15 @@ public class AddSportDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Get views
         sportName = view.findViewById(R.id.sport_name);
         timeGoal = view.findViewById(R.id.time_goal);
         distanceGoal = view.findViewById(R.id.distance_goal);
         Button cancel = view.findViewById(R.id.cancel);
         addSport = view.findViewById(R.id.add_sport);
+
+        // Populate views
         Objects.requireNonNull(getDialog()).setTitle("Add sport");
         // Show soft keyboard automatically and request focus to field
         sportName.requestFocus();
@@ -64,6 +68,7 @@ public class AddSportDialogFragment extends DialogFragment {
         distanceGoal.setOnCheckedChangeListener((buttonView, isChecked) ->
                 addSport.setEnabled(isChecked || timeGoal.isChecked()));
 
+        // Add sport
         addSport.setOnClickListener(v -> {
             // learn what type of goals are needed
             int authorizedGoals;

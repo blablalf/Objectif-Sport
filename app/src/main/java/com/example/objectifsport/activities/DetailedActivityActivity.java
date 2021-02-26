@@ -26,6 +26,7 @@ import java.util.Locale;
 
 public class DetailedActivityActivity extends AppCompatActivity implements PermissionsListener {
 
+    // model
     private Activity activity;
 
     // distance part
@@ -43,12 +44,16 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_activity);
 
+        // Get the model
         activity = DataManager.getActivities().get(getIntent().getIntExtra("position", 0));
 
+        // Get views
         TextView activityDescription = findViewById(R.id.activity_description);
         TextView sportName = findViewById((R.id.sport_name));
         TextView creationDate = findViewById(R.id.creation_date);
+        Button completeUncompleteButton = findViewById(R.id.complete_uncomplete);
 
+        // Do we need to set up time, distance or both parts ?
         if (activity.getSport().getAuthorizedGoals() == 1) // Only time
             setTimeLayout();
         else if (activity.getSport().getAuthorizedGoals() == 2) // Only distance
@@ -58,15 +63,9 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
             setDistanceLayout();
         }
 
-        Button completeUncompleteButton = findViewById(R.id.complete_uncomplete);
         completeUncompleteButton.setText((activity.isAchieved())?
                 getResources().getString(R.string.activity_unfinished) :
                 getResources().getString(R.string.activity_complete));
-
-        if (resetTimeButton != null) {
-            resetTimeButton.setEnabled(!activity.isAchieved());
-            startTimeButton.setEnabled(!activity.isAchieved());
-        }
 
         completeUncompleteButton.setOnClickListener(v -> {
             activity.setAchieved(!activity.isAchieved());
@@ -75,14 +74,6 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
             completeUncompleteButton.setText((activity.isAchieved())?
                     getResources().getString(R.string.activity_unfinished) :
                     getResources().getString(R.string.activity_complete));
-
-            if (resetTimeButton != null) {
-                resetTimeButton.setEnabled(!activity.isAchieved());
-                startTimeButton.setEnabled(!activity.isAchieved());
-            }
-
-            if (activity.getSport().getAuthorizedGoals() != 1)
-                activityMapFragment.enablingDisablingTrackingButtons();
 
         });
 
@@ -100,6 +91,17 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
         TextView savedTime = findViewById(R.id.saved_time);
 
         timePart.setVisibility(View.VISIBLE);
+
+        if (resetTimeButton != null) {
+            resetTimeButton.setEnabled(!activity.isAchieved());
+            startTimeButton.setEnabled(!activity.isAchieved());
+        }
+
+        // Prevent time buttons from being used if activity is set achieved
+        if (resetTimeButton != null) {
+            resetTimeButton.setEnabled(!activity.isAchieved());
+            startTimeButton.setEnabled(!activity.isAchieved());
+        }
 
         timeToSave = activity.getActivityTime();
         timeRunning = false;
@@ -154,12 +156,19 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
 
     private void setDistanceLayout() {
         findViewById(R.id.distance_part).setVisibility(View.VISIBLE); // set the view visible
+
+        // Prevent distance buttons from being used if activity is set achieved
+        activityMapFragment.enablingDisablingTrackingButtons();
+
+        // Replace the layout by the map fragment
         FragmentTransaction ft = getSupportFragmentManager()
                 .beginTransaction();
         activityMapFragment = new ActivityMapFragment();
         ft.replace(R.id.distance_part, activityMapFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
+
+        // Get the localization permission if we need them
         if (!PermissionsManager.areLocationPermissionsGranted(this)) {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);

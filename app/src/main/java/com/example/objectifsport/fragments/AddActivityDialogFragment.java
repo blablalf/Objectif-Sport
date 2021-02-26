@@ -50,15 +50,18 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
         super.onViewCreated(view, savedInstanceState);
 
+        // Get views
         activityDescription = view.findViewById(R.id.activity_description);
         Spinner sportSelect = view.findViewById(R.id.sport_select);
         Button cancel = view.findViewById(R.id.cancel);
         Button addActivity = view.findViewById(R.id.add_activity);
 
+        // Get the models
         Objects.requireNonNull(getDialog()).setTitle("Add Activity");
         ArrayList<String> sportNames = new ArrayList<>();
         for (Sport sport : DataManager.getSports()) sportNames.add(sport.getName());
 
+        // Populate views
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, sportNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sportSelect.setAdapter(adapter);
@@ -66,12 +69,14 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
         activityDescription.requestFocus(); // Show soft keyboard automatically and request focus to field
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
+        // Try to add activity
         addActivity.setOnClickListener(v -> {
             // Add activity
             Activity activity = new Activity(DataManager.getSports().get(
                     sportSelect.getSelectedItemPosition()), activityDescription.getText().toString());
             DataManager.addActivity(activity);
-            MainFragmentPageAdapter mFPA = ((MainActivity) getActivity()).getMainFragmentPageAdapter();
+            MainFragmentPageAdapter mFPA = ((MainActivity) Objects.requireNonNull(getActivity()))
+                    .getMainFragmentPageAdapter();
             if (mFPA.getMyActivitiesFragment() != null)
                 mFPA.getMyActivitiesFragment().getActivityAdapter().notifyDataSetChanged();
 
@@ -87,7 +92,7 @@ public class AddActivityDialogFragment extends DialogFragment implements Adapter
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println("Selected_is_"+position);
+
     }
 
     @Override

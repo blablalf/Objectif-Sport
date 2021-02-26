@@ -67,11 +67,13 @@ public class SportAdapter extends ArrayAdapter<Sport> {
         goalsInProgressAmount.setText(String.valueOf(goalsAmountValue));
         goalsDoneAmount.setText(String.valueOf(achievedGoalsAmountValue));
 
+        // If we need in the future to start a specific activity for a sport
         convertView.setOnClickListener(v -> {
-            //Intent intent = new Intent(context, DetailSportActivity.class);
+            //Intent intent = new Intent(context, DetailedSportActivity.class);
             //context.startActivity(intent);
         });
 
+        // Remove a sport
         convertView.setOnLongClickListener(v -> {
             ((Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE))
                     .vibrate(30);

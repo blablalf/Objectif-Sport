@@ -30,12 +30,15 @@ public class MyGoalsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // inflate
         View view = inflater.inflate(R.layout.my_goal_fragment, container, false);
 
+        // define adapter by an instance with the model and context
         goalAdapter = new GoalAdapter(view.getContext(), DataManager.getGoals());
         ListView listView = view.findViewById(R.id.goals_list);
         listView.setAdapter(goalAdapter);
 
+        // get FloatingActionButton and populate it
         FloatingActionButton addGoalButton = view.findViewById(R.id.add_goal);
         addGoalButton.setOnClickListener(v -> {
             if (DataManager.getSports().isEmpty()) {
@@ -54,6 +57,7 @@ public class MyGoalsFragment extends Fragment {
         return view;
     }
 
+    // useful to notify
     public GoalAdapter getGoalAdapter() {
         return goalAdapter;
     }

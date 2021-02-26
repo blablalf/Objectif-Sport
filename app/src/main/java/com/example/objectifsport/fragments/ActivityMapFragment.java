@@ -61,14 +61,17 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
 public class ActivityMapFragment extends Fragment implements OnMapReadyCallback {
 
-    private boolean distanceRunning = false;
-    private boolean distanceStarted = false;
-    private double totalLineDistance = 0;
-    private int currentLinePosition;
+    // Model
     private Activity activity;
+
+    // Distance part
+    private boolean distanceRunning = false; // Tracking is running
+    private boolean distanceStarted = false; // No any routes has been restored or saved, tracking never started...
+    private double totalLineDistance = 0; // Total distance given by routes
+    private int currentLinePosition; // Index of current routes (the which one you draw with your tracking)
     private LatLng lastLocation;
-    private String currentGeoJsonSource;
-    private ArrayList<String> layersList;
+    private String currentGeoJsonSource; // id to access the current route selected
+    private ArrayList<String> layersList; // List of routes id
 
     // views
     private TextView totalDistance;
@@ -93,24 +96,34 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        // Get Mapbox instance before inflating
         Mapbox.getInstance(inflater.getContext(), getString(R.string.mapbox_access_token));
+        // Inflating ...
         view = inflater.inflate(R.layout.activity_map_fragment, container, false);
 
+        // Get the model
         activity = DataManager.getActivities().get(Objects.requireNonNull(
                 getActivity()).getIntent().getIntExtra("position", 0));
 
-        layersList = new ArrayList<>();
+        layersList = new ArrayList<>(); // List of routes
+
+        // Get views
         totalDistance = view.findViewById(R.id.distance_travelled);
+        startDistanceButton = view.findViewById(R.id.start_stop_tracking);
         mapView = view.findViewById(R.id.mapview);
+
+        // Create the map
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        startDistanceButton = view.findViewById(R.id.start_stop_tracking);
+        // Start, stop or resume tracking (The button changes its value)
         startDistanceButton.setOnClickListener(v -> {
             if (!distanceRunning || !distanceStarted) { // we start/resume
                 distanceStarted = true;
                 distanceRunning = true;
                 startDistanceButton.setText(getResources().getString(R.string.stop));
+                // set the "start" marker
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
                         .title(getResources().getString(R.string.start)));
@@ -139,6 +152,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
             } else { // we stop
                 distanceRunning = false;
                 startDistanceButton.setText(getResources().getString(R.string.resume));
+                // set the "finish" marker
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))
                         .title(getResources().getString(R.string.finish)));
@@ -172,6 +186,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
                     distanceStarted = false;
                     distanceRunning = false;
                     resetDistanceButton.setText(getResources().getString(R.string.start));
+                    // Remove all markers
                     for (Marker marker : mapboxMap.getMarkers()) {
                         marker.remove();
                     }
@@ -234,6 +249,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
         // init data
         if (!activity.getTrajectories().isEmpty()) {
 
+            // Restore layers (routes) and markers
             for (ArrayList<Point> points : activity.getTrajectories()){
                 mapboxMap.getStyle(style -> {
                     GeoJsonSource geoJsonSource = new GeoJsonSource(UUID.randomUUID().toString());
@@ -246,6 +262,7 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
                             lineJoin(LINE_JOIN_ROUND)));
                 });
 
+                // Restore markers
                 if(points.size() != 0) {
                     mapboxMap.addMarker(new MarkerOptions()
                             .position(new LatLng(points.get(0).latitude(), points.get(0).longitude()))
@@ -303,8 +320,8 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     private void initLocationEngine() {
         locationEngine = LocationEngineProvider.getBestLocationEngine(view.getContext());
 
-        long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L;
-        long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5;
+        long DEFAULT_INTERVAL_IN_MILLISECONDS = 1000L; // position updated every seconds
+        long DEFAULT_MAX_WAIT_TIME = DEFAULT_INTERVAL_IN_MILLISECONDS * 5; // Max interval before update
         LocationEngineRequest request = new LocationEngineRequest.Builder(DEFAULT_INTERVAL_IN_MILLISECONDS)
                 .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
                 .setMaxWaitTime(DEFAULT_MAX_WAIT_TIME).build();

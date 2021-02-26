@@ -31,11 +31,15 @@ public class MySportsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // inflate
         View view = inflater.inflate(R.layout.my_sports_fragment, container, false);
+
+        // create adapter with the model and context
         sportAdapter = new SportAdapter(view.getContext(), DataManager.getSports());
         ListView listView = view.findViewById(R.id.sports_list);
         listView.setAdapter(sportAdapter);
 
+        // get FloatingActionButton and populate it
         FloatingActionButton addSportButton = view.findViewById(R.id.add_sport);
         addSportButton.setOnClickListener(v -> {
             FragmentManager fm = getFragmentManager();
@@ -47,6 +51,7 @@ public class MySportsFragment extends Fragment {
         return view;
     }
 
+    // useful to notify
     public SportAdapter getSportAdapter() {
         return sportAdapter;
     }
