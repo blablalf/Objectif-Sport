@@ -21,6 +21,9 @@ import beetlejuice.objectifsport.model.Sport;
 
 import java.util.Objects;
 
+/**
+ * The type Add sport dialog fragment.
+ */
 public class AddSportDialogFragment extends DialogFragment {
 
     private EditText sportName;
@@ -28,12 +31,20 @@ public class AddSportDialogFragment extends DialogFragment {
     private CheckBox distanceGoal;
     private Button addSport;
 
+    /**
+     * Instantiates a new Add sport dialog fragment.
+     */
     public AddSportDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
     }
 
+    /**
+     * New instance add sport dialog fragment.
+     *
+     * @return the add sport dialog fragment
+     */
     public static AddSportDialogFragment newInstance() {
         return new AddSportDialogFragment();
     }

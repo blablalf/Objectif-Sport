@@ -34,13 +34,25 @@ import java.util.Objects;
 
 import mobi.upod.timedurationpicker.TimeDurationPickerDialog;
 
+/**
+ * The type Add goal dialog fragment.
+ */
 public class AddGoalDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
     private EditText timeGoalInput;
     private EditText distanceGoalInput;
     private EditText deadlineGoalInput;
+    /**
+     * The Time goal.
+     */
     CheckBox timeGoal;
+    /**
+     * The Distance goal.
+     */
     CheckBox distanceGoal;
+    /**
+     * The Deadline.
+     */
     CheckBox deadline;
 
     private Calendar deadlineDate; // ... \-(^|^)-/
@@ -48,12 +60,20 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
     private Double distance; // km
     private Sport selectedSport;
 
+    /**
+     * Instantiates a new Add goal dialog fragment.
+     */
     public AddGoalDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
     }
 
+    /**
+     * New instance add goal dialog fragment.
+     *
+     * @return the add goal dialog fragment
+     */
     public static AddGoalDialogFragment newInstance() {
         return new AddGoalDialogFragment();
     }
@@ -282,7 +302,10 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
 
     }
 
-    // Repeated code, if a specific sport is selected, some views need to disappear
+    /**
+     * Input visibiliyty manager.
+     */
+// Repeated code, if a specific sport is selected, some views need to disappear
     public void inputVisibiliytyManager(){
         if (timeGoal.isChecked()) timeGoalInput.setVisibility(View.VISIBLE);
         else timeGoalInput.setVisibility(View.GONE);
@@ -292,6 +315,11 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
         else deadlineGoalInput.setVisibility(View.GONE);
     }
 
+    /**
+     * Display date picker.
+     *
+     * @param context the context
+     */
     public void displayDatePicker(Context context){
         final Calendar cldr = Calendar.getInstance();
         int day = cldr.get(Calendar.DAY_OF_MONTH);
@@ -310,6 +338,11 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
         picker.show();
     }
 
+    /**
+     * Display time picker.
+     *
+     * @param context the context
+     */
     public void displayTimePicker(Context context){
         TimeDurationPickerDialog picker = new TimeDurationPickerDialog(context, (view, duration) -> {
             timeGoalDuration = Duration.ofMillis(duration);

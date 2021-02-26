@@ -23,10 +23,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * The type Goal adapter.
+ */
 public class GoalAdapter extends ArrayAdapter<Goal> {
 
     private final Context context;
 
+    /**
+     * Instantiates a new Goal adapter.
+     *
+     * @param context the context
+     * @param objects the objects
+     */
     public GoalAdapter(@NonNull Context context, @NonNull List<Goal> objects) {
         super(context, 0, objects);
         this.context = context;

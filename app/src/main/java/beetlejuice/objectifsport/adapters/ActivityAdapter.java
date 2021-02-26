@@ -22,10 +22,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * The type Activity adapter.
+ */
 public class ActivityAdapter extends ArrayAdapter<Activity> {
 
+    /**
+     * The Context.
+     */
     Context context;
 
+    /**
+     * Instantiates a new Activity adapter.
+     *
+     * @param context    the context
+     * @param activities the activities
+     */
     public ActivityAdapter(Context context, ArrayList<Activity> activities) {
         super(context, 0, activities);
         this.context = context;

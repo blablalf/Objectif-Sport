@@ -59,6 +59,9 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
+/**
+ * The type Activity map fragment.
+ */
 public class ActivityMapFragment extends Fragment implements OnMapReadyCallback {
 
     // Model
@@ -79,6 +82,9 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
     private Button resetDistanceButton;
     private MapView mapView;
     private MapboxMap mapboxMap;
+    /**
+     * The View.
+     */
     View view;
 
     // Variables needed to add the location engine
@@ -209,6 +215,9 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
         return view;
     }
 
+    /**
+     * Enabling disabling tracking buttons.
+     */
     public void enablingDisablingTrackingButtons() {
         if (resetDistanceButton != null) {
             resetDistanceButton.setEnabled(!activity.isAchieved());
@@ -216,10 +225,18 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
         }
     }
 
+    /**
+     * Gets map view.
+     *
+     * @return the map view
+     */
     public MapView getMapView() {
         return mapView;
     }
 
+    /**
+     * Prevent leak.
+     */
     public void preventLeak() {
         if (locationEngine != null) {
             locationEngine.removeLocationUpdates(callback);
@@ -330,10 +347,18 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
         locationEngine.getLastLocation(callback);
     }
 
+    /**
+     * Treat on explanation needed.
+     */
     public void treatOnExplanationNeeded() {
         Toast.makeText(view.getContext(), R.string.user_location_permission_explanation, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Treat on permission result.
+     *
+     * @param granted the granted
+     */
     public void treatOnPermissionResult(boolean granted) {
         if (granted)
             if (mapboxMap.getStyle() != null) {
@@ -397,6 +422,11 @@ public class ActivityMapFragment extends Fragment implements OnMapReadyCallback 
 
         private final WeakReference<ActivityMapFragment> activityWeakReference;
 
+        /**
+         * Instantiates a new Activity map fragment location callback.
+         *
+         * @param activity the activity
+         */
         ActivityMapFragmentLocationCallback(ActivityMapFragment activity) {
             this.activityWeakReference = new WeakReference<>(activity);
         }

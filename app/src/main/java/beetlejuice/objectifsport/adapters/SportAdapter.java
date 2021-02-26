@@ -20,10 +20,19 @@ import beetlejuice.objectifsport.model.goals.Goal;
 
 import java.util.ArrayList;
 
+/**
+ * The type Sport adapter.
+ */
 public class SportAdapter extends ArrayAdapter<Sport> {
 
     private final Context context;
 
+    /**
+     * Instantiates a new Sport adapter.
+     *
+     * @param context       the context
+     * @param announcements the announcements
+     */
     public SportAdapter(Context context, ArrayList<Sport> announcements) {
         super(context, 0, announcements);
         this.context = context;

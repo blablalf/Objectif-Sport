@@ -18,6 +18,9 @@ import beetlejuice.objectifsport.adapters.MainFragmentPageAdapter;
 import beetlejuice.objectifsport.model.goals.Goal;
 import com.google.android.material.tabs.TabLayout;
 
+/**
+ * The type Main activity.
+ */
 public class MainActivity extends AppCompatActivity {
 
     // Notification part
@@ -53,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Gets main fragment page adapter.
+     *
+     * @return the main fragment page adapter
+     */
     public MainFragmentPageAdapter getMainFragmentPageAdapter() {
         return mainFragmentPageAdapter;
     }

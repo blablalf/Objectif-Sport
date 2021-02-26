@@ -19,6 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * The type Detailed goal activity.
+ */
 public class DetailedGoalActivity extends AppCompatActivity {
 
     @Override
@@ -112,6 +115,11 @@ public class DetailedGoalActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Back to my goals.
+     *
+     * @param view the view
+     */
     public void backToMyGoals(View view) {
         onBackPressed();
     }

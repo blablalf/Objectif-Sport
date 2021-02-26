@@ -9,6 +9,9 @@ import beetlejuice.objectifsport.fragments.MyActivitiesFragment;
 import beetlejuice.objectifsport.fragments.MyGoalsFragment;
 import beetlejuice.objectifsport.fragments.MySportsFragment;
 
+/**
+ * The type Main fragment page adapter.
+ */
 public class MainFragmentPageAdapter extends FragmentPagerAdapter {
 
     private final String[] tabTitles = new String[] { "My Sports", "My Activities", "My Goals" };
@@ -16,6 +19,12 @@ public class MainFragmentPageAdapter extends FragmentPagerAdapter {
     private MyGoalsFragment myGoalsFragment;
     private MySportsFragment mySportsFragment;
 
+    /**
+     * Instantiates a new Main fragment page adapter.
+     *
+     * @param fm       the fm
+     * @param behavior the behavior
+     */
     public MainFragmentPageAdapter(FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
@@ -46,15 +55,30 @@ public class MainFragmentPageAdapter extends FragmentPagerAdapter {
         return tabTitles[position];
     }
 
+    /**
+     * Gets my activities fragment.
+     *
+     * @return the my activities fragment
+     */
     public MyActivitiesFragment getMyActivitiesFragment() {
         return myActivitiesFragment;
     }
 
 
+    /**
+     * Gets my goals fragment.
+     *
+     * @return the my goals fragment
+     */
     public beetlejuice.objectifsport.fragments.MyGoalsFragment getMyGoalsFragment() {
         return myGoalsFragment;
     }
 
+    /**
+     * Gets my sports fragment.
+     *
+     * @return the my sports fragment
+     */
     public beetlejuice.objectifsport.fragments.MySportsFragment getMySportsFragment() {
         return mySportsFragment;
     }

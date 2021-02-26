@@ -25,16 +25,27 @@ import beetlejuice.objectifsport.model.activities.Activity;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * The type Add activity dialog fragment.
+ */
 public class AddActivityDialogFragment extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
     private EditText activityDescription;
 
+    /**
+     * Instantiates a new Add activity dialog fragment.
+     */
     public AddActivityDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
     }
 
+    /**
+     * New instance add activity dialog fragment.
+     *
+     * @return the add activity dialog fragment
+     */
     public static AddActivityDialogFragment newInstance() {
         return new AddActivityDialogFragment();
     }

@@ -14,6 +14,9 @@ import beetlejuice.objectifsport.Services.DataManager;
 import beetlejuice.objectifsport.adapters.GoalAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * The type My goals fragment.
+ */
 public class MyGoalsFragment extends Fragment {
 
     private GoalAdapter goalAdapter;
@@ -23,6 +26,11 @@ public class MyGoalsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * New instance my goals fragment.
+     *
+     * @return the my goals fragment
+     */
     public static MyGoalsFragment newInstance() {
         return new MyGoalsFragment();
     }
@@ -57,7 +65,12 @@ public class MyGoalsFragment extends Fragment {
         return view;
     }
 
-    // useful to notify
+    /**
+     * Gets goal adapter.
+     *
+     * @return the goal adapter
+     */
+// useful to notify
     public GoalAdapter getGoalAdapter() {
         return goalAdapter;
     }

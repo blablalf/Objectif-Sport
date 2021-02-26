@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.Locale;
 
 
+/**
+ * The type Detailed activity activity.
+ */
 public class DetailedActivityActivity extends AppCompatActivity implements PermissionsListener {
 
     // model
@@ -33,8 +36,7 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
     private PermissionsManager permissionsManager;
     private ActivityMapFragment activityMapFragment;
 
-    // time part views
-    private Button resetTimeButton;
+    // time part
     private Button startTimeButton;
     private long startTime, timeToSave;
     private boolean timeRunning, timeStarted;
@@ -87,7 +89,8 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
         View timePart = findViewById(R.id.time_part);
         Chronometer chronometer = findViewById(R.id.chronometer);
         startTimeButton = findViewById(R.id.start_pause);
-        resetTimeButton = findViewById(R.id.reset);
+        // time part views
+        Button resetTimeButton = findViewById(R.id.reset);
         TextView savedTime = findViewById(R.id.saved_time);
 
         timePart.setVisibility(View.VISIBLE);
@@ -175,6 +178,11 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
         }
     }
 
+    /**
+     * Back to my activities.
+     *
+     * @param view the view
+     */
     public void backToMyActivities(View view) {
         onBackPressed();
     }

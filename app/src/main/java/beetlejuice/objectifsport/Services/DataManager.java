@@ -16,20 +16,37 @@ import java.util.UUID;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * The type Data manager.
+ */
 public class DataManager {
 
+    /**
+     * The User data.
+     */
     static SharedPreferences userData;
     private static ArrayList<Sport> sports;
     private static ArrayList<Activity> activities;
     private static ArrayList<Goal> goals;
 
+    /**
+     * Gets sport.
+     *
+     * @param sportId the sport id
+     * @return the sport
+     */
     public static Sport getSport(UUID sportId) {
         for (Sport sport : sports)
             if (sport.getId().equals(sportId)) return sport;
         return new Sport("error");
     }
 
-    // Load all data from SharedPreferences
+    /**
+     * Load.
+     *
+     * @param context the context
+     */
+// Load all data from SharedPreferences
     public static void load(Context context){
         userData = context.getSharedPreferences("USER_DATA", MODE_PRIVATE);
 
@@ -59,7 +76,10 @@ public class DataManager {
         }
     }
 
-    // Save all data into SharedPreferences
+    /**
+     * Save.
+     */
+// Save all data into SharedPreferences
     public static void save(){
         Gson gson = new Gson();
         String sportsJson = gson.toJson(sports);
@@ -72,14 +92,29 @@ public class DataManager {
                 .apply();
     }
 
+    /**
+     * Gets sports.
+     *
+     * @return the sports
+     */
     public static ArrayList<Sport> getSports() {
         return sports;
     }
 
+    /**
+     * Gets activities.
+     *
+     * @return the activities
+     */
     public static ArrayList<Activity> getActivities() {
         return activities;
     }
 
+    /**
+     * Remove sport.
+     *
+     * @param sport the sport
+     */
     public static void removeSport(Sport sport) {
         Iterator<Goal> goalIterator = goals.iterator();
         while (goalIterator.hasNext())
@@ -91,30 +126,60 @@ public class DataManager {
         save();
     }
 
+    /**
+     * Remove activity.
+     *
+     * @param activity the activity
+     */
     public static void removeActivity(Activity activity) {
         activities.remove(activity);
         save();
     }
 
+    /**
+     * Add activity.
+     *
+     * @param activity the activity
+     */
     public static void addActivity(Activity activity) {
         activities.add(activity);
         save();
     }
 
+    /**
+     * Gets goals.
+     *
+     * @return the goals
+     */
     public static ArrayList<Goal> getGoals() {
         return goals;
     }
 
+    /**
+     * Add sport.
+     *
+     * @param sport the sport
+     */
     public static void addSport(Sport sport) {
         sports.add(sport);
         save();
     }
 
+    /**
+     * Remove goal.
+     *
+     * @param goal the goal
+     */
     public static void removeGoal(Goal goal) {
         goals.remove(goal);
         save();
     }
 
+    /**
+     * Add goal.
+     *
+     * @param goal the goal
+     */
     public static void addGoal(Goal goal) {
         goals.add(goal);
         save();

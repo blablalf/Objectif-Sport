@@ -14,10 +14,18 @@ import beetlejuice.objectifsport.Services.DataManager;
 import beetlejuice.objectifsport.adapters.SportAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+/**
+ * The type My sports fragment.
+ */
 public class MySportsFragment extends Fragment {
 
     private SportAdapter sportAdapter;
 
+    /**
+     * New instance my sports fragment.
+     *
+     * @return the my sports fragment
+     */
     public static MySportsFragment newInstance() {
         return new MySportsFragment();
     }
@@ -51,7 +59,12 @@ public class MySportsFragment extends Fragment {
         return view;
     }
 
-    // useful to notify
+    /**
+     * Gets sport adapter.
+     *
+     * @return the sport adapter
+     */
+// useful to notify
     public SportAdapter getSportAdapter() {
         return sportAdapter;
     }
