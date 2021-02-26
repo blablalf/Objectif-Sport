@@ -8,15 +8,9 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="80dp"
-        android:orientation="horizontal"
-        android:background="@color/design_default_color_secondary_variant"
-        android:layout_alignParentTop="true"
         android:onClick="backToMyActivities"
-        android:id="@+id/back">
+        android:id="@+id/back"
+        style="@style/topBack">
 
         <ImageView
             android:layout_width="80dp"
@@ -47,14 +41,7 @@
         android:gravity="center">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:textSize="26sp"
-            android:textColor="@color/design_default_color_secondary_variant"
+            style="@style/textDescription"
             android:text="@string/activity_description"
             android:id="@+id/activity_description"/>
 
@@ -65,22 +52,12 @@
             android:gravity="center">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:textSize="18sp"
-                android:textColor="@color/design_default_color_secondary_variant"
+                style="@style/textInformations"
                 android:text="@string/sport_name"
                 android:id="@+id/sport_name"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:textSize="18sp"
-                android:textColor="@color/design_default_color_secondary_variant"
+                style="@style/textInformations"
                 android:text="@string/random_date"
                 android:id="@+id/creation_date"/>
 
@@ -128,23 +105,15 @@
             </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/textInformations"
                 android:layout_below="@+id/buttonPanel"
-                android:textColor="@color/design_default_color_secondary_variant"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
                 android:text="@string/current_time_recorded"
                 android:id="@+id/current_time_recorded"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/textInformations"
                 android:layout_toEndOf="@+id/current_time_recorded"
                 android:layout_below="@+id/buttonPanel"
-                android:textColor="@color/design_default_color_secondary_variant"
-                android:textSize="18sp"
-                android:layout_margin="10dp"
                 android:text="@string/random_time"
                 android:id="@+id/saved_time"/>
 
@@ -160,10 +129,7 @@
     </LinearLayout>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:shadowColor="@color/design_default_color_secondary"
+        style="@style/bottomButton"
         android:text="@string/activity_complete"
         android:id="@+id/complete_uncomplete"/>
 

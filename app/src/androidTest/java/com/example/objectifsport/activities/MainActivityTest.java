@@ -695,6 +695,7 @@ public class MainActivityTest {
     }
     */
 
+    /*
     @Test
     public void mainActivityRemoveGoalTest() {
         ViewInteraction floatingActionButton = onView(
@@ -819,6 +820,7 @@ public class MainActivityTest {
                                 3)));
         materialButton5.perform(scrollTo(), click());
     }
+    */
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {

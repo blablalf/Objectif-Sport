@@ -6,11 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textSize="22sp"
-        android:textColor="@color/design_default_color_primary"
+        style="@style/itemTitle"
         android:text="@string/activity_description"
         android:id="@+id/activity_description"/>
 
@@ -20,19 +16,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:textColor="@color/dark_grey"
+            style="@style/itemDescriptionText"
             android:text="@string/sport"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:textColor="@color/dark_grey"
+            style="@style/itemDescriptionText"
             android:text="@string/sport_name"
             android:id="@+id/sport_name"/>
 
@@ -44,19 +32,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:textColor="@color/dark_grey"
+            style="@style/itemDescriptionText"
             android:text="@string/creation_date"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:textColor="@color/dark_grey"
+            style="@style/itemDescriptionText"
             android:text="@string/random_date"
             android:id="@+id/creation_date"/>
 
@@ -68,19 +48,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:textColor="@color/dark_grey"
+            style="@style/itemDescriptionText"
             android:text="@string/activity_status"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_margin="5dp"
-            android:textColor="@color/dark_grey"
+            style="@style/itemDescriptionText"
             android:text="@string/done_not_done"
             android:id="@+id/activity_status"/>
 

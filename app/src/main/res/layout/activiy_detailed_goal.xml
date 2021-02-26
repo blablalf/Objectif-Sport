@@ -5,13 +5,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="80dp"
-        android:orientation="horizontal"
-        android:background="@color/design_default_color_secondary_variant"
-        android:layout_alignParentTop="true"
+        style="@style/topBack"
         android:onClick="backToMyGoals"
         android:id="@+id/back">
 
@@ -53,14 +47,7 @@
             android:id="@+id/goal_status"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:textSize="26sp"
-            android:textColor="@color/design_default_color_secondary_variant"
+            style="@style/textDescription"
             android:text="@string/goal_description"
             android:id="@+id/goal_description"/>
 
@@ -71,22 +58,12 @@
             android:gravity="center">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:textSize="18sp"
-                android:textColor="@color/design_default_color_secondary_variant"
+                style="@style/textInformations"
                 android:text="@string/sport_name"
                 android:id="@+id/sport_name"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:textSize="18sp"
-                android:textColor="@color/design_default_color_secondary_variant"
+                style="@style/textInformations"
                 android:text="@string/random_date"
                 android:id="@+id/creation_date"/>
 
@@ -110,19 +87,13 @@
                 android:id="@+id/deadline_date_container">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/design_default_color_secondary_variant"
+                    style="@style/textInformations"
+                    android:textSize="16sp"
                     android:text="@string/deadline_date"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textSize="18sp"
-                    android:textColor="@color/design_default_color_secondary_variant"
+                    android:textSize="16sp"
+                    style="@style/textInformations"
                     android:text="@string/no_deadline_date"
                     android:id="@+id/deadline_date"/>
 
@@ -145,19 +116,11 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/time_goal_title"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/no_time_goal"
                         android:id="@+id/time_goal"/>
 
@@ -169,19 +132,11 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/time_reached"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/no_time_reached"
                         android:id="@+id/no_time_reached"/>
 
@@ -193,30 +148,18 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/completion"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/no_time_percentage"
                         android:id="@+id/time_percentage"/>
 
                 </LinearLayout>
 
                 <ProgressBar
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:max="100"
-                    android:progress="25"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    style="@style/classicHorizontalProgressBars"
                     android:id="@+id/time_progress"/>
 
             </LinearLayout>
@@ -238,19 +181,11 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/distance_goal_title"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/no_distance_goal"
                         android:id="@+id/distance_goal"/>
 
@@ -262,19 +197,11 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/distance_reached"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/no_distance_reached"
                         android:id="@+id/distance_reached"/>
 
@@ -286,30 +213,18 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/completion"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:textSize="18sp"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        style="@style/textInformationsCondensed"
                         android:text="@string/no_distance_percentage"
                         android:id="@+id/distance_percentage"/>
 
                 </LinearLayout>
 
                 <ProgressBar
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:max="100"
-                    android:progress="48"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    style="@style/classicHorizontalProgressBars"
                     android:id="@+id/distanceProgress"/>
 
             </LinearLayout>
