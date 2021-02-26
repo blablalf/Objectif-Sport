@@ -1,4 +1,4 @@
-![app_icon](https://forge.iut-larochelle.fr/uploads/-/system/project/avatar/1955/ic_launcher.png?width=64)
+![app_icon](https://i.ibb.co/F7MB6Wb/ic-launcher-1.png)
 # Objectif Sport
 
 #### **Functional Context**
@@ -18,7 +18,7 @@ _Alfred Gaillard_ (contact@alfred-gaillard.fr)
 #### **Libs used**
 - **TimePicker** : [time-duration-picker](https://github.com/svenwiegand/time-duration-picker)
 - **Map** : [MapBox](https://docs.mapbox.com/android/maps/guides)
-- **Data Storage** : [gson](https://github.com/google/gson) (once trimmed, objects are then placed in the SharedPreferences.)
+- **Data Storage** : [gson](https://github.com/google/gson) (once serialized, objects are then placed in the SharedPreferences for saving and deserialized for loading them.)
 
 #### **Testing**
 - Use of Espresso test to test the bases of the interface
