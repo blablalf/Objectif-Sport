@@ -6,7 +6,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.example.objectifsport"
+        applicationId "beetlejuice.objectifsport"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
