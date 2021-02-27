@@ -37,7 +37,7 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
     private ActivityMapFragment activityMapFragment;
 
     // time part
-    private Button startTimeButton;
+    private Button startTimeButton, resetTimeButton;
     private long startTime, timeToSave;
     private boolean timeRunning, timeStarted;
 
@@ -77,6 +77,15 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
                     getResources().getString(R.string.activity_unfinished) :
                     getResources().getString(R.string.activity_complete));
 
+            // Prevent time buttons from being used if activity is set achieved
+            if (resetTimeButton != null) {
+                resetTimeButton.setEnabled(!activity.isAchieved());
+                startTimeButton.setEnabled(!activity.isAchieved());
+            }
+
+            // Prevent distance buttons from being used if activity is set achieved
+            activityMapFragment.enablingDisablingTrackingButtons();
+
         });
 
         activityDescription.setText(activity.getActivityDescription());
@@ -90,17 +99,11 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
         Chronometer chronometer = findViewById(R.id.chronometer);
         startTimeButton = findViewById(R.id.start_pause);
         // time part views
-        Button resetTimeButton = findViewById(R.id.reset);
+        resetTimeButton = findViewById(R.id.reset);
         TextView savedTime = findViewById(R.id.saved_time);
 
         timePart.setVisibility(View.VISIBLE);
 
-        if (resetTimeButton != null) {
-            resetTimeButton.setEnabled(!activity.isAchieved());
-            startTimeButton.setEnabled(!activity.isAchieved());
-        }
-
-        // Prevent time buttons from being used if activity is set achieved
         if (resetTimeButton != null) {
             resetTimeButton.setEnabled(!activity.isAchieved());
             startTimeButton.setEnabled(!activity.isAchieved());
