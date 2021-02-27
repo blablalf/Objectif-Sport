@@ -1,19 +1,19 @@
-![app_icon](https://forge.iut-larochelle.fr/uploads/-/system/project/avatar/1955/ic_launcher.png?width=64)
+![app_icon](https://i.ibb.co/F7MB6Wb/ic-launcher-1.png)
 # Objectif Sport
 
 #### **Functional Context**
 Sport monitoring Android application for sportsmen and women. 
-This application allows you to define sports, sport's objectives (time or distance with or without deadline) and activities to achieve them.
+This application allows you to define sports, sport's objectives (time or distance with or without deadline) and activities to achieve them. 
 
-#### **Developper**  
-_Alfred Gaillard_ (contact@alfred-gaillard.fr).
+#### **Developper** 
+_Alfred Gaillard_ (contact@alfred-gaillard.fr). 
 
-#### **Standards** 
+#### **Standards**
 - **Languages used** : English for everything.
 - **Naming Convention** : https://www.oracle.com/java/technologies/javase/codeconventions-namingconventions.html && https://source.android.com/setup/contribute/code-style#follow-field-naming-conventions.
 - **Git** : GitFlow type.
 - **Devices** : Android smartphones.
-- **Api used** : Api 23 -> 30 to get more than 80% of devices.
+- **Api used** : Api 23 -> 30 to get more than 80% of devices. 
 
 #### **Libs used**
 - **TimePicker** : [time-duration-picker](https://github.com/svenwiegand/time-duration-picker).
