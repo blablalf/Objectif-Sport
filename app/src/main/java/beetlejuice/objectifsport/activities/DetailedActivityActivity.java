@@ -160,9 +160,6 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
     private void setDistanceLayout() {
         findViewById(R.id.distance_part).setVisibility(View.VISIBLE); // set the view visible
 
-        // Prevent distance buttons from being used if activity is set achieved
-        activityMapFragment.enablingDisablingTrackingButtons();
-
         // Replace the layout by the map fragment
         FragmentTransaction ft = getSupportFragmentManager()
                 .beginTransaction();
@@ -170,6 +167,9 @@ public class DetailedActivityActivity extends AppCompatActivity implements Permi
         ft.replace(R.id.distance_part, activityMapFragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
+
+        // Prevent distance buttons from being used if activity is set achieved
+        activityMapFragment.enablingDisablingTrackingButtons();
 
         // Get the localization permission if we need them
         if (!PermissionsManager.areLocationPermissionsGranted(this)) {
