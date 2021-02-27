@@ -20,5 +20,11 @@ _Alfred Gaillard_ (contact@alfred-gaillard.fr)
 - **Map** : [MapBox](https://docs.mapbox.com/android/maps/guides)
 - **Data Storage** : [gson](https://github.com/google/gson) (once serialized, objects are then placed in the SharedPreferences for saving and deserialized for loading them.)
 
-#### **Testing**
-- Use of Espresso test to test the bases of the interface
+#### **Testing** 
+- Use of Espresso test to test the bases of the interface 
+
+#### **Get Started**
+1. Create a sport into the "My Sports" tab by clicking on the "+" button.
+2. Add a goal into the "My Goals" tab. 
+3. Add your activities into "My Activities" tab.
+4. When you doing some sport, just click on your activity to make it progress.
