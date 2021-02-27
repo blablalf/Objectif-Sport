@@ -28,3 +28,14 @@ _Alfred Gaillard_ (contact@alfred-gaillard.fr).
 2. Add a goal into the "My Goals" tab. 
 3. Add your activities into "My Activities" tab.
 4. When you doing some sport, just click on your activity to make it progress.
+
+#### **Known bugs**
+There are no known bugs to actually. However, I have problems with the map when I'm on emulator but I think it's my environment. However if you encounter a crash when opening the map, feel free to contact me and test on a real device.
+
+#### **Devices used for testing**
+I recently encountered problems with mapbox on emulators (not only on this project).So all recent testing was done with a real device, a OnePlus 7T 256GB with Android 10 and 411dp screen.
+Until recently the tests were done with the following emulators:
+- Pixel 3a XL api 23 & 30 (400Dp)
+- Pixel a3 api 23 & 30 (440Dp)
+- Pixel XL api 23 & 30 (560Dp)
+- Nexus 5X api 23 & 30 (420Dp)
