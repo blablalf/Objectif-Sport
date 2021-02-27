@@ -2,7 +2,7 @@
 # Objectif Sport
 
 #### **Functional Context**
-Sport monitoring application for sportsmen and women. 
+Sport monitoring Android application for sportsmen and women. 
 This application allows you to define sports, sport's objectives (time or distance with or without deadline) and activities to achieve them.
 
 #### **Developper**  
